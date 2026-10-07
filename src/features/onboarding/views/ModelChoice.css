@@ -1,0 +1,134 @@
+/*
+ * First-run model choice: the three-line model rows from the Native design
+ * (name, one-line description, "size · quant · format"), in Minimal's
+ * tokens, inside one inset group. A trailing check marks the choice, as in
+ * the model menus.
+ */
+
+.sb-fr-models {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.sb-fr-models__group {
+  border-radius: var(--radius-md);
+  background: var(--bg-group);
+}
+
+.sb-fr-model {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 66px;
+  box-sizing: border-box;
+  padding: 10px 0 10px 12px;
+  cursor: default;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.sb-fr-model:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+}
+
+.sb-fr-model:last-child {
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.sb-fr-model + .sb-fr-model::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: var(--hairline);
+}
+
+.sb-fr-model:hover:not([data-disabled]) {
+  background: var(--fill-hover);
+}
+
+/* The real radio stays in the tree for keyboard and screen readers. */
+.sb-fr-model__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: default;
+}
+
+.sb-fr-model:has(.sb-fr-model__input:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.sb-fr-model__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.sb-fr-model__name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  font-weight: var(--weight-medium);
+  line-height: 18px;
+}
+
+.sb-fr-model__tag {
+  flex: none;
+  padding: 0 7px;
+  border-radius: var(--radius-pill);
+  background: var(--fill-control);
+  color: var(--text-secondary);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-regular);
+  line-height: 17px;
+}
+
+.sb-fr-model__desc,
+.sb-fr-model__meta {
+  display: block;
+  margin-top: 1px;
+  font-size: var(--text-xs);
+  line-height: 16px;
+  color: var(--text-secondary);
+}
+
+.sb-fr-model__desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sb-fr-model__meta {
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Trailing slot: same 60px column as Run and Get on Models. */
+.sb-fr-model__check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--action-slot);
+  color: var(--text-primary);
+}
+
+.sb-fr-model__check > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sb-fr-model[data-disabled] .sb-fr-model__name,
+.sb-fr-model[data-disabled] .sb-fr-model__desc {
+  opacity: 0.45;
+}

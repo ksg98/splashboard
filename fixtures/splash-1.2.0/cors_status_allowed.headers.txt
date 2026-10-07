@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+Server: Splash
+Date: Sun, 04 Oct 2026 07:25:15 GMT
+Content-Type: application/json
+Content-Length: 10479
+Connection: close
+Access-Control-Allow-Origin: tauri://localhost
+Vary: Origin
+Access-Control-Expose-Headers: Retry-After, WWW-Authenticate
+

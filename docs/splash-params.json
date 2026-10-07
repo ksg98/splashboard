@@ -1,0 +1,3189 @@
+{
+  "version": "1.2.0",
+  "$comment": "Generated for Splashboard from Splash 1.2.0 (splash serve --help, server/serve_options.py, install/launcher.py, server/frontend.py, install/clients.py). Prose and rationale: docs/terminal-parity.md. HTTP shapes: docs/splash-api.md. serve[] holds every `splash serve` flag (flag != null) and every environment variable the form controls (flag == null, env set). Values in presets[].serve use serve[].key and CLI spelling (sizes like '32G', context like '256K', booleans true). min_version is the first Splash release that accepts the field.",
+  "conventions": {
+    "control": [
+      "model-picker",
+      "revision-picker",
+      "combobox+directory-picker",
+      "toggle",
+      "secret",
+      "secret+generate",
+      "directory-picker",
+      "number",
+      "number+none",
+      "number+auto",
+      "number+random",
+      "select",
+      "segmented",
+      "slider",
+      "slider+auto",
+      "slider+off",
+      "multi-value-list",
+      "text",
+      "textarea",
+      "tri-state",
+      "json-editor",
+      "select+json-schema-editor",
+      "tool-list-editor",
+      "file-attach",
+      "internal"
+    ],
+    "pass_as": {
+      "argv": "--flag=value on the splash serve command line",
+      "env": "environment variable of the spawned process (secrets always go here)"
+    },
+    "restart_required": "true = a running server must be restarted for the change to apply; false = takes effect on the next spawned process (download, catalog refresh or next start) or, for request fields, on the next request",
+    "min_max": "min/max/step are the UI control's bounds; Splash's exact bounds are in validation (exclusive_min, ui_soft_max, dynamic_max). Example: top_p slider floor 0.01, Splash accepts any value > 0",
+    "headless": "connectors[].headless = a non-interactive invocation (prompt on stdin) that needs no PTY",
+    "visibility": {
+      "basic": "shown by default",
+      "advanced": "behind 'Show advanced'",
+      "internal": "set by Splashboard, never shown"
+    },
+    "validation.requires": "the field is only valid (and its control enabled) when the named key meets the condition",
+    "validation.dynamic_max": "the UI computes the upper bound at runtime as described"
+  },
+  "sections": [
+    {
+      "id": "model",
+      "label": "Model",
+      "description": "What to serve, which revision and draft, vision on or off, and where downloads come from."
+    },
+    {
+      "id": "server_network",
+      "label": "Server & network",
+      "description": "Port, bind address, host names, model aliases and the built-in chat page."
+    },
+    {
+      "id": "memory_context",
+      "label": "Memory & context",
+      "description": "GPU memory budget, context length and image size limits."
+    },
+    {
+      "id": "kv_caches",
+      "label": "KV & caches",
+      "description": "KV cache precision and the optional SSD cache tier."
+    },
+    {
+      "id": "performance",
+      "label": "Performance & scheduling",
+      "description": "How requests share the engine, queue limits, timeouts and request size."
+    },
+    {
+      "id": "reasoning",
+      "label": "Reasoning defaults",
+      "description": "Server-wide default for how much the model thinks."
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "description": "API key and which web origins may call the API."
+    },
+    {
+      "id": "advanced",
+      "label": "Advanced",
+      "description": "Diagnostics, Hugging Face download tuning and proxies."
+    }
+  ],
+  "serve": [
+    {
+      "flag": "--model",
+      "env": null,
+      "key": "model",
+      "label": "Model",
+      "section": "model",
+      "control": "model-picker",
+      "type": "model_id",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0",
+      "help": "The Hugging Face model to serve. Use OWNER/REPO for an MLX 4-bit model or an Inco Splash package, or OWNER/REPO:VARIANT to pick one GGUF file, for example unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_M. Splash recognises the model from its files and downloads the matching speed-up draft for you. Only the Qwen3.8-27B and Qwen3.6-35B-A3B families are supported. This name is also the model name in the API.",
+      "validation": {
+        "required": true,
+        "pattern": "^[A-Za-z0-9_](?:[A-Za-z0-9._-]*[A-Za-z0-9_])?/[A-Za-z0-9_](?:[A-Za-z0-9._-]{0,94}[A-Za-z0-9_])?(?::[A-Za-z0-9][A-Za-z0-9._-]{0,63})?$",
+        "forbid_substrings": [
+          "--",
+          ".."
+        ],
+        "repo_must_not_end_with": ".git",
+        "version_gates": {
+          "upstream MLX/GGUF repositories and :VARIANT": "1.1.0",
+          "legacy incoai/*-Splash packages": "1.0"
+        },
+        "legacy_package_rejects": [
+          "variant",
+          "revision",
+          "draft_model",
+          "language_only"
+        ],
+        "install_time_errors": [
+          "no supported model has this architecture (...)",
+          "select a GGUF with OWNER/REPO:VARIANT (files in the repository root: ...)",
+          "this runtime package has no variants; drop the :VARIANT suffix"
+        ],
+        "summary": "Required. OWNER/REPO[:VARIANT]; repo name at most 96 characters; no '--', '..' or '.git'. Legacy incoai/*-Splash packages take no :VARIANT, revision, draft or text-only option."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "basic",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--revision",
+      "env": null,
+      "key": "revision",
+      "label": "Model revision",
+      "section": "model",
+      "control": "revision-picker",
+      "type": "string",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.1.0",
+      "help": "Which version of the model repository to use: a branch, a tag or a full 40-character commit. Leave empty to follow the default branch; Splash then checks for a newer version at each start (one request, at most 5 s) and downloads only changed files. Pin a commit to freeze the model.",
+      "validation": {
+        "commit_pattern": "^[0-9a-fA-F]{40}$",
+        "not_for_legacy_packages": true,
+        "creates_separate_installation": true,
+        "summary": "Branch, tag or 40-hex commit. Not for legacy packages. A different value is a separate installation (re-assembled, unchanged files reused)."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--draft-model",
+      "env": null,
+      "key": "draft_model",
+      "label": "Draft model",
+      "section": "model",
+      "control": "combobox+directory-picker",
+      "type": "repo_id_or_path",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.1.0",
+      "help": "Override the small draft model Splash uses to speed up generation. Leave empty to use the matching DFlash2 draft (incoai/Qwen3.8-27B-DFlash2 or incoai/Qwen3.6-35B-A3B-DFlash2). Accepts a Hugging Face repo or a local folder.",
+      "validation": {
+        "one_of": [
+          "repo_id",
+          "absolute_directory"
+        ],
+        "repo_pattern": "^[A-Za-z0-9_](?:[A-Za-z0-9._-]*[A-Za-z0-9_])?/[A-Za-z0-9_](?:[A-Za-z0-9._-]{0,94}[A-Za-z0-9_])?$",
+        "directory_must_be_absolute": true,
+        "not_for_legacy_packages": true,
+        "creates_separate_installation": true,
+        "install_time_errors": [
+          "draft configuration is incompatible with <family>"
+        ],
+        "summary": "Repo ID or an existing folder (send an absolute path: a relative one resolves against the launcher's working directory). Must match the model family."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--language-only",
+      "env": null,
+      "key": "language_only",
+      "label": "Text only (no vision)",
+      "section": "model",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.1.0",
+      "help": "Skip the vision part of the model. Frees memory for a longer context (the 27B UD-IQ3_XXS on a 24 GB Mac goes from 73,721 to 102,393 tokens) but images and PDFs are refused. Recommended for coding agents on 24 GB Macs, and the fix when a GGUF repo has no usable vision projector.",
+      "validation": {
+        "not_for_legacy_packages": true,
+        "creates_separate_installation": true,
+        "disables_request_fields": [
+          "images",
+          "pdf_files"
+        ],
+        "summary": "Not for legacy packages. A separate installation from the same model with vision."
+      },
+      "pass_as": "argv",
+      "cli_format": "flag",
+      "visibility": "basic",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--offline",
+      "env": "HF_HUB_OFFLINE",
+      "key": "offline",
+      "label": "Offline start",
+      "section": "model",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.2.0",
+      "help": "Start without contacting Hugging Face. Use it with no internet, or to skip the update check at start. Works only for a model that is already installed; a model that was never installed still needs the Hub once.",
+      "validation": {
+        "requires_installed_model": true,
+        "env_equivalent": {
+          "HF_HUB_OFFLINE": "1"
+        },
+        "env_truthy_values": [
+          "1",
+          "ON",
+          "YES",
+          "TRUE"
+        ],
+        "env_min_version": "1.1.0",
+        "summary": "Model must already be installed. Same as HF_HUB_OFFLINE=1 (or TRANSFORMERS_OFFLINE=1), which also works on 1.1.0."
+      },
+      "pass_as": "argv",
+      "cli_format": "flag",
+      "visibility": "basic",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "HF_TOKEN",
+      "key": "hf_token",
+      "label": "Hugging Face token",
+      "section": "model",
+      "control": "secret",
+      "type": "string",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Access token for private or gated models only; public models need none. Splashboard keeps it in the macOS Keychain and passes it only to downloads and server starts.",
+      "validation": {
+        "pattern": "^hf_[A-Za-z0-9]+$",
+        "pattern_is_hint_only": true,
+        "test_command": "<libexec>/python/bin/python3 <libexec>/python/bin/hf auth whoami --format json",
+        "summary": "Optional. A 401/403 during download means the token is missing or lacks access. Alternative: save it as the hf login (~/.cache/huggingface/token)."
+      },
+      "pass_as": "env",
+      "cli_format": "{value}",
+      "visibility": "basic",
+      "applies_to": [
+        "serve",
+        "download",
+        "catalog_refresh"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "HF_HUB_CACHE",
+      "key": "hf_hub_cache",
+      "label": "Model download folder",
+      "section": "model",
+      "control": "directory-picker",
+      "type": "path",
+      "default": "~/.cache/huggingface/hub",
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Where new model downloads go, for example a folder on an external disk. Existing downloads are not moved. Splash reads the original files at every start and after 10 idle minutes, so the disk must stay connected.",
+      "validation": {
+        "must_exist_and_be_writable": true,
+        "warn_if_removable_volume": true,
+        "summary": "Writable folder. Warn if on a removable volume; check it is mounted before start."
+      },
+      "pass_as": "env",
+      "cli_format": "{value}",
+      "visibility": "basic",
+      "applies_to": [
+        "serve",
+        "download"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--port",
+      "env": "SPLASH_PORT",
+      "key": "port",
+      "label": "Port",
+      "section": "server_network",
+      "control": "number",
+      "type": "integer",
+      "default": 8000,
+      "min": 1,
+      "max": 65535,
+      "step": 1,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0.1",
+      "help": "Network port for this server. Each port is a separate server with its own model and memory budget. Agents launched from Splashboard are given this port automatically.",
+      "validation": {
+        "integer": true,
+        "check_free": "bind host:port with SO_REUSEADDR and try a loopback connect, as the launcher does",
+        "launcher_errors": [
+          "Splash is already serving (PID p, model m, port n); stop it with Ctrl+C first",
+          "cannot bind HOST:PORT: ..."
+        ],
+        "summary": "Integer 1-65535. Must be free. 8000 is also used by oMLX, vLLM and others; pick another port if it clashes."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "basic",
+      "notes": "Before 1.0.1 the port was fixed at 8000.",
+      "applies_to": [
+        "serve"
+      ]
+    },
+    {
+      "flag": "--host",
+      "env": null,
+      "key": "host",
+      "label": "Listen on",
+      "section": "server_network",
+      "control": "select",
+      "type": "ipv4",
+      "default": "127.0.0.1",
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": [
+        {
+          "value": "127.0.0.1",
+          "label": "This Mac only"
+        },
+        {
+          "value": "0.0.0.0",
+          "label": "All networks (LAN)"
+        },
+        {
+          "value": "<interface address>",
+          "label": "One network interface (IPv4)"
+        }
+      ],
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0.2",
+      "help": "Where the server listens. 'This Mac only' is the safe default. 'All networks' lets other devices on your network connect; turn on an API key when you do. IPv6 is not supported.",
+      "validation": {
+        "format": "ipv4",
+        "warn_if_non_loopback_without_api_key": "Anyone on your network could use this server. Set an API key.",
+        "warn_if_specific_non_loopback_ip": "Agents launched by Splash connect to 127.0.0.1 and will not reach a server bound only to this address.",
+        "summary": "IPv4 only. Non-loopback without an API key gets a warning. Agents always dial 127.0.0.1, so keep loopback or 0.0.0.0."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "basic",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--allowed-host",
+      "env": null,
+      "key": "allowed_host",
+      "label": "Extra host names",
+      "section": "server_network",
+      "control": "multi-value-list",
+      "type": "hostname",
+      "default": [],
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": true,
+      "restart_required": true,
+      "min_version": "1.0",
+      "help": "Host names clients may use in the URL besides IP addresses and localhost, such as mymac.local or a proxy name. Without it, requests that address the server by name get 403. It does not change who can connect.",
+      "validation": {
+        "item_format": "hostname",
+        "suggest": "scutil --get LocalHostName + '.local'",
+        "summary": "Host names, one per entry. Splashboard suggests this Mac's .local name."
+      },
+      "pass_as": "argv",
+      "cli_format": "--allowed-host={item} per item",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--served-model-name",
+      "env": null,
+      "key": "served_model_name",
+      "label": "Model aliases",
+      "section": "server_network",
+      "control": "multi-value-list",
+      "type": "string",
+      "default": [],
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": true,
+      "restart_required": true,
+      "min_version": "1.0.2",
+      "help": "Extra names clients may use for the model, such as 'local-qwen' or model names an app has hard-coded. Responses still report the real model ID unless 'Announce first alias' is on.",
+      "validation": {
+        "item_rules": [
+          "non-empty",
+          "no whitespace or control characters",
+          "none of \\ % ? #",
+          "no empty, '.' or '..' path segments"
+        ],
+        "item_pattern": "^[^\\s\\\\%?#]+$",
+        "unique": true,
+        "summary": "Non-empty; no spaces, control characters, \\ % ? #, or empty/./.. path segments."
+      },
+      "pass_as": "argv",
+      "cli_format": "--served-model-name={item} per item",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--announce-served-name",
+      "env": null,
+      "key": "announce_served_name",
+      "label": "Announce first alias",
+      "section": "server_network",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.2.0",
+      "help": "Report the first alias as the model name in responses and list it first in /v1/models, for clients that reject a reply whose model name differs from the one they asked for. Agents launched by Splash then use the alias. /status keeps the real ID.",
+      "validation": {
+        "requires": {
+          "served_model_name": "non_empty"
+        },
+        "parse_error": "--announce-served-name needs --served-model-name",
+        "summary": "Needs at least one alias; disable the toggle until one exists."
+      },
+      "pass_as": "argv",
+      "cli_format": "flag",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--no-webui",
+      "env": null,
+      "key": "no_webui",
+      "label": "Disable built-in chat page",
+      "section": "server_network",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0",
+      "help": "Turn off Splash's own chat page at http://127.0.0.1:PORT/. The API keeps working, and Splashboard does not need the page.",
+      "validation": {
+        "summary": "None."
+      },
+      "pass_as": "argv",
+      "cli_format": "flag",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--max-memory",
+      "env": null,
+      "key": "max_memory",
+      "label": "GPU memory limit",
+      "section": "memory_context",
+      "control": "slider+auto",
+      "type": "size",
+      "default": "auto",
+      "min": 1,
+      "max": null,
+      "step": 1,
+      "unit": "GiB",
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0",
+      "help": "Upper limit on the GPU memory Splash may use. 'Auto' uses as much as macOS considers safe for the GPU. Lower it to leave room for other apps; the automatic context length shrinks with it. It limits GPU allocations, not the total shown in Activity Monitor.",
+      "validation": {
+        "pattern": "^([Aa][Uu][Tt][Oo]|[0-9]+([KkMmGg]([Ii]?[Bb])?)?)$",
+        "units_base": 1024,
+        "min_bytes": 1,
+        "max_bytes": 9223372036854775807,
+        "dynamic_max": "MTLDevice.recommendedMaxWorkingSetSize - max(1 GiB, 2%) (read from Rust); a higher value is silently clamped to this",
+        "startup_failure": "memory plan cannot hold one model token (prints memory_plan_json)",
+        "summary": "'auto' or a size such as 28G (K/M/G = 1024-based). Slider max = the Mac's own GPU budget; above it has no effect. Too small for the model fails at startup."
+      },
+      "pass_as": "argv",
+      "cli_format": "{n}G, or omit for auto",
+      "visibility": "basic",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--max-context",
+      "env": null,
+      "key": "max_context",
+      "label": "Context length",
+      "section": "memory_context",
+      "control": "slider+auto",
+      "type": "tokens",
+      "default": "auto",
+      "min": 1,
+      "max": 262144,
+      "step": 1024,
+      "unit": "tokens",
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0",
+      "help": "Longest conversation (prompt plus reply) the server accepts. 'Auto' picks the most your memory budget allows, up to 256K. Coding agents need about 100K. A value above what memory allows stops the server at startup, so Splashboard caps this slider at the last measured automatic value.",
+      "validation": {
+        "pattern": "^([Aa][Uu][Tt][Oo]|[0-9]+[Kk]?)$",
+        "k_multiplier": 1024,
+        "max_tokens": 262144,
+        "parse_error": "must be 'auto' or a token count up to 256K, such as 100K",
+        "dynamic_max": "maximum_context_tokens last reported with max_context=auto for the same model, revision, draft, language_only, max_memory, kv_format and max_cache_disk",
+        "startup_failure": "--max-context N exceeds the M tokens the model and this Mac's memory|--max-memory allow; omit it or pass at most M",
+        "warn_below_for_agents": 100000,
+        "summary": "'auto' or 1-262144 tokens (K = 1024). Above the memory-derived limit fails at startup, not when parsed."
+      },
+      "pass_as": "argv",
+      "cli_format": "{n}K when divisible by 1024, else {n}; omit for auto",
+      "visibility": "basic",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--max-image-pixels",
+      "env": null,
+      "key": "max_image_pixels",
+      "label": "Max image size",
+      "section": "memory_context",
+      "control": "slider",
+      "type": "integer",
+      "default": 4194304,
+      "min": 65536,
+      "max": 4194304,
+      "step": 65536,
+      "unit": "pixels",
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0",
+      "help": "Largest size an image is scaled to before the model sees it. Lower values use less memory per image (about 600 MiB at the default) and fewer tokens, at the cost of detail. No effect in text-only mode.",
+      "validation": {
+        "integer": true,
+        "disabled_when": {
+          "language_only": true
+        },
+        "parse_error": "must be between 65536 and 4194304 pixels",
+        "summary": "Integer 65,536-4,194,304 (about 0.07-4.2 MP). Hidden when text only."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--kv-format",
+      "env": null,
+      "key": "kv_format",
+      "label": "KV cache precision",
+      "section": "kv_caches",
+      "control": "segmented",
+      "type": "enum",
+      "default": "int8",
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": [
+        {
+          "value": "int8",
+          "label": "8-bit (default)"
+        },
+        {
+          "value": "bf16",
+          "label": "BF16 (full precision, ~2x KV memory)"
+        }
+      ],
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.1.0",
+      "help": "How the model's working memory (KV cache) is stored. 8-bit fits about twice the context. BF16 avoids quantizing it but uses about twice the KV memory and can be slower at long contexts. Model weights are unchanged.",
+      "validation": {
+        "summary": "int8 or bf16. Changes the automatic context limit; re-measure it."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value} (omit for int8)",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--max-cache-disk",
+      "env": null,
+      "key": "max_cache_disk",
+      "label": "SSD cache size",
+      "section": "kv_caches",
+      "control": "slider+off",
+      "type": "size",
+      "default": "0",
+      "min": 0,
+      "max": null,
+      "step": 1,
+      "unit": "GiB",
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.1.0",
+      "help": "Let Splash move cached conversation data to the SSD when memory runs short, so long prompts do not have to be read again. 0 turns it off. It does not raise the context limit. It writes to your SSD, up to about 50 GB per hour on a busy 24 GB Mac.",
+      "validation": {
+        "pattern": "^(0|[0-9]+([KkMmGg]([Ii]?[Bb])?)?)$",
+        "units_base": 1024,
+        "min_effective_mib": {
+          "Qwen3.6-35B-A3B": 109,
+          "Qwen3.8-27B": 187
+        },
+        "dynamic_max": "free space on the volume that holds the temporary or persistent cache",
+        "notes": "One state buffer (109 MiB for the 35B, 187 MiB for the 27B) comes out of the memory budget; a quota smaller than one state disables the tier. Disk use can briefly exceed the quota by about 2%.",
+        "summary": "0 (off) or a size such as 16G. Below one state (109/187 MiB) it silently does nothing. Keep below free disk space."
+      },
+      "pass_as": "argv",
+      "cli_format": "{n}G (omit for 0)",
+      "visibility": "basic",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--persistent-cache",
+      "env": null,
+      "key": "persistent_cache",
+      "label": "Keep SSD cache across restarts",
+      "section": "kv_caches",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.2.0",
+      "help": "Keep the SSD cache through restarts, upgrades and crashes, so long system prompts and conversations are ready right after a restart. Uses the SSD cache size above. A model's cache unused for 14 days is deleted.",
+      "validation": {
+        "requires": {
+          "max_cache_disk": "> 0"
+        },
+        "parse_error": "--persistent-cache needs --max-cache-disk",
+        "summary": "Needs SSD cache size above 0; disable the toggle until it is."
+      },
+      "pass_as": "argv",
+      "cli_format": "flag",
+      "visibility": "basic",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--cache-dir",
+      "env": null,
+      "key": "cache_dir",
+      "label": "Persistent cache folder",
+      "section": "kv_caches",
+      "control": "directory-picker",
+      "type": "path",
+      "default": "~/Library/Caches/Splash/prefix-cache",
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.2.0",
+      "help": "Folder for the persistent cache. Leave the default unless you want it on another disk. Only one server uses a folder at a time; another waits 20 s, then uses temporary files.",
+      "validation": {
+        "requires": {
+          "persistent_cache": true
+        },
+        "parse_error": "--cache-dir needs --persistent-cache",
+        "non_empty": true,
+        "send_only_if_not_default": true,
+        "summary": "Needs the persistent cache on. Send only when it differs from the default."
+      },
+      "pass_as": "argv",
+      "cli_format": "{absolute path}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--decode-share",
+      "env": null,
+      "key": "decode_share",
+      "label": "Decode share during long prompts",
+      "section": "performance",
+      "control": "slider",
+      "type": "number",
+      "default": 0.5,
+      "min": 0,
+      "max": null,
+      "step": 0.05,
+      "unit": "ratio",
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.2.0",
+      "help": "How Splash balances one long prompt against replies already streaming. Higher keeps other chats and agents flowing while a long prompt is read, but that prompt finishes later. 0 alternates one step each.",
+      "validation": {
+        "finite": true,
+        "ui_soft_max": 4,
+        "send_only_if_set": true,
+        "parse_error": "must be a nonnegative number such as 0.5",
+        "summary": "Number >= 0 (no upper bound; UI slider to 4 with free entry). Engine default 0.5."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--queue-size",
+      "env": null,
+      "key": "queue_size",
+      "label": "Request queue size",
+      "section": "performance",
+      "control": "number",
+      "type": "integer",
+      "default": 32,
+      "min": 1,
+      "max": null,
+      "step": 1,
+      "unit": "requests",
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.2.0",
+      "help": "How many requests the server accepts at once, running plus waiting. More get 'busy, retry later' (503). This is not parallelism: Splash runs at most 4 requests at a time and there is no setting for that.",
+      "validation": {
+        "integer": true,
+        "parse_error": "must be a positive number of requests such as 32",
+        "summary": "Integer >= 1."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "notes": "1.0-1.1.0: server-only flag, fixed at 32 through `splash serve`.",
+      "applies_to": [
+        "serve"
+      ]
+    },
+    {
+      "flag": "--request-timeout",
+      "env": null,
+      "key": "request_timeout",
+      "label": "Request time limit",
+      "section": "performance",
+      "control": "number+none",
+      "type": "number",
+      "default": null,
+      "min": 0,
+      "max": null,
+      "step": 60,
+      "unit": "seconds",
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.2.0",
+      "help": "Give up on any request that takes longer than this (error 504). Empty means no limit. It also limits upload time. A request's own timeout can only be shorter.",
+      "validation": {
+        "exclusive_min": 0,
+        "finite": true,
+        "parse_error": "must be a positive number of seconds such as 3600",
+        "summary": "Empty (no limit) or seconds > 0."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "notes": "1.0-1.1.0: fixed 1800 s and not settable through `splash serve` (#185).",
+      "applies_to": [
+        "serve"
+      ]
+    },
+    {
+      "flag": "--max-request-size",
+      "env": null,
+      "key": "max_request_size",
+      "label": "Max request size",
+      "section": "performance",
+      "control": "number",
+      "type": "size",
+      "default": "128M",
+      "min": 1,
+      "max": null,
+      "step": 16,
+      "unit": "MiB",
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0.1",
+      "help": "Largest single request body; images and PDFs travel inside it. Bigger requests get 413. All requests in flight share a budget of at least 512 MiB, or twice this value.",
+      "validation": {
+        "pattern": "^[0-9]+([KkMmGg]([Ii]?[Bb])?)?$",
+        "units_base": 1024,
+        "min_bytes": 1,
+        "parse_error": "must be a positive byte count such as 128M",
+        "summary": "Positive size such as 256M."
+      },
+      "pass_as": "argv",
+      "cli_format": "{n}M (omit for 128M)",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--default-reasoning-effort",
+      "env": "SPLASH_DEFAULT_REASONING_EFFORT",
+      "key": "default_reasoning_effort",
+      "label": "Default thinking effort",
+      "section": "reasoning",
+      "control": "select",
+      "type": "enum",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": [
+        {
+          "value": null,
+          "label": "Model default"
+        },
+        {
+          "value": "none",
+          "label": "Off (none)"
+        },
+        {
+          "value": "minimal",
+          "label": "Minimal (renders as low)"
+        },
+        {
+          "value": "low",
+          "label": "Low"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "high",
+          "label": "High (renders as xhigh)"
+        },
+        {
+          "value": "xhigh",
+          "label": "Extra high"
+        },
+        {
+          "value": "max",
+          "label": "Max (renders as xhigh)"
+        }
+      ],
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0.2",
+      "help": "How much the model thinks before answering when a request does not say. 'Model default' keeps the template's own (xhigh for Qwen3.8-27B). 'Off' turns thinking off unless a request asks for it. Anthropic-style requests are not affected.",
+      "validation": {
+        "choices": [
+          "none",
+          "minimal",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "template_aliases": {
+          "high": "xhigh",
+          "max": "xhigh",
+          "minimal": "low"
+        },
+        "env_validated_at_parse": true,
+        "summary": "One of the seven names, or unset. An invalid SPLASH_DEFAULT_REASONING_EFFORT stops startup."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "basic",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--api-key",
+      "env": "SPLASH_API_KEY",
+      "key": "api_key",
+      "label": "API key",
+      "section": "security",
+      "control": "secret+generate",
+      "type": "string",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0",
+      "help": "A password clients must send (Authorization: Bearer KEY or x-api-key). Needed when sharing on a network. Health checks and the chat page stay public. Splashboard keeps it in the Keychain and hands it to the server and to agents as SPLASH_API_KEY, never on a command line.",
+      "validation": {
+        "pattern": "^[\\x21-\\x7E]+$",
+        "parse_error": "API key must contain only visible ASCII characters",
+        "generate": "32 random bytes, base64url without padding",
+        "summary": "Visible ASCII only, no spaces. Passed as env SPLASH_API_KEY, never as --api-key."
+      },
+      "pass_as": "env",
+      "cli_format": "env SPLASH_API_KEY={value}",
+      "visibility": "basic",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": "--allowed-origin",
+      "env": null,
+      "key": "allowed_origin",
+      "label": "Allowed web origins",
+      "section": "security",
+      "control": "multi-value-list",
+      "type": "origin",
+      "default": [],
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": true,
+      "restart_required": true,
+      "min_version": "1.2.0",
+      "help": "Web pages or app webviews allowed to call the API from a browser, such as tauri://localhost or http://localhost:3000. '*' allows every site; use it only with an API key. Splashboard adds its own origin automatically when it starts the server.",
+      "validation": {
+        "item_pattern": "^(\\*|[A-Za-z][A-Za-z0-9+.-]*://[^/\\s*?#]+)$",
+        "no_wildcard_patterns": "tauri://* and http://*.example.com are refused at startup",
+        "warn_if_star_without_api_key": true,
+        "auto_add": [
+          "tauri://localhost",
+          "http://localhost:1420 (dev builds only)"
+        ],
+        "summary": "Exact scheme://host[:port], or a bare '*'. No wildcards inside. '*' without a key warns."
+      },
+      "pass_as": "argv",
+      "cli_format": "--allowed-origin={item} per item",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "SPLASH_CRASH_TRACE",
+      "key": "crash_trace",
+      "label": "Record crash traces",
+      "section": "advanced",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.0",
+      "help": "When the engine crashes, save its last messages to ~/Library/Logs/Splash/crash/ for a bug report (newest 4 files, 64 MiB at most). Traces can contain your conversation text; review before sharing.",
+      "validation": {
+        "env_value_when_on": "1",
+        "only_exact_value_enables": true,
+        "confirm_on_enable": "Crash traces may contain private conversation data.",
+        "summary": "Sets SPLASH_CRASH_TRACE=1 (only exactly '1' works). Confirm the privacy note."
+      },
+      "pass_as": "env",
+      "cli_format": "env SPLASH_CRASH_TRACE=1",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "HF_HOME",
+      "key": "hf_home",
+      "label": "Hugging Face home folder",
+      "section": "advanced",
+      "control": "directory-picker",
+      "type": "path",
+      "default": "~/.cache/huggingface",
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Moves the whole Hugging Face folder: downloads and the saved login. Prefer 'Model download folder' unless you need this.",
+      "validation": {
+        "summary": "Writable folder. HF_HUB_CACHE, when set, wins for downloads."
+      },
+      "pass_as": "env",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve",
+        "download"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "HF_ENDPOINT",
+      "key": "hf_endpoint",
+      "label": "Hugging Face endpoint",
+      "section": "advanced",
+      "control": "text",
+      "type": "url",
+      "default": "https://huggingface.co",
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Use a Hugging Face mirror or proxy for downloads and the catalog refresh.",
+      "validation": {
+        "format": "url",
+        "summary": "http(s) URL."
+      },
+      "pass_as": "env",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve",
+        "download",
+        "catalog_refresh"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "HF_HUB_DOWNLOAD_TIMEOUT",
+      "key": "hf_download_timeout",
+      "label": "Download timeout",
+      "section": "advanced",
+      "control": "number",
+      "type": "integer",
+      "default": 10,
+      "min": 1,
+      "max": null,
+      "step": 5,
+      "unit": "seconds",
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Network timeout for model downloads. Raise it on slow or flaky connections. Splash's own update check at start always uses 5 s.",
+      "validation": {
+        "integer": true,
+        "summary": "Integer seconds >= 1 (read by the bundled huggingface_hub 1.28)."
+      },
+      "pass_as": "env",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve",
+        "download"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "HF_HUB_ETAG_TIMEOUT",
+      "key": "hf_etag_timeout",
+      "label": "Metadata timeout",
+      "section": "advanced",
+      "control": "number",
+      "type": "integer",
+      "default": 10,
+      "min": 1,
+      "max": null,
+      "step": 5,
+      "unit": "seconds",
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Timeout for the Hub's file-metadata requests during downloads.",
+      "validation": {
+        "integer": true,
+        "summary": "Integer seconds >= 1."
+      },
+      "pass_as": "env",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve",
+        "download"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "HF_HUB_DISABLE_XET",
+      "key": "hf_disable_xet",
+      "label": "Disable Xet transfers",
+      "section": "advanced",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Download with plain HTTP instead of the Xet transfer backend. Try it if downloads stall.",
+      "validation": {
+        "env_value_when_on": "1",
+        "summary": "Sets HF_HUB_DISABLE_XET=1."
+      },
+      "pass_as": "env",
+      "cli_format": "1",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve",
+        "download"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "HF_XET_HIGH_PERFORMANCE",
+      "key": "hf_xet_high_performance",
+      "label": "High-performance downloads",
+      "section": "advanced",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Let the Xet backend use more connections and memory for faster downloads.",
+      "validation": {
+        "env_value_when_on": "1",
+        "summary": "Sets HF_XET_HIGH_PERFORMANCE=1."
+      },
+      "pass_as": "env",
+      "cli_format": "1",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve",
+        "download"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "HTTPS_PROXY",
+      "key": "https_proxy",
+      "label": "HTTPS proxy",
+      "section": "advanced",
+      "control": "text",
+      "type": "url",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Proxy for downloads and the catalog refresh. Splashboard inherits the system or shell value by default. HTTP_PROXY and ALL_PROXY are honoured the same way.",
+      "validation": {
+        "format": "url",
+        "implies": {
+          "no_proxy": "127.0.0.1,localhost"
+        },
+        "summary": "URL. When set, Splashboard also sets NO_PROXY for loopback."
+      },
+      "pass_as": "env",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve",
+        "download",
+        "catalog_refresh",
+        "agents"
+      ],
+      "notes": null
+    },
+    {
+      "flag": null,
+      "env": "NO_PROXY",
+      "key": "no_proxy",
+      "label": "Bypass proxy for",
+      "section": "advanced",
+      "control": "text",
+      "type": "string",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Hosts that skip the proxy. Must include 127.0.0.1 and localhost, or agent launchers may not find the local server ('No ready Splash server').",
+      "validation": {
+        "must_include": [
+          "127.0.0.1",
+          "localhost"
+        ],
+        "summary": "Comma list; Splashboard keeps 127.0.0.1 and localhost in it."
+      },
+      "pass_as": "env",
+      "cli_format": "{value}",
+      "visibility": "advanced",
+      "applies_to": [
+        "serve",
+        "download",
+        "agents"
+      ],
+      "notes": "Unset by default. Splashboard fills in 127.0.0.1,localhost automatically whenever a proxy variable is set."
+    },
+    {
+      "flag": null,
+      "env": "HF_HUB_DISABLE_PROGRESS_BARS",
+      "key": "hf_disable_progress_bars",
+      "label": "(internal) Disable download progress bars",
+      "section": "advanced",
+      "control": "internal",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Set by Splashboard on download child processes so stderr is not flooded with tqdm redraws; progress is computed from file sizes instead. Not shown in the form.",
+      "validation": {
+        "env_value_when_on": "1",
+        "summary": "Always 1 on Splashboard-spawned installs."
+      },
+      "pass_as": "env",
+      "cli_format": "1",
+      "visibility": "internal",
+      "applies_to": [
+        "download"
+      ],
+      "notes": "Unset by default (bars shown). Splashboard always sets 1 on the download children it spawns."
+    }
+  ],
+  "request_sections": [
+    {
+      "id": "prompt",
+      "label": "Prompt & model"
+    },
+    {
+      "id": "sampling",
+      "label": "Sampling"
+    },
+    {
+      "id": "penalties",
+      "label": "Penalties"
+    },
+    {
+      "id": "length",
+      "label": "Length & stopping"
+    },
+    {
+      "id": "reasoning",
+      "label": "Reasoning"
+    },
+    {
+      "id": "structured",
+      "label": "Structured output & tools"
+    },
+    {
+      "id": "attachments",
+      "label": "Attachments"
+    },
+    {
+      "id": "delivery",
+      "label": "Streaming & scheduling"
+    }
+  ],
+  "request": [
+    {
+      "field": "messages[role=system]",
+      "env": null,
+      "key": "system_prompt",
+      "label": "System prompt",
+      "section": "prompt",
+      "control": "textarea",
+      "type": "string",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Instructions placed before the conversation. Sent as the first message with role 'system' (a 'developer' message is merged into it). Later system messages render in place when the template supports it.",
+      "validation": {
+        "summary": "Optional text. The conversation must still contain a user message.",
+        "messages_must_include_user": true
+      },
+      "endpoint_map": {
+        "responses": "instructions",
+        "messages": "system"
+      }
+    },
+    {
+      "field": "model",
+      "env": null,
+      "key": "model",
+      "label": "Model name",
+      "section": "prompt",
+      "control": "select",
+      "type": "string",
+      "default": "<loaded model ID>",
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Which of the server's names to send. Only the loaded model and its aliases are accepted.",
+      "validation": {
+        "one_of": "GET /v1/models data[].id",
+        "error": "404 model_not_found",
+        "summary": "Optional; must be a name /v1/models lists."
+      },
+      "endpoint_map": {
+        "responses": "model",
+        "messages": "model (required)"
+      }
+    },
+    {
+      "field": "temperature",
+      "env": null,
+      "key": "temperature",
+      "label": "Temperature",
+      "section": "sampling",
+      "control": "slider",
+      "type": "number",
+      "default": 1.0,
+      "min": 0,
+      "max": 2,
+      "step": 0.05,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Randomness. 0 always picks the most likely token; higher is more varied. The default 1.0 follows Qwen's recommendation for thinking mode.",
+      "validation": {
+        "min": 0,
+        "max": 2,
+        "raise_nonzero_below": 0.01,
+        "error": "temperature must be a number in [0, 2]",
+        "summary": "0-2. A nonzero value below 0.01 is raised to 0.01."
+      },
+      "endpoint_map": {
+        "responses": "temperature",
+        "messages": "temperature"
+      }
+    },
+    {
+      "field": "top_p",
+      "env": null,
+      "key": "top_p",
+      "label": "Top P",
+      "section": "sampling",
+      "control": "slider",
+      "type": "number",
+      "default": 0.95,
+      "min": 0.01,
+      "max": 1,
+      "step": 0.01,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Consider only the most likely tokens whose probabilities add up to this share.",
+      "validation": {
+        "exclusive_min": 0,
+        "max": 1,
+        "error": "top_p must be a number in (0, 1]",
+        "summary": "Greater than 0, at most 1."
+      },
+      "endpoint_map": {
+        "responses": "top_p",
+        "messages": "top_p"
+      }
+    },
+    {
+      "field": "top_k",
+      "env": null,
+      "key": "top_k",
+      "label": "Top K",
+      "section": "sampling",
+      "control": "number",
+      "type": "integer",
+      "default": 20,
+      "min": -1,
+      "max": null,
+      "step": 1,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Consider only this many most likely tokens. 0 or -1 turns the limit off.",
+      "validation": {
+        "integer": true,
+        "min": -1,
+        "ui_soft_max": 200,
+        "error": "top_k must be 0 or -1 (disabled) or a positive integer",
+        "version_gates": {
+          "0 or -1 to disable": "1.2.0 (1.0-1.1.0 accept only 1..max)"
+        },
+        "summary": "Integer >= -1; 0 and -1 disable it (1.2.0+; earlier versions need >= 1)."
+      },
+      "endpoint_map": {
+        "responses": "top_k",
+        "messages": "top_k"
+      }
+    },
+    {
+      "field": "min_p",
+      "env": null,
+      "key": "min_p",
+      "label": "Min P",
+      "section": "sampling",
+      "control": "slider",
+      "type": "number",
+      "default": 0.0,
+      "min": 0,
+      "max": 1,
+      "step": 0.01,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Drop tokens whose probability is below this fraction of the most likely token's.",
+      "validation": {
+        "min": 0,
+        "max": 1,
+        "error": "min_p must be a number in [0, 1]",
+        "summary": "0-1. Before 1.2.0 a nonzero value gives 400."
+      },
+      "endpoint_map": {
+        "responses": "min_p",
+        "messages": null
+      }
+    },
+    {
+      "field": "seed",
+      "env": null,
+      "key": "seed",
+      "label": "Seed",
+      "section": "sampling",
+      "control": "number+random",
+      "type": "integer",
+      "default": null,
+      "min": 0,
+      "max": 18446744073709551615,
+      "step": 1,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Fixes the random choices so a reply can repeat. Repeats only when the request runs alone with the same cached prefixes, on the same Splash version.",
+      "validation": {
+        "integer": true,
+        "min": 0,
+        "max": 18446744073709551615,
+        "error": "seed must be an unsigned 64-bit integer",
+        "summary": "Empty (random) or 0 to 2^64-1. Send as a JSON integer, not a float."
+      },
+      "endpoint_map": {
+        "responses": "seed",
+        "messages": "seed"
+      }
+    },
+    {
+      "field": "presence_penalty",
+      "env": null,
+      "key": "presence_penalty",
+      "label": "Presence penalty",
+      "section": "penalties",
+      "control": "slider",
+      "type": "number",
+      "default": 0.0,
+      "min": -2,
+      "max": 2,
+      "step": 0.1,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Discourages reusing any token that already appeared. Qwen recommends 1.5 when thinking is off.",
+      "validation": {
+        "min": -2,
+        "max": 2,
+        "summary": "-2 to 2. Before 1.2.0 a nonzero value gives 400."
+      },
+      "endpoint_map": {
+        "responses": "presence_penalty",
+        "messages": null
+      }
+    },
+    {
+      "field": "frequency_penalty",
+      "env": null,
+      "key": "frequency_penalty",
+      "label": "Frequency penalty",
+      "section": "penalties",
+      "control": "slider",
+      "type": "number",
+      "default": 0.0,
+      "min": -2,
+      "max": 2,
+      "step": 0.1,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Discourages tokens in proportion to how often they already appeared.",
+      "validation": {
+        "min": -2,
+        "max": 2,
+        "summary": "-2 to 2. Before 1.2.0 a nonzero value gives 400."
+      },
+      "endpoint_map": {
+        "responses": "frequency_penalty",
+        "messages": null
+      }
+    },
+    {
+      "field": "repetition_penalty",
+      "env": null,
+      "key": "repetition_penalty",
+      "label": "Repetition penalty",
+      "section": "penalties",
+      "control": "slider",
+      "type": "number",
+      "default": 1.0,
+      "min": 0.01,
+      "max": 2,
+      "step": 0.01,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Multiplicative penalty on repeated tokens. 1.0 is off; above 1 discourages repeats.",
+      "validation": {
+        "exclusive_min": 0,
+        "ui_max": 2,
+        "error": "repetition_penalty must be a positive number",
+        "summary": "Positive number (UI 0.01-2). Silently ignored before 1.2.0."
+      },
+      "endpoint_map": {
+        "responses": "repetition_penalty",
+        "messages": null
+      }
+    },
+    {
+      "field": "max_completion_tokens",
+      "env": null,
+      "key": "max_tokens",
+      "label": "Max reply length",
+      "section": "length",
+      "control": "number+auto",
+      "type": "integer",
+      "default": null,
+      "min": 1,
+      "max": null,
+      "step": 256,
+      "unit": "tokens",
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Most tokens the reply (thinking included) may use. Empty lets it use the rest of the context. Splashboard always sends a value so a runaway reply cannot fill the context.",
+      "validation": {
+        "integer": true,
+        "min": 1,
+        "dynamic_max": "context_length - prompt tokens",
+        "alias": "max_tokens",
+        "error": "400 context_length_exceeded when prompt + value > context",
+        "version_gates": {
+          "omitted = rest of context": "1.2.0 (earlier: capped at 32,768)"
+        },
+        "summary": "Integer >= 1, at most the context the prompt leaves."
+      },
+      "endpoint_map": {
+        "responses": "max_output_tokens",
+        "messages": "max_tokens (required; clamped to the context)"
+      }
+    },
+    {
+      "field": "stop",
+      "env": null,
+      "key": "stop",
+      "label": "Stop sequences",
+      "section": "length",
+      "control": "multi-value-list",
+      "type": "string",
+      "default": [],
+      "min": 0,
+      "max": 4,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": true,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Stop the reply when any of these texts appears. Up to four.",
+      "validation": {
+        "max_items": 4,
+        "item_non_empty": true,
+        "conflicts": [
+          "tools (callable)",
+          "response_format"
+        ],
+        "error": "stop cannot be combined with tools or structured output",
+        "summary": "1-4 non-empty strings. Not with callable tools or a response format."
+      },
+      "endpoint_map": {
+        "responses": "stop",
+        "messages": "stop_sequences"
+      }
+    },
+    {
+      "field": "ignore_eos",
+      "env": null,
+      "key": "ignore_eos",
+      "label": "Ignore end of text",
+      "section": "length",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Keep generating to the length limit even when the model would stop. For benchmarks only.",
+      "validation": {
+        "conflicts": [
+          "tools",
+          "response_format"
+        ],
+        "error": "ignore_eos cannot be combined with tools or structured output",
+        "summary": "Boolean. Not with tools or a response format. Silently dropped before 1.2.0."
+      },
+      "endpoint_map": {
+        "responses": null,
+        "messages": null,
+        "completions": "ignore_eos"
+      }
+    },
+    {
+      "field": "reasoning_effort",
+      "env": null,
+      "key": "reasoning_effort",
+      "label": "Thinking",
+      "section": "reasoning",
+      "control": "select",
+      "type": "enum",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": [
+        {
+          "value": null,
+          "label": "Server default"
+        },
+        {
+          "value": "none",
+          "label": "Off"
+        },
+        {
+          "value": "minimal",
+          "label": "Minimal (renders as low)"
+        },
+        {
+          "value": "low",
+          "label": "Low"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "high",
+          "label": "High (renders as xhigh)"
+        },
+        {
+          "value": "xhigh",
+          "label": "Extra high"
+        },
+        {
+          "value": "max",
+          "label": "Max (renders as xhigh)"
+        }
+      ],
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "How much the model thinks before answering. 'Off' skips thinking. Unset uses the server default, then the model's own (xhigh for Qwen3.8-27B).",
+      "validation": {
+        "choices": [
+          "none",
+          "minimal",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ],
+        "template_aliases": {
+          "high": "xhigh",
+          "max": "xhigh",
+          "minimal": "low"
+        },
+        "error": "invalid reasoning_effort",
+        "per_model_ui": {
+          "Qwen3.8-27B": [
+            "none",
+            "low",
+            "medium",
+            "xhigh"
+          ],
+          "Qwen3.6-35B-A3B": [
+            "none",
+            "<unset = on>"
+          ]
+        },
+        "summary": "One of seven names or unset. Show Off/Low/Medium/High(xhigh) for the 27B, On/Off for the 35B."
+      },
+      "endpoint_map": {
+        "responses": "reasoning.effort",
+        "messages": "thinking.type + output_config.effort (low|medium|high|xhigh|max, default high); off when thinking is omitted"
+      }
+    },
+    {
+      "field": "chat_template_kwargs.enable_thinking",
+      "env": null,
+      "key": "enable_thinking",
+      "label": "Force thinking on/off",
+      "section": "reasoning",
+      "control": "tri-state",
+      "type": "boolean",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Advanced override passed straight to the chat template. It wins over Thinking. Prefer the Thinking control; do not send both.",
+      "validation": {
+        "outranks": "reasoning_effort",
+        "error": "chat template does not support the requested thinking mode",
+        "summary": "Unset, true or false. Wins over reasoning_effort."
+      },
+      "endpoint_map": {
+        "responses": null,
+        "messages": null
+      }
+    },
+    {
+      "field": "chat_template_kwargs",
+      "env": null,
+      "key": "chat_template_kwargs",
+      "label": "Template variables (JSON)",
+      "section": "reasoning",
+      "control": "json-editor",
+      "type": "object",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.2.0",
+      "help": "Extra variables for the model's chat template, as vLLM and SGLang accept them.",
+      "validation": {
+        "type": "object",
+        "reserved_keys": [
+          "add_generation_prompt",
+          "chat_template",
+          "continue_final_message",
+          "conversation",
+          "documents",
+          "messages",
+          "return_dict",
+          "tokenize",
+          "tools"
+        ],
+        "error": "chat_template_kwargs cannot set <key>",
+        "summary": "JSON object; must not set reserved keys (tools, messages, ...)."
+      },
+      "endpoint_map": {
+        "responses": null,
+        "messages": null
+      }
+    },
+    {
+      "field": "preserve_thinking",
+      "env": null,
+      "key": "preserve_thinking",
+      "label": "Keep earlier thinking",
+      "section": "reasoning",
+      "control": "tri-state",
+      "type": "boolean",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Keep previous turns' reasoning in the prompt instead of dropping it. Unset follows the template.",
+      "validation": {
+        "error": "preserve_thinking must be a boolean",
+        "summary": "Unset, true or false."
+      },
+      "endpoint_map": {
+        "responses": null,
+        "messages": "context_management.edits clear_thinking keep:all"
+      }
+    },
+    {
+      "field": "response_format",
+      "env": null,
+      "key": "response_format",
+      "label": "Response format",
+      "section": "structured",
+      "control": "select+json-schema-editor",
+      "type": "object",
+      "default": {
+        "type": "text"
+      },
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": [
+        {
+          "value": "text",
+          "label": "Free text"
+        },
+        {
+          "value": "json_object",
+          "label": "Any JSON object"
+        },
+        {
+          "value": "json_schema",
+          "label": "JSON matching a schema"
+        }
+      ],
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Force the reply to be JSON, optionally matching a JSON Schema. The constraint is enforced while generating; it adds nothing to the prompt, so also describe the format in your instructions.",
+      "validation": {
+        "schema_required_for": "json_schema",
+        "no_remote_refs": true,
+        "conflicts": [
+          "stop",
+          "ignore_eos"
+        ],
+        "summary": "text, json_object, or json_schema with json_schema.schema. No remote $ref."
+      },
+      "endpoint_map": {
+        "responses": "text.format",
+        "messages": "output_config.format / output_format (json_schema)"
+      }
+    },
+    {
+      "field": "tools",
+      "env": null,
+      "key": "tools",
+      "label": "Tools",
+      "section": "structured",
+      "control": "tool-list-editor",
+      "type": "array",
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": true,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Functions the model may call, each with a JSON Schema for its arguments. Arguments are enforced while generating. Hosted web search is not available.",
+      "validation": {
+        "item_type": "function",
+        "name_pattern": "^[A-Za-z0-9_-]{1,128}$",
+        "unique_names": true,
+        "no_remote_refs": true,
+        "conflicts": [
+          "stop",
+          "ignore_eos"
+        ],
+        "summary": "type function only; names [A-Za-z0-9_-]{1,128}, unique."
+      },
+      "endpoint_map": {
+        "responses": "tools",
+        "messages": "tools (custom)"
+      }
+    },
+    {
+      "field": "tool_choice",
+      "env": null,
+      "key": "tool_choice",
+      "label": "Tool choice",
+      "section": "structured",
+      "control": "select",
+      "type": "enum_or_object",
+      "default": "auto",
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": [
+        {
+          "value": "auto",
+          "label": "Model decides"
+        },
+        {
+          "value": "none",
+          "label": "Never call (tools still described)"
+        },
+        {
+          "value": "required",
+          "label": "Must call a tool"
+        },
+        {
+          "value": {
+            "type": "function",
+            "function": {
+              "name": "<name>"
+            }
+          },
+          "label": "Call this tool"
+        }
+      ],
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Whether and which tool the model must call.",
+      "validation": {
+        "requires": {
+          "tools": "non_empty unless auto|none"
+        },
+        "summary": "auto, none, required, or a named function present in tools."
+      },
+      "endpoint_map": {
+        "responses": "tool_choice",
+        "messages": "tool_choice"
+      }
+    },
+    {
+      "field": "parallel_tool_calls",
+      "env": null,
+      "key": "parallel_tool_calls",
+      "label": "Parallel tool calls",
+      "section": "structured",
+      "control": "toggle",
+      "type": "boolean",
+      "default": true,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Allow several tool calls in one reply.",
+      "validation": {
+        "summary": "Boolean. Forced off for a named tool_choice."
+      },
+      "endpoint_map": {
+        "responses": "parallel_tool_calls",
+        "messages": "tool_choice.disable_parallel_tool_use"
+      }
+    },
+    {
+      "field": "messages[].content[type=image_url]",
+      "env": null,
+      "key": "images",
+      "label": "Images",
+      "section": "attachments",
+      "control": "file-attach",
+      "type": "data_url",
+      "default": null,
+      "min": 0,
+      "max": 64,
+      "step": null,
+      "unit": "images",
+      "choices": null,
+      "multiple": true,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Attach pictures. Splashboard encodes them as base64 data: URLs; web links are not fetched. Needs a model with vision (not text-only).",
+      "validation": {
+        "formats": [
+          "JPEG",
+          "PNG",
+          "WEBP",
+          "GIF"
+        ],
+        "data_url_only": true,
+        "max_bytes_each": 33554432,
+        "max_per_request": 64,
+        "requires_server": {
+          "vision": true
+        },
+        "resized_to": "--max-image-pixels",
+        "summary": "JPEG/PNG/WEBP/GIF as data: URLs, 32 MiB each, 64 per request; vision only."
+      },
+      "endpoint_map": {
+        "responses": "input_image",
+        "messages": "image (base64 source)"
+      }
+    },
+    {
+      "field": "messages[].content[type=file]",
+      "env": null,
+      "key": "pdf_files",
+      "label": "PDFs",
+      "section": "attachments",
+      "control": "file-attach",
+      "type": "data_url",
+      "default": null,
+      "min": 0,
+      "max": 64,
+      "step": null,
+      "unit": "pages",
+      "choices": null,
+      "multiple": true,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Attach PDFs inline (base64). Pages are rendered to text and images, so this needs vision.",
+      "validation": {
+        "mime": "application/pdf",
+        "max_total_bytes": 67108864,
+        "max_pages_total": 64,
+        "requires_server": {
+          "vision": true
+        },
+        "summary": "application/pdf base64, 64 MiB and 64 pages per request in total; vision only."
+      },
+      "endpoint_map": {
+        "responses": "input_file",
+        "messages": "document (base64 application/pdf)"
+      }
+    },
+    {
+      "field": "stream",
+      "env": null,
+      "key": "stream",
+      "label": "Stream reply",
+      "section": "delivery",
+      "control": "internal",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Splashboard always streams (true) so text appears as it is generated.",
+      "validation": {
+        "ui_value": true,
+        "summary": "UI always sends true."
+      },
+      "endpoint_map": {
+        "responses": "stream",
+        "messages": "stream"
+      }
+    },
+    {
+      "field": "stream_options.include_usage",
+      "env": null,
+      "key": "include_usage",
+      "label": "Include usage",
+      "section": "delivery",
+      "control": "internal",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Adds token counts at the end of a stream. Splashboard always sends true.",
+      "validation": {
+        "ui_value": true,
+        "requires": {
+          "stream": true
+        },
+        "summary": "UI always sends true."
+      },
+      "endpoint_map": {
+        "responses": null,
+        "messages": null
+      }
+    },
+    {
+      "field": "return_progress",
+      "env": null,
+      "key": "return_progress",
+      "label": "Prompt progress",
+      "section": "delivery",
+      "control": "internal",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Streams prompt-reading progress so the UI can show a bar for long prompts.",
+      "validation": {
+        "requires": {
+          "stream": true
+        },
+        "error": "return_progress requires stream: true and must be a boolean",
+        "ui_value": true,
+        "summary": "Streaming only. UI always sends true."
+      },
+      "endpoint_map": {
+        "responses": "return_progress",
+        "messages": "return_progress"
+      }
+    },
+    {
+      "field": "priority",
+      "env": null,
+      "key": "priority",
+      "label": "Priority",
+      "section": "delivery",
+      "control": "segmented",
+      "type": "enum",
+      "default": "normal",
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": [
+        {
+          "value": "foreground",
+          "label": "Foreground"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "background",
+          "label": "Background"
+        }
+      ],
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0.2",
+      "help": "Higher priority can pause lower-priority requests and skip their waits. Use Background for batch jobs so interactive chats stay fast.",
+      "validation": {
+        "error": "priority must be foreground, normal, or background",
+        "summary": "foreground, normal or background."
+      },
+      "endpoint_map": {
+        "responses": "priority",
+        "messages": "priority"
+      }
+    },
+    {
+      "field": "timeout",
+      "env": null,
+      "key": "timeout",
+      "label": "Time limit",
+      "section": "delivery",
+      "control": "number+none",
+      "type": "number",
+      "default": null,
+      "min": 0,
+      "max": null,
+      "step": 30,
+      "unit": "seconds",
+      "choices": null,
+      "multiple": false,
+      "restart_required": false,
+      "min_version": "1.0",
+      "help": "Give up after this many seconds (504). Can only be shorter than the server's limit.",
+      "validation": {
+        "exclusive_min": 0,
+        "error": "timeout must be positive",
+        "summary": "Empty or seconds > 0; min(this, --request-timeout) applies."
+      },
+      "endpoint_map": {
+        "responses": "timeout",
+        "messages": "timeout"
+      }
+    }
+  ],
+  "presets": [
+    {
+      "id": "ram24-agent-27b",
+      "kind": "ram",
+      "label": "24 GB: coding agents (27B, text only)",
+      "ram_gb": 24,
+      "evidence": "measured",
+      "description": "Qwen3.8-27B in the UD-IQ3_XXS GGUF without vision. Measured on a 24 GB M6: 43.5 tok/s code decode, 102,393 tokens of context (73,721 with vision), enough for coding agents (~100K).",
+      "serve": {
+        "model": "unsloth/Qwen3.8-27B-GGUF:UD-IQ3_XXS",
+        "language_only": true
+      },
+      "observed": [],
+      "alternatives": [],
+      "source": [
+        "splash-src/docs/performance.md#smaller-ggufs-on-24-gb-macs"
+      ],
+      "request": null,
+      "min_version": null
+    },
+    {
+      "id": "ram24-fast-35b",
+      "kind": "ram",
+      "label": "24 GB: fastest (35B-A3B, 256K)",
+      "ram_gb": 24,
+      "evidence": "measured",
+      "description": "Qwen3.6-35B-A3B in UD-Q2_K_XL. Measured on a 24 GB M6: 145 tok/s, 256K context. Leaves other apps little memory.",
+      "serve": {
+        "model": "unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q2_K_XL"
+      },
+      "observed": [
+        "#220: a 24 GB M4 Pro served the 35B-A3B for ~12 h with --max-memory 16G"
+      ],
+      "alternatives": [],
+      "source": [
+        "splash-src/docs/performance.md#smaller-ggufs-on-24-gb-macs",
+        "https://github.com/incoai/splash/issues/220"
+      ],
+      "request": null,
+      "min_version": null
+    },
+    {
+      "id": "ram24-small-vision",
+      "kind": "ram",
+      "label": "24 GB: smallest with vision (Bonsai PQ2_0)",
+      "ram_gb": 24,
+      "evidence": "documented",
+      "description": "Prism ML Ternary Bonsai 2 27B in PQ2_0, 7.2 GB including vision.",
+      "serve": {
+        "model": "prism-ml/Ternary-Bonsai-2-27B-gguf:PQ2_0"
+      },
+      "observed": [],
+      "alternatives": [],
+      "source": [
+        "splash-src/README.md#models",
+        "https://github.com/incoai/splash/pull/166"
+      ],
+      "request": null,
+      "min_version": null
+    },
+    {
+      "id": "ram32-inferred",
+      "kind": "ram",
+      "label": "32 GB: 27B low-bit with vision",
+      "ram_gb": 32,
+      "evidence": "inferred",
+      "description": "No 32 GB measurement exists. The 4-bit examples need at least 36 GB, so use the 24 GB picks with vision left on and expect more context than on 24 GB. Switch on Text only if the reported context is below ~100K and you run agents.",
+      "serve": {
+        "model": "unsloth/Qwen3.8-27B-GGUF:UD-IQ3_XXS"
+      },
+      "observed": [],
+      "alternatives": [
+        "unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q2_K_XL"
+      ],
+      "source": [
+        "inferred from splash-src/docs/performance.md#smaller-ggufs-on-24-gb-macs and the 36 GB minimum in splash-src/README.md#quick-start"
+      ],
+      "request": null,
+      "min_version": null
+    },
+    {
+      "id": "ram36-27b",
+      "kind": "ram",
+      "label": "36 GB: 27B 4-bit (minimum for 4-bit)",
+      "ram_gb": 36,
+      "evidence": "documented+observed",
+      "description": "The README quick-start model. 36 GB is the documented minimum for the 4-bit examples.",
+      "serve": {
+        "model": "unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_M"
+      },
+      "observed": [
+        "#90: 36 GB M5 Max ran `splash serve --max-context 131072 --no-webui` (1.0.1)",
+        "#10: 36 GB M3 Max served both incoai packages behind llama-swap"
+      ],
+      "alternatives": [
+        "mlx-community/Qwen3.8-27B-4bit",
+        "incoai/Qwen3.8-27B-Splash",
+        "unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_M"
+      ],
+      "source": [
+        "splash-src/README.md#quick-start",
+        "https://github.com/incoai/splash/issues/90",
+        "https://github.com/incoai/splash/issues/10"
+      ],
+      "request": null,
+      "min_version": null
+    },
+    {
+      "id": "ram48-27b",
+      "kind": "ram",
+      "label": "48 GB: 27B 4-bit (recommended)",
+      "ram_gb": 48,
+      "evidence": "documented+observed",
+      "description": "48 GB is the recommended size for the 4-bit examples; the README benchmarks ran on a 48 GB M5 Pro (74 tok/s 27B, 210 tok/s 35B-A3B).",
+      "serve": {
+        "model": "unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_M"
+      },
+      "observed": [
+        "#90 (comment): 48 GB M4 Pro ran incoai/Qwen3.8-27B-Splash with --max-memory 40G"
+      ],
+      "alternatives": [
+        "unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_M",
+        "mlx-community/Qwen3.6-35B-A3B-4bit"
+      ],
+      "source": [
+        "splash-src/README.md#quick-start",
+        "splash-src/docs/performance.md",
+        "https://github.com/incoai/splash/issues/90"
+      ],
+      "request": null,
+      "min_version": null
+    },
+    {
+      "id": "ram64-agent",
+      "kind": "ram",
+      "label": "64 GB: 27B + persistent SSD cache for agents",
+      "ram_gb": 64,
+      "evidence": "observed",
+      "description": "Room for the full 256K context with the 27B, plus an SSD cache that keeps agents' long system prompts warm across restarts (cold prefill 44 s vs 0.3 s cached in #177).",
+      "serve": {
+        "model": "unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_M",
+        "max_cache_disk": "32G",
+        "persistent_cache": true
+      },
+      "observed": [
+        "#177: 64 GB M5 Pro, --max-memory 46G --max-cache-disk 32G; maintainer recipe --persistent-cache --max-cache-disk 32G",
+        "docs/splash-api.md capture: 64 GB M3 Max, incoai/Qwen3.8-27B-Splash, auto context 256K"
+      ],
+      "alternatives": [
+        "incoai/Qwen3.8-27B-Splash"
+      ],
+      "source": [
+        "https://github.com/incoai/splash/issues/177",
+        "docs/splash-api.md#42-startup-phases-observed-with---offline-and-the-model-cached"
+      ],
+      "request": null,
+      "min_version": null
+    },
+    {
+      "id": "ram96-quality",
+      "kind": "ram",
+      "label": "96 GB: 27B Q8_0 + BF16 KV, 256K",
+      "ram_gb": 96,
+      "evidence": "observed",
+      "description": "Highest-fidelity settings seen in the wild: 8-bit GGUF weights, BF16 KV cache, full 256K context and a 40G SSD tier. Reported on 1.1.0 in a stall investigation; treat as a working configuration, not an endorsement.",
+      "serve": {
+        "model": "unsloth/Qwen3.8-27B-GGUF:Q8_0",
+        "kv_format": "bf16",
+        "max_context": "256K",
+        "max_cache_disk": "40G"
+      },
+      "observed": [
+        "#220: 96 GB M5 Ultra, --kv-format bf16 --max-memory 48G --max-context 256K --max-cache-disk 40G",
+        "#96: 96 GB M3 Ultra, incoai/Qwen3.8-27B-Splash with --max-memory 30G"
+      ],
+      "alternatives": [
+        "unsloth/Qwen3.8-27B-GGUF:UD-Q6_K_XL"
+      ],
+      "source": [
+        "https://github.com/incoai/splash/issues/220",
+        "https://github.com/incoai/splash/issues/96"
+      ],
+      "request": null,
+      "min_version": null
+    },
+    {
+      "id": "ram128-longctx",
+      "kind": "ram",
+      "label": "128 GB: 27B UD-Q4_K_XL, 256K, 64G cap",
+      "ram_gb": 128,
+      "evidence": "observed",
+      "description": "Long agent sessions at full context, capped at 64G so other GPU apps keep room. Two 128 GB reporters used a 64G cap.",
+      "serve": {
+        "model": "unsloth/Qwen3.8-27B-GGUF:UD-Q4_K_XL",
+        "max_memory": "64G",
+        "max_context": "256K"
+      },
+      "observed": [
+        "#220: 128 GB M5 Max, UD-Q4_K_XL --max-memory 64G --max-context 220-256K (1.1.0)",
+        "#41: 128 GB M5 Max with --max-memory 28G and 64G"
+      ],
+      "alternatives": [
+        "unsloth/Qwen3.8-27B-GGUF:Q8_0 with kv_format bf16"
+      ],
+      "source": [
+        "https://github.com/incoai/splash/issues/220",
+        "https://github.com/incoai/splash/issues/41"
+      ],
+      "request": null,
+      "min_version": null
+    },
+    {
+      "id": "recipe-lan-share",
+      "kind": "recipe",
+      "label": "Share on my network",
+      "ram_gb": null,
+      "evidence": "documented",
+      "description": "Listen on all IPv4 interfaces, require an API key (generated if missing) and accept this Mac's .local name.",
+      "serve": {
+        "host": "0.0.0.0",
+        "api_key": "<generate>",
+        "allowed_host": [
+          "<LocalHostName>.local"
+        ]
+      },
+      "source": [
+        "splash-src/DEVELOPMENT.md#server-configuration",
+        "https://github.com/incoai/splash/issues/27",
+        "https://github.com/incoai/splash/issues/142"
+      ],
+      "request": null,
+      "min_version": null,
+      "observed": [],
+      "alternatives": []
+    },
+    {
+      "id": "recipe-open-webui",
+      "kind": "recipe",
+      "label": "Back end for Open WebUI",
+      "ram_gb": null,
+      "evidence": "observed",
+      "description": "LAN listener with a key and the built-in chat page off, as in #214.",
+      "serve": {
+        "host": "0.0.0.0",
+        "api_key": "<generate>",
+        "no_webui": true
+      },
+      "source": [
+        "https://github.com/incoai/splash/issues/214"
+      ],
+      "request": null,
+      "min_version": null,
+      "observed": [],
+      "alternatives": []
+    },
+    {
+      "id": "recipe-webview-app",
+      "kind": "recipe",
+      "label": "Allow Jan / Tauri apps",
+      "ram_gb": null,
+      "evidence": "documented",
+      "description": "Admit a desktop app's webview origin (CORS).",
+      "serve": {
+        "allowed_origin": [
+          "tauri://localhost"
+        ]
+      },
+      "source": [
+        "https://github.com/incoai/splash/issues/232",
+        "splash-src/DEVELOPMENT.md#server-configuration"
+      ],
+      "request": null,
+      "min_version": null,
+      "observed": [],
+      "alternatives": []
+    },
+    {
+      "id": "recipe-warm-prompt",
+      "kind": "recipe",
+      "label": "Keep long agent prompts warm",
+      "ram_gb": null,
+      "evidence": "documented",
+      "description": "SSD tier that survives restarts, for agents that resend long system prompts.",
+      "serve": {
+        "max_cache_disk": "32G",
+        "persistent_cache": true
+      },
+      "source": [
+        "https://github.com/incoai/splash/issues/177",
+        "splash-src/DEVELOPMENT.md#persistent-cache"
+      ],
+      "request": null,
+      "min_version": null,
+      "observed": [],
+      "alternatives": []
+    },
+    {
+      "id": "recipe-offline",
+      "kind": "recipe",
+      "label": "Offline / air-gapped start",
+      "ram_gb": null,
+      "evidence": "documented",
+      "description": "Start an installed model with no Hub request.",
+      "serve": {
+        "offline": true
+      },
+      "source": [
+        "https://github.com/incoai/splash/issues/263",
+        "splash-src/DEVELOPMENT.md#revisions"
+      ],
+      "request": null,
+      "min_version": null,
+      "observed": [],
+      "alternatives": []
+    },
+    {
+      "id": "recipe-fixed-model-names",
+      "kind": "recipe",
+      "label": "Answer to fixed model names (Claude Desktop-style apps)",
+      "ram_gb": null,
+      "evidence": "observed",
+      "description": "Accept the model names an app hard-codes so its requests do not 404. Edit the list to the names your app sends; turn on Announce if it checks the reply.",
+      "serve": {
+        "served_model_name": [
+          "claude-sonnet-4-5",
+          "claude-opus-4-7",
+          "claude-haiku-4-5"
+        ],
+        "announce_served_name": false
+      },
+      "source": [
+        "https://github.com/hometrix/SplashMonitor/blob/main/Sources/SplashMonitor/Services/SplashService.swift",
+        "splash-src/DEVELOPMENT.md#api-model-aliases"
+      ],
+      "request": null,
+      "min_version": null,
+      "observed": [],
+      "alternatives": []
+    },
+    {
+      "id": "recipe-external-disk",
+      "kind": "recipe",
+      "label": "Store models on an external disk",
+      "ram_gb": null,
+      "evidence": "documented",
+      "description": "Point new downloads at a folder on another volume.",
+      "serve": {
+        "hf_hub_cache": "<chosen folder>"
+      },
+      "source": [
+        "https://github.com/incoai/splash/issues/5",
+        "splash-src/DEVELOPMENT.md#model-cache"
+      ],
+      "request": null,
+      "min_version": null,
+      "observed": [],
+      "alternatives": []
+    },
+    {
+      "id": "sampling-thinking",
+      "kind": "sampling",
+      "label": "Thinking (Qwen recommended)",
+      "ram_gb": null,
+      "evidence": "documented",
+      "description": "Qwen's thinking-mode settings; also Splash's own defaults.",
+      "serve": {},
+      "request": {
+        "temperature": 1.0,
+        "top_p": 0.95,
+        "top_k": 20,
+        "min_p": 0.0,
+        "presence_penalty": 0.0,
+        "repetition_penalty": 1.0
+      },
+      "source": [
+        "https://github.com/incoai/splash/issues/204",
+        "splash-src/server/frontend.py"
+      ],
+      "min_version": null,
+      "observed": [],
+      "alternatives": []
+    },
+    {
+      "id": "sampling-instruct",
+      "kind": "sampling",
+      "label": "Instruct (thinking off)",
+      "ram_gb": null,
+      "evidence": "documented",
+      "description": "Qwen's non-thinking settings. Penalties need Splash 1.2.0.",
+      "serve": {},
+      "request": {
+        "reasoning_effort": "none",
+        "temperature": 0.7,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0.0,
+        "presence_penalty": 1.5,
+        "repetition_penalty": 1.0
+      },
+      "min_version": "1.2.0",
+      "source": [
+        "https://github.com/incoai/splash/issues/204",
+        "splash-src/DEVELOPMENT.md"
+      ],
+      "observed": [],
+      "alternatives": []
+    },
+    {
+      "id": "sampling-greedy",
+      "kind": "sampling",
+      "label": "Deterministic (greedy)",
+      "ram_gb": null,
+      "evidence": "observed",
+      "description": "Temperature 0 and a fixed seed, as benchmarkers use.",
+      "serve": {},
+      "request": {
+        "temperature": 0,
+        "seed": 1
+      },
+      "source": [
+        "https://github.com/incoai/splash/issues/176"
+      ],
+      "min_version": null,
+      "observed": [],
+      "alternatives": []
+    },
+    {
+      "id": "sampling-benchmark",
+      "kind": "sampling",
+      "label": "Benchmark: fixed length",
+      "ram_gb": null,
+      "evidence": "observed",
+      "description": "Generate exactly max_tokens tokens for speed tests.",
+      "serve": {},
+      "request": {
+        "temperature": 0,
+        "reasoning_effort": "none",
+        "ignore_eos": true,
+        "max_tokens": 1024
+      },
+      "min_version": "1.2.0",
+      "source": [
+        "https://github.com/incoai/splash/issues/205"
+      ],
+      "observed": [],
+      "alternatives": []
+    }
+  ],
+  "connectors": [
+    {
+      "id": "claude",
+      "label": "Claude Code",
+      "command": "splash claude [ARGS...]",
+      "binary": "claude",
+      "install_url": "https://code.claude.com/docs/en/overview",
+      "mechanism": "env + argv, then exec: `claude --disallowedTools WebSearch --model <model> --permission-mode default <ARGS>` with ANTHROPIC_BASE_URL=http://127.0.0.1:<port>, ANTHROPIC_AUTH_TOKEN=<key|local>, ANTHROPIC_MODEL and ANTHROPIC_DEFAULT_OPUS/SONNET/HAIKU_MODEL and ANTHROPIC_SMALL_FAST_MODEL=<model>, CLAUDE_CODE_MAX_CONTEXT_TOKENS and CLAUDE_CODE_AUTO_COMPACT_WINDOW=<context>, CLAUDE_CODE_USE_BEDROCK/VERTEX/FOUNDRY=0; ANTHROPIC_API_KEY removed",
+      "needs_terminal": true,
+      "writes_files": false,
+      "files": [],
+      "min_version": "1.0",
+      "env_inputs": [
+        "SPLASH_PORT",
+        "SPLASH_API_KEY"
+      ],
+      "env_options": [
+        {
+          "env": "CLAUDE_CODE_MAX_OUTPUT_TOKENS",
+          "control": "number",
+          "unit": "tokens",
+          "help": "Raise Claude Code's own per-reply output limit; Splash does not set it."
+        }
+      ],
+      "headless": {
+        "args": [
+          "--print",
+          "--output-format",
+          "stream-json",
+          "--verbose"
+        ],
+        "prompt_via": "stdin",
+        "note": "non-interactive; as Splash's own real-agent test runs it (dev/tests/agent_real.py); `-p PROMPT` is the short form"
+      },
+      "undo": null,
+      "notes": "Hosted WebSearch is disabled; WebFetch, local tools and MCP work."
+    },
+    {
+      "id": "opencode",
+      "label": "OpenCode",
+      "command": "splash opencode [ARGS...]",
+      "binary": "opencode",
+      "install_url": "https://opencode.ai/docs/",
+      "mechanism": "env OPENCODE_CONFIG_CONTENT (merged into any existing JSON object): provider 'splash' (@ai-sdk/openai-compatible, baseURL http://127.0.0.1:<port>/v1), model and small_model and agents build/plan/general/explore/title/compaction = splash/<model>, reasoning variants none..xhigh, limit {context, input, output=min(32768, ctx/4)}; adds --standalone for OpenCode 2+ unless --standalone/--server given",
+      "needs_terminal": true,
+      "writes_files": false,
+      "files": [],
+      "min_version": "1.0 (auto --standalone for OpenCode 2: 1.1.0)",
+      "env_inputs": [
+        "SPLASH_PORT",
+        "SPLASH_API_KEY",
+        "OPENCODE_CONFIG_CONTENT"
+      ],
+      "env_options": [
+        {
+          "env": "OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX",
+          "control": "number",
+          "unit": "tokens",
+          "help": "OpenCode caps output at 32,000 tokens unless this raises it."
+        },
+        {
+          "env": "OPENCODE_CONFIG_CONTENT",
+          "control": "json-editor",
+          "help": "Extra OpenCode config (JSON object) that Splash merges its provider into."
+        }
+      ],
+      "headless": {
+        "args": [
+          "run",
+          "--format",
+          "json"
+        ],
+        "prompt_via": "stdin",
+        "note": "non-interactive, as dev/tests/agent_real.py runs it"
+      },
+      "undo": null,
+      "notes": "Most common agent in issue reports."
+    },
+    {
+      "id": "codex",
+      "label": "Codex",
+      "command": "splash codex [ARGS...]",
+      "binary": "codex",
+      "install_url": "https://developers.openai.com/codex/cli/",
+      "mechanism": "argv -c overrides at the root level: model, web_search=disabled, model_provider=splash, model_providers.splash={base_url=http://127.0.0.1:<port>/v1, env_key=SPLASH_API_KEY, wire_api=responses}, model_context_window=<ctx>, model_auto_compact_token_limit=<ctx*0.9>; env SPLASH_API_KEY=<key|local>; the user's own -c overrides follow in order",
+      "needs_terminal": true,
+      "writes_files": false,
+      "files": [],
+      "min_version": "1.0",
+      "env_inputs": [
+        "SPLASH_PORT",
+        "SPLASH_API_KEY"
+      ],
+      "env_options": [],
+      "headless": {
+        "args": [
+          "exec",
+          "--json",
+          "-"
+        ],
+        "prompt_via": "stdin",
+        "note": "non-interactive, as dev/tests/agent_real.py runs it; interactive resume is `resume --last`"
+      },
+      "undo": null,
+      "notes": "Hosted WebSearch disabled."
+    },
+    {
+      "id": "hermes",
+      "label": "Hermes",
+      "command": "splash hermes [ARGS...]",
+      "binary": "hermes",
+      "install_url": "https://hermes-agent.nousresearch.com/docs/getting-started/installation/",
+      "mechanism": "creates profile with `hermes profile create splash[-<port>] --no-alias` on first use, atomically rewrites <root>/profiles/splash[-<port>]/config.yaml model.{default, provider custom, base_url, api_key, api_mode chat_completions, supports_vision, context_length, max_tokens}; exec `hermes --provider custom --model <model> <ARGS>` with HERMES_HOME=<profile>, CUSTOM_BASE_URL, OPENAI_BASE_URL, OPENAI_API_KEY",
+      "needs_terminal": true,
+      "writes_files": true,
+      "files": [
+        "~/.hermes/profiles/splash[-<port>]/config.yaml (API key in plain text)"
+      ],
+      "min_version": "1.0 (profile under ~/.hermes: 1.2.0)",
+      "env_inputs": [
+        "SPLASH_PORT",
+        "SPLASH_API_KEY",
+        "HERMES_HOME"
+      ],
+      "env_options": [
+        {
+          "env": "HERMES_HOME",
+          "control": "directory-picker",
+          "help": "Hermes root (default ~/.hermes); the profile goes under <root>/profiles/."
+        }
+      ],
+      "headless": {
+        "args": [
+          "chat",
+          "--oneshot",
+          "--query-file",
+          "-"
+        ],
+        "prompt_via": "stdin",
+        "note": "as dev/tests/agent_real.py runs it; DEVELOPMENT.md also shows `chat -q \"Hello\"`"
+      },
+      "undo": "hermes profile delete splash[-<port>] (whether it prompts is unverified: hermes was not installed here), or delete the profile folder",
+      "notes": "1.1.0 used ~/Library/Application Support/Splash/runtime/hermes; if it exists run `hermes pm install` once, then delete it."
+    },
+    {
+      "id": "pi",
+      "label": "Pi",
+      "command": "splash pi [ARGS...]",
+      "binary": "pi",
+      "install_url": "https://pi.dev/",
+      "mechanism": "atomically rewrites <PI_CODING_AGENT_DIR or ~/.pi/agent>/models.json (following symlinks), setting providers['splash' or 'splash-<port>'] = {baseUrl, api openai-completions, apiKey '$SPLASH_API_KEY' or 'local', models [{id, reasoning, thinkingLevelMap {off: none}, input, contextWindow, maxTokens 32768}]}; exec `pi --provider <name> --model <model> <ARGS>`",
+      "needs_terminal": true,
+      "writes_files": true,
+      "files": [
+        "~/.pi/agent/models.json (provider splash or splash-<port>; other providers kept)"
+      ],
+      "min_version": "1.1.0",
+      "env_inputs": [
+        "SPLASH_PORT",
+        "SPLASH_API_KEY",
+        "PI_CODING_AGENT_DIR"
+      ],
+      "env_options": [
+        {
+          "env": "PI_CODING_AGENT_DIR",
+          "control": "directory-picker",
+          "help": "Pi's agent folder (default ~/.pi/agent)."
+        }
+      ],
+      "headless": {
+        "args": [
+          "--print",
+          "--mode",
+          "json"
+        ],
+        "prompt_via": "stdin",
+        "note": "non-interactive, as dev/tests/agent_real.py runs it"
+      },
+      "undo": "remove providers.splash (or splash-<port>) from models.json",
+      "notes": "The key is never written; Pi expands $SPLASH_API_KEY per request."
+    }
+  ],
+  "client_configs": [
+    {
+      "id": "openai-compatible",
+      "label": "Any OpenAI-compatible app (Cursor, Cline, Continue, SDKs)",
+      "base_url": "http://127.0.0.1:<port>/v1",
+      "api_key": "<key or any text, e.g. local>",
+      "model": "<model ID or alias>",
+      "serve_requirements": {},
+      "notes": "Context limit: /v1/models context_length. Use the LAN IP + key from other machines.",
+      "source": [
+        "splash-src/README.md#use-the-api",
+        "https://github.com/incoai/splash/issues/72",
+        "https://github.com/incoai/splash/issues/118"
+      ]
+    },
+    {
+      "id": "anthropic-compatible",
+      "label": "Anthropic-compatible apps and SDKs",
+      "base_url": "http://127.0.0.1:<port>",
+      "api_key": "<key or local>",
+      "model": "<model ID or alias>",
+      "serve_requirements": {
+        "served_model_name": "names the app hard-codes, if any"
+      },
+      "notes": "Messages API at /v1/messages; thinking is off unless the request enables it.",
+      "source": [
+        "splash-src/README.md#use-the-api",
+        "https://github.com/hometrix/SplashMonitor/blob/main/Sources/SplashMonitor/Services/SplashService.swift"
+      ]
+    },
+    {
+      "id": "open-webui",
+      "label": "Open WebUI",
+      "base_url": "http://<this Mac's LAN IP>:<port>/v1",
+      "api_key": "<key>",
+      "model": "<model ID>",
+      "serve_requirements": {
+        "host": "0.0.0.0",
+        "api_key": "set",
+        "no_webui": "optional"
+      },
+      "steps": [
+        "Admin > Connections > OpenAI: add the base URL and key",
+        "Model > Advanced Params > Function Calling = native (for tools)",
+        "Enable Web Search in Admin and in the chat if you want its search tool"
+      ],
+      "source": [
+        "https://github.com/incoai/splash/issues/214"
+      ]
+    },
+    {
+      "id": "jan",
+      "label": "Jan and other Tauri/webview apps",
+      "base_url": "http://127.0.0.1:<port>/v1",
+      "api_key": "<key or local>",
+      "model": "<model ID>",
+      "serve_requirements": {
+        "allowed_origin": [
+          "tauri://localhost"
+        ],
+        "min_version": "1.2.0"
+      },
+      "notes": "Before 1.2.0 these apps need a CORS proxy.",
+      "source": [
+        "https://github.com/incoai/splash/issues/232"
+      ]
+    }
+  ],
+  "app_settings": [
+    {
+      "key": "keep_running_on_quit",
+      "label": "Keep server running when Splashboard quits",
+      "control": "toggle",
+      "default": false,
+      "help": "Leave the server running in the background; Splashboard re-attaches via the port lock next time.",
+      "replaces": "nohup / tmux / launchd",
+      "source": [
+        "https://github.com/rickhuizinga/splash-dashboard",
+        "https://github.com/incoai/splash/issues/185"
+      ]
+    },
+    {
+      "key": "open_at_login",
+      "label": "Open Splashboard at login",
+      "control": "toggle",
+      "default": false,
+      "help": "Registers a login item (SMAppService).",
+      "replaces": "LaunchAgent plist",
+      "source": [
+        "https://github.com/rickhuizinga/splash-dashboard"
+      ]
+    },
+    {
+      "key": "start_server_at_login",
+      "label": "Start server at login with profile",
+      "control": "select",
+      "default": null,
+      "help": "Start the chosen launch profile when Splashboard opens at login.",
+      "replaces": "launchd ProgramArguments",
+      "source": [
+        "https://github.com/incoai/splash/issues/185"
+      ]
+    },
+    {
+      "key": "restart_on_crash",
+      "label": "Restart server if it exits unexpectedly",
+      "control": "toggle",
+      "default": true,
+      "help": "At most 3 restarts in 5 minutes, then stop and notify. Never restarts after a clean stop or a launcher error (bad flag, port busy, model failed).",
+      "replaces": "launchd KeepAlive",
+      "source": [
+        "https://github.com/rickhuizinga/splash-dashboard"
+      ]
+    },
+    {
+      "key": "prevent_sleep",
+      "label": "Prevent sleep while serving",
+      "control": "toggle",
+      "default": true,
+      "help": "Holds a PreventUserIdleSystemSleep assertion (or runs caffeinate -i -w <server pid>) while the server runs; the display may still sleep.",
+      "replaces": "caffeinate -i -s -m",
+      "source": [
+        "https://github.com/incoai/splash/issues/41",
+        "https://github.com/incoai/splash/issues/275",
+        "https://github.com/incoai/splash/pull/291"
+      ]
+    },
+    {
+      "key": "stop_grace_seconds",
+      "label": "Stop grace period",
+      "control": "number",
+      "default": 20,
+      "unit": "seconds",
+      "help": "Time between SIGINT and SIGTERM when stopping; SIGKILL only after a confirmed Force stop.",
+      "replaces": "Ctrl+C, pkill",
+      "source": [
+        "https://github.com/hometrix/SplashMonitor/blob/main/Sources/SplashMonitor/Services/ServerTermination.swift"
+      ]
+    },
+    {
+      "key": "auto_allowed_origin",
+      "label": "(internal) Add Splashboard's webview origin",
+      "control": "internal",
+      "default": true,
+      "help": "Adds --allowed-origin tauri://localhost (and the dev origin in dev builds) to servers Splashboard starts, when the webview talks to Splash directly.",
+      "replaces": "manual --allowed-origin",
+      "source": [
+        "https://github.com/incoai/splash/issues/232"
+      ]
+    },
+    {
+      "key": "auto_no_proxy",
+      "label": "(internal) Keep loopback off the proxy",
+      "control": "internal",
+      "default": true,
+      "help": "When any *_PROXY is set, ensure NO_PROXY contains 127.0.0.1,localhost for the server, downloads and agents.",
+      "replaces": "export NO_PROXY=...",
+      "source": [
+        "splash-src/dev/tests/engine/test_clients.py"
+      ]
+    }
+  ]
+}

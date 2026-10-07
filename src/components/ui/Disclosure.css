@@ -1,0 +1,99 @@
+/* Disclosure (design/minimal-ref .disclosure, .row-more, .disclosure-panel). */
+.sb-disclosure {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  margin-left: -4px;
+  padding: 0 8px 0 4px;
+  border-radius: var(--radius-xs);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.sb-disclosure:hover {
+  color: var(--text-primary);
+  background: var(--fill-hover);
+}
+
+.sb-disclosure:focus-visible,
+.sb-form-more:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.sb-form-more:focus-visible {
+  outline-offset: -2px;
+}
+
+.sb-disclosure__chevron {
+  flex: none;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.sb-disclosure[aria-expanded='true'] .sb-disclosure__chevron,
+.sb-form-more[aria-expanded='true'] .sb-disclosure__chevron {
+  transform: rotate(90deg);
+}
+
+/* "More options ›" as the last row of a group. */
+.sb-form-more {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  text-align: left;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.sb-form-more:hover {
+  color: var(--text-primary);
+}
+
+.sb-form-more[aria-expanded='true'] {
+  border-radius: 0;
+}
+
+/* Panel: grows from 0fr to 1fr and fades in. --dur-base is 0 under reduced motion. */
+.sb-disclosure-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out);
+}
+
+.sb-disclosure-panel.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.sb-disclosure-panel__inner {
+  min-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: visibility 0s linear var(--dur-base);
+}
+
+.sb-disclosure-panel.is-open > .sb-disclosure-panel__inner {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-disclosure-panel,
+  .sb-disclosure-panel__inner,
+  .sb-disclosure__chevron {
+    transition: none;
+  }
+}

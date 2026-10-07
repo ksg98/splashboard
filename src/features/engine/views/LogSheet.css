@@ -1,0 +1,15 @@
+/* Log sheet body: room on the left for the red error dots in the gutter. */
+.eng-logsheet-body {
+  padding: 4px 32px 24px 38px;
+}
+
+.eng-logsheet-gap {
+  width: 8px;
+  flex: none;
+}
+
+.eng-logsheet-empty {
+  margin: 24px 0;
+  color: var(--text-secondary);
+  text-align: center;
+}

@@ -1,0 +1,46 @@
+/* Status dots (design/minimal-ref: .dot) */
+.sb-dot {
+  display: inline-block;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--status-ok);
+  vertical-align: middle;
+}
+.sb-dot--warn {
+  background: var(--status-warn);
+}
+.sb-dot--error {
+  background: var(--status-error);
+}
+.sb-dot--off {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--status-off);
+}
+.sb-dot.is-pulsing {
+  animation: sb-dot-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes sb-dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.sb-dot-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-dot.is-pulsing {
+    animation: none;
+  }
+}

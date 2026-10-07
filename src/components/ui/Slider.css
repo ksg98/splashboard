@@ -1,0 +1,101 @@
+/* Plain-track slider (design/minimal-ref .slider, .slider-ends). No accent fill:
+   bipolar ranges would look half-set at zero, and many sliders on one page
+   would turn the accent into decoration. */
+.sb-slider {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+}
+
+.sb-slider__root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: var(--sb-slider-width, 200px);
+  height: 18px;
+  touch-action: none;
+  user-select: none;
+}
+
+.sb-slider__track {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--fill-track);
+}
+
+/* The knob is white in both themes, as on macOS (--fill-knob is proposed for tokens.css). */
+.sb-slider__thumb {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--fill-knob, #ffffff);
+  box-shadow: var(--shadow-knob);
+  transition: box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.sb-slider__thumb:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.sb-slider__value {
+  min-width: 52px;
+  text-align: right;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sb-slider[data-disabled] .sb-slider__root,
+.sb-slider[data-disabled] .sb-slider__ticks {
+  opacity: 0.45;
+}
+
+.sb-slider[data-disabled] .sb-slider__value,
+.sb-slider[data-disabled] .sb-slider__end {
+  color: var(--text-tertiary);
+}
+
+/* Named ends with tick marks (System Settings › Keyboard). */
+.sb-slider.has-ends {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  row-gap: 1px;
+  width: var(--sb-slider-width, 232px);
+  padding-top: 4px;
+}
+
+.sb-slider.has-ends .sb-slider__root {
+  grid-column: 1 / 3;
+  width: 100%;
+}
+
+.sb-slider__ticks {
+  grid-column: 1 / 3;
+  display: flex;
+  justify-content: space-between;
+  height: 5px;
+  /* Centre the end ticks under the knob at min and max (half the knob, less half a tick). */
+  padding: 0 7.5px;
+}
+
+.sb-slider__ticks > i {
+  width: 1px;
+  height: 5px;
+  background: var(--hairline-strong);
+}
+
+.sb-slider__end {
+  font-size: var(--text-2xs);
+  line-height: 16px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.sb-slider__end + .sb-slider__end {
+  text-align: right;
+}

@@ -1,0 +1,1 @@
+{"id":"incoai/Qwen3.8-27B-Splash","object":"model","created":0,"owned_by":"splash","max_model_len":262144,"context_length":262144,"vision":true,"input_modalities":["text","image","pdf"]}

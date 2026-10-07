@@ -1,0 +1,93 @@
+import type { GalleryEntry } from '@/app/gallery/types';
+import {
+  ConversationContextMenu,
+  EngineActionsMenu,
+  InfoPopover,
+  LaunchSettingsDialog,
+  ModelTitleMenu,
+  SettingsTooltip,
+  ThinkingPopUp,
+  ToastStack,
+  UninstallDialog,
+  VersionPopUp,
+} from './overlays.demos';
+
+export const gallery: GalleryEntry[] = [
+  {
+    id: 'overlays-menu',
+    title: 'Menu (engine actions, shortcuts)',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <EngineActionsMenu />,
+  },
+  {
+    id: 'overlays-menu-models',
+    title: 'Menu (model title pop-up, descriptions and check)',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <ModelTitleMenu />,
+  },
+  {
+    id: 'overlays-context-menu',
+    title: 'Context menu (conversation row)',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <ConversationContextMenu />,
+  },
+  {
+    id: 'overlays-popup-filled',
+    title: 'Pop-up button, filled (Version)',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <VersionPopUp />,
+  },
+  {
+    id: 'overlays-popup-plain',
+    title: 'Pop-up button, plain (Thinking pill)',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <ThinkingPopUp />,
+  },
+  {
+    id: 'overlays-popover',
+    title: 'Popover',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <InfoPopover />,
+  },
+  {
+    id: 'overlays-tooltip',
+    title: 'Tooltip with shortcut',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <SettingsTooltip />,
+  },
+  {
+    id: 'overlays-dialog',
+    title: 'Dialog (Launch settings sheet)',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <LaunchSettingsDialog />,
+  },
+  {
+    id: 'overlays-dialog-scrolled',
+    title: 'Dialog, scrolled (scroll-edge fade under the title)',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <LaunchSettingsDialog scrolled />,
+  },
+  {
+    id: 'overlays-dialog-small',
+    title: 'Dialog, small confirmation',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <UninstallDialog />,
+  },
+  {
+    id: 'overlays-toast',
+    title: 'Toasts',
+    group: 'Primitives › Overlays',
+    frame: 'fill',
+    render: () => <ToastStack />,
+  },
+];

@@ -1,0 +1,99 @@
+/*
+ * Line chart (design/minimal-ref: .chart-section). Drawn straight on the
+ * window, no card: an optional 13 px semibold section label with the readout
+ * on the right, one 2 px accent line, three faint gridlines, a hairline zero
+ * baseline, y labels on the right and start/end labels below.
+ *
+ * The canvas cannot read CSS variables, so the chart resolves these colours
+ * from the element (Chart.tsx) and redraws when the theme changes.
+ */
+
+.sb-chart {
+  --sb-chart-line: var(--accent);
+  --sb-chart-grid-line: var(--chart-grid);
+  --sb-chart-base-line: var(--chart-baseline);
+  --sb-chart-axis: var(--text-secondary);
+  --sb-chart-surface: var(--bg-window);
+  --sb-chart-hover: var(--hairline-strong);
+
+  min-width: 0;
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+}
+
+.sb-chart__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 14px 2px;
+}
+
+.sb-chart__title {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 18px;
+}
+
+.sb-chart__readout {
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sb-chart__plot {
+  position: relative;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.sb-chart__plot:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+.sb-chart__plot .uplot {
+  width: 100%;
+  font-family: inherit;
+  line-height: 1;
+}
+
+.sb-chart__plot .u-hz .u-cursor-x {
+  border-right: 1px solid var(--sb-chart-hover);
+}
+
+.sb-chart__empty {
+  position: absolute;
+  top: 8px;
+  right: 34px;
+  bottom: 6px;
+  left: 0;
+  display: grid;
+  margin: 0;
+  place-items: center;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  pointer-events: none;
+}
+
+.sb-chart__x {
+  display: flex;
+  justify-content: space-between;
+  height: 18px;
+  padding: 0 34px 0 1px;
+  color: var(--sb-chart-axis);
+  font-size: var(--text-2xs);
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hidden probe used to resolve token colours for the canvas. */
+.sb-chart__probe {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}

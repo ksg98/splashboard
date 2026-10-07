@@ -1,0 +1,62 @@
+/* User turn (reference: .turn-user, .user-media, .bubble). */
+.ch-user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  margin: 0 0 24px;
+}
+
+.ch-user-media {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.ch-user-image {
+  position: relative;
+  display: block;
+  width: 232px;
+  height: 144px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--fill-control);
+}
+
+.ch-user-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Hairline edge drawn over the picture so light images keep their shape. */
+.ch-user-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  pointer-events: none;
+}
+
+button.ch-user-image {
+  cursor: default;
+}
+
+.ch-bubble {
+  max-width: 72%;
+  padding: 10px 16px;
+  border-radius: var(--radius-bubble);
+  background: var(--bg-bubble);
+  color: var(--text-primary);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

@@ -1,0 +1,1 @@
+{"error":{"message":"Host mymac.local is not allowed; restart the server with --allowed-host mymac.local to accept it","type":"invalid_request_error","code":"forbidden"}}

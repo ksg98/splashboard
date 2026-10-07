@@ -1,0 +1,7 @@
+HTTP/1.1 400 Bad Request
+Server: Splash
+Date: Sun, 04 Oct 2026 07:20:32 GMT
+Content-Type: application/json
+Content-Length: 124
+Connection: close
+

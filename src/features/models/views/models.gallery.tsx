@@ -1,0 +1,103 @@
+import type { GalleryEntry } from '@/app/gallery/types';
+import {
+  launchSettingsCommandProps,
+  launchSettingsOtherProps,
+  launchSettingsProps,
+  modelsViewBusy,
+  modelsViewProps,
+  modelsViewSearch,
+  modelsViewSearchEmpty,
+  modelsViewSearchError,
+  modelsViewSearchLoading,
+  modelsViewSmallMac,
+  modelsViewStarting,
+  modelsViewStopped,
+} from './fixtures';
+import { LaunchDemo, ModelsDemo } from './models.demos';
+
+export const gallery: GalleryEntry[] = [
+  {
+    id: 'models-ready',
+    title: 'Models · ready',
+    group: 'Models',
+    frame: 'window',
+    render: () => <ModelsDemo props={modelsViewProps} />,
+  },
+  {
+    id: 'models-thinking',
+    title: 'Models · thinking',
+    group: 'Models',
+    frame: 'window',
+    render: () => <ModelsDemo props={modelsViewBusy} />,
+  },
+  {
+    id: 'models-starting',
+    title: 'Models · starting',
+    group: 'Models',
+    frame: 'window',
+    render: () => <ModelsDemo props={modelsViewStarting} />,
+  },
+  {
+    id: 'models-stopped',
+    title: 'Models · stopped',
+    group: 'Models',
+    frame: 'window',
+    render: () => <ModelsDemo props={modelsViewStopped} />,
+  },
+  {
+    id: 'models-search-results',
+    title: 'Models · Hugging Face results',
+    group: 'Models',
+    frame: 'window',
+    render: () => <ModelsDemo props={modelsViewSearch} />,
+  },
+  {
+    id: 'models-search-loading',
+    title: 'Models · searching',
+    group: 'Models',
+    frame: 'window',
+    render: () => <ModelsDemo props={modelsViewSearchLoading} />,
+  },
+  {
+    id: 'models-search-empty',
+    title: 'Models · no results',
+    group: 'Models',
+    frame: 'window',
+    render: () => <ModelsDemo props={modelsViewSearchEmpty} />,
+  },
+  {
+    id: 'models-search-error',
+    title: 'Models · search failed',
+    group: 'Models',
+    frame: 'window',
+    render: () => <ModelsDemo props={modelsViewSearchError} />,
+  },
+  {
+    id: 'models-not-compatible',
+    title: 'Models · 16 GB Mac (not compatible)',
+    group: 'Models',
+    frame: 'window',
+    render: () => <ModelsDemo props={modelsViewSmallMac} />,
+  },
+  {
+    id: 'launch-settings',
+    title: 'Launch settings · running model',
+    group: 'Models',
+    frame: 'window',
+    render: () => <LaunchDemo props={launchSettingsProps} />,
+  },
+  {
+    id: 'launch-other',
+    title: 'Launch settings · another installed model',
+    group: 'Models',
+    frame: 'window',
+    render: () => <LaunchDemo props={launchSettingsOtherProps} />,
+  },
+  {
+    id: 'launch-command',
+    title: 'Launch settings · more options and command',
+    group: 'Models',
+    frame: 'window',
+    render: () => <LaunchDemo props={launchSettingsCommandProps} />,
+  },
+];

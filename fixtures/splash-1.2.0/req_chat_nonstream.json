@@ -1,0 +1,1 @@
+{"model":"incoai/Qwen3.8-27B-Splash","messages":[{"role":"system","content":"You are concise."},{"role":"user","content":"Name three primary colors."}],"max_tokens":512,"temperature":0.6,"top_p":0.95}

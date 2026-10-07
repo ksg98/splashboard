@@ -1,0 +1,42 @@
+/* Log lines: time column, message at most 84 characters wide, hanging indent. */
+.eng-log {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--text-primary);
+  -webkit-user-select: text;
+  user-select: text;
+  cursor: text;
+}
+
+.eng-log-line {
+  position: relative;
+  display: grid;
+  grid-template-columns: 9ch minmax(0, 84ch);
+  column-gap: 2ch;
+}
+
+.eng-log-t {
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.eng-log-m {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.eng-log-id {
+  white-space: nowrap;
+}
+
+.eng-log-err {
+  position: absolute;
+  left: -14px;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--status-error);
+}

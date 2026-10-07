@@ -1,0 +1,27 @@
+/* Gallery only: an empty window frame (260 px sidebar) behind the dialog. */
+.sdemo-window {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-window);
+}
+
+.sdemo-sidebar {
+  background: var(--bg-sidebar);
+}
+
+.sdemo-main {
+  display: grid;
+  place-items: center;
+}
+
+.sdemo-reopen {
+  height: var(--control-height);
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  background: var(--fill-control);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}

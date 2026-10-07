@@ -1,0 +1,141 @@
+/* Gallery-only window stand-in for the chat views (reference: .window, .sidebar, .toolbar, .dock). */
+.chd-window {
+  display: grid;
+  grid-template-columns: var(--sidebar-width, 260px) minmax(0, 1fr);
+  width: 100%;
+  height: 100%;
+  background: var(--bg-window);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+}
+
+.chd-sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg-sidebar);
+}
+
+.chd-sidebar--alone {
+  width: var(--sidebar-width, 260px);
+  height: 640px;
+  overflow-y: auto;
+  border-radius: var(--radius-lg);
+}
+
+.chd-traffic {
+  display: flex;
+  gap: 8px;
+  height: var(--toolbar-height, 52px);
+  padding: 20px 0 0 20px;
+  flex: none;
+}
+
+.chd-traffic i {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.5px var(--traffic-edge);
+}
+
+.chd-traffic i:nth-child(1) {
+  background: var(--traffic-close);
+}
+
+.chd-traffic i:nth-child(2) {
+  background: var(--traffic-minimize);
+}
+
+.chd-traffic i:nth-child(3) {
+  background: var(--traffic-zoom);
+}
+
+.chd-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 8px;
+  flex: none;
+}
+
+.chd-nav-row,
+.chd-side-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: var(--row-height-sm, 32px);
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+}
+
+.chd-side-search {
+  background: var(--fill-selected);
+}
+
+.chd-gap {
+  height: 14px;
+}
+
+.chd-history {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.chd-engine {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  margin: 8px;
+  padding: 0 4px 0 10px;
+  flex: none;
+}
+
+.chd-engine-name {
+  font-weight: var(--weight-medium);
+}
+
+.chd-engine-state {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.chd-engine-gear {
+  margin-left: 12px;
+  color: var(--text-secondary);
+}
+
+.chd-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--bg-window);
+}
+
+.chd-toolbar {
+  display: flex;
+  align-items: center;
+  height: var(--toolbar-height, 52px);
+  padding: 0 12px;
+  flex: none;
+}
+
+.chd-dock {
+  flex: none;
+  padding: 4px 24px 18px;
+}
+
+.chd-thread-box {
+  display: flex;
+  flex-direction: column;
+  width: 860px;
+  height: 560px;
+  background: var(--bg-window);
+}

@@ -1,0 +1,143 @@
+/* Settings dialog (design/minimal-ref: .dialog.settings, .settings-nav/head/body). */
+
+.sd-root {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 208px minmax(0, 1fr);
+}
+
+/* Left column: ✕ on top, then the tabs. */
+.sd-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 0;
+  padding: 12px 10px;
+}
+
+.sd-close {
+  margin: 0 0 10px;
+}
+
+.sd-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sd-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-align: left;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.sd-tab:hover {
+  background: var(--fill-hover);
+}
+
+.sd-tab[data-state='active'] {
+  background: var(--fill-selected);
+}
+
+.sd-tab:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.sd-tab-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+/* Right column: a fixed 20 px page title above a scrolling panel. */
+.sd-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sd-head {
+  flex: none;
+  padding: 22px 28px 12px 14px;
+}
+
+.sd-title {
+  margin: 0;
+  font-size: var(--text-title-2);
+  line-height: 26px;
+  font-weight: var(--weight-semibold);
+}
+
+.sd-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 28px 32px 12px;
+}
+
+.sd-panel:focus-visible {
+  outline: none;
+}
+
+/* Small pieces inside rows. */
+.sd-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.sd-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.sd-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* About: the one tile treatment (64 px, gray fill, no border), then the name. */
+.sd-about {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 24px 2px;
+}
+
+.sd-about-tile {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--tile-lg);
+  height: var(--tile-lg);
+  border-radius: var(--tile-radius-lg);
+  background: var(--fill-tile);
+  color: var(--text-primary);
+}
+
+.sd-about-name {
+  font-size: var(--text-title-3);
+  line-height: 22px;
+  font-weight: var(--weight-semibold);
+}
+
+.sd-about-line {
+  margin-top: 2px;
+  color: var(--text-secondary);
+}

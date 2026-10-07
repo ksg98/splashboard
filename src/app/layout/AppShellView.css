@@ -1,0 +1,261 @@
+/* The window (design/minimal-ref: .window, .traffic, .sidebar, .side-*, .main, .toolbar, .tb-engine) */
+.sb-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  width: 100%;
+  height: 100%;
+  background: var(--bg-window);
+  color: var(--text-primary);
+  transition: grid-template-columns var(--dur-slow) var(--ease-out);
+}
+.sb-shell.is-collapsed {
+  grid-template-columns: 0 minmax(0, 1fr);
+}
+
+/* Drawn only in browser previews; Tauri draws the real traffic lights. */
+.sb-traffic {
+  position: absolute;
+  z-index: 40;
+  top: var(--traffic-top);
+  left: var(--traffic-left);
+  display: flex;
+  gap: var(--traffic-gap);
+  pointer-events: none;
+}
+.sb-traffic i {
+  display: block;
+  width: var(--traffic-size);
+  height: var(--traffic-size);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 0.5px var(--traffic-edge);
+}
+.sb-traffic i:nth-child(1) {
+  background: var(--traffic-close);
+}
+.sb-traffic i:nth-child(2) {
+  background: var(--traffic-minimize);
+}
+.sb-traffic i:nth-child(3) {
+  background: var(--traffic-zoom);
+}
+
+/* ---------- Sidebar ---------- */
+.sb-sidebar {
+  grid-area: 1 / 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--bg-sidebar);
+}
+/* Fixed width, so nothing reflows while the column animates closed. */
+.sb-sidebar__inner {
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  height: 100%;
+}
+.sb-sidebar__head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: var(--toolbar-height);
+  padding: 0 10px;
+}
+.sb-sidebar__nav {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 8px;
+}
+.sb-sidebar__gap {
+  flex: none;
+  height: 14px;
+}
+.sb-sidebar__history {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.sb-sidebar__foot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 8px;
+}
+
+/* Sidebar row: 18 px line icon, 13 px label, 32 px tall, 8 px radius */
+.sb-side-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: var(--row-height-sm);
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.sb-side-item svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+.sb-side-item:hover {
+  background: var(--fill-hover);
+}
+/* Only a destination can be current; New chat and Search chats are actions. */
+.sb-side-item[aria-current='page'] {
+  background: var(--fill-selected);
+}
+.sb-side-item__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sb-side-item__hint {
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.sb-side-item:hover .sb-side-item__hint,
+.sb-side-item:focus-visible .sb-side-item__hint {
+  opacity: 1;
+}
+
+/* Search chats, as an inline rounded field. The ring belongs to the field, not the bare input. */
+.sb-side-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: var(--row-height-sm);
+  padding: 0 6px 0 10px;
+  border-radius: var(--radius-sm);
+  background: var(--fill-selected);
+  transition: box-shadow var(--dur-fast) var(--ease-out);
+}
+.sb-side-search svg {
+  flex: none;
+}
+.sb-side-search:focus-within {
+  box-shadow: 0 0 0 3px var(--halo-focus);
+}
+.sb-side-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: var(--text-sm);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.sb-side-search input:focus-visible {
+  outline: none;
+}
+.sb-side-search input::placeholder {
+  color: var(--text-secondary);
+}
+.sb-side-search input::-webkit-search-cancel-button,
+.sb-side-search input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.sb-side-search__clear {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--fill-control-hover);
+  color: var(--text-secondary);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+.sb-side-search__clear svg {
+  width: 10px;
+  height: 10px;
+}
+.sb-side-search__clear:hover {
+  background: var(--fill-track);
+  color: var(--text-primary);
+}
+
+/* ---------- Main ---------- */
+.sb-main {
+  grid-area: 1 / 2;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--bg-window);
+}
+/* 52 px, unified with the content: no title strip, no divider. */
+.sb-toolbar {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: var(--toolbar-height);
+  padding: 0 12px;
+  transition: padding-left var(--dur-slow) var(--ease-out);
+}
+.sb-shell.is-collapsed .sb-toolbar {
+  padding-left: var(--traffic-lights-inset);
+}
+.sb-toolbar__spacer {
+  flex: 1;
+  align-self: stretch;
+}
+.sb-main__content {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+/* Collapsed-sidebar engine state at the toolbar's right end */
+.sb-tb-engine {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  height: 32px;
+  padding: 0 12px 0 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+.sb-tb-engine:hover,
+.sb-tb-engine[aria-expanded='true'],
+.sb-tb-engine[data-state='open'] {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}

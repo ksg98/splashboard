@@ -1,0 +1,1 @@
+{"error":{"message":"Origin tauri://localhost is not allowed; restart the server with --allowed-origin tauri://localhost to accept it","type":"invalid_request_error","code":"forbidden"}}

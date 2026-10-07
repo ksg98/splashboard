@@ -1,0 +1,23 @@
+/* Eye button inside a secure field (design/minimal-ref .copy-btn, scaled to the 24px field). */
+.sb-secure-field__reveal {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-right: -6px;
+  border-radius: 5px;
+  color: var(--text-secondary);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.sb-secure-field__reveal:hover:not(:disabled) {
+  background: var(--fill-control-hover);
+  color: var(--text-primary);
+}
+
+.sb-secure-field__reveal:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}

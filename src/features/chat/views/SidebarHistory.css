@@ -1,0 +1,147 @@
+/* Chat history (reference: .side-history, .side-label, .side-chat, .side-empty). */
+.ch-history {
+  padding: 4px 8px 12px;
+  font-size: var(--text-sm);
+  line-height: 18px;
+  color: var(--text-primary);
+}
+
+.ch-history-group {
+  margin: 0;
+}
+
+.ch-history-label {
+  margin: 0;
+  padding: 16px 10px 4px;
+  font-size: var(--text-xs);
+  line-height: 16px;
+  font-weight: var(--weight-medium, 500);
+  color: var(--text-secondary);
+}
+
+.ch-history-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ch-history-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--row-height-sm, 32px);
+  border-radius: var(--radius-sm, 8px);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.ch-history-row:hover {
+  background: var(--fill-hover);
+}
+
+.ch-history-row.is-current,
+.ch-history-row.is-renaming {
+  background: var(--fill-selected);
+}
+
+.ch-history-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 100%;
+  padding: 0 10px;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.ch-history-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ch-history-title mark {
+  background: none;
+  color: inherit;
+  font-weight: var(--weight-semibold, 600);
+}
+
+/* ⋯ appears on hover, keyboard focus, the current row, and while its menu is open. */
+.ch-history-more {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs, 6px);
+  background: none;
+  color: var(--text-secondary);
+  opacity: 0;
+  transform: translateY(-50%);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.ch-history-row:hover .ch-history-more,
+.ch-history-row:focus-within .ch-history-more,
+.ch-history-more[aria-expanded='true'],
+.ch-history-more[data-state='open'] {
+  opacity: 1;
+}
+
+.ch-history-more:hover,
+.ch-history-more[aria-expanded='true'],
+.ch-history-more[data-state='open'] {
+  color: var(--text-primary);
+}
+
+.ch-history-row:hover .ch-history-link,
+.ch-history-row:focus-within .ch-history-link {
+  padding-right: 34px;
+}
+
+.ch-history-rename {
+  flex: 1;
+  min-width: 0;
+  height: 26px;
+  margin: 0 4px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: var(--radius-xs, 6px);
+  background: var(--bg-window);
+  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+  font: inherit;
+  color: var(--text-primary);
+  caret-color: var(--accent);
+  outline: none;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.ch-history-rename:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 0;
+}
+
+.ch-history-empty {
+  padding: 14px 10px 4px;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.ch-history-empty strong {
+  display: block;
+  font-weight: var(--weight-medium, 500);
+  color: var(--text-primary);
+}

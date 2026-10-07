@@ -1,0 +1,8 @@
+pnpm-lock.yaml
+dist
+coverage
+src-tauri/target
+src-tauri/gen
+design
+fixtures
+docs/splash-api.md

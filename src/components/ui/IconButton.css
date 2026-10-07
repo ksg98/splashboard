@@ -1,0 +1,81 @@
+/* Icon buttons (design/minimal-ref: .icon-btn, .act, .c-icon, .send) */
+.sb-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+.sb-icon-btn__glyph {
+  display: inline-grid;
+  place-items: center;
+}
+.sb-icon-btn__glyph svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sb-icon-btn--sm {
+  width: 30px;
+  height: 30px;
+}
+.sb-icon-btn--sm .sb-icon-btn__glyph svg {
+  width: 16px;
+  height: 16px;
+}
+.sb-icon-btn--lg {
+  width: 36px;
+  height: 36px;
+}
+.sb-icon-btn--circle {
+  border-radius: 50%;
+}
+
+/* Ghost */
+.sb-icon-btn--ghost:hover,
+.sb-icon-btn--ghost[aria-expanded='true'],
+.sb-icon-btn--ghost[data-state='open'] {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+.sb-icon-btn--ghost[aria-pressed='true'] {
+  background: var(--fill-selected);
+  color: var(--text-primary);
+}
+
+/* Secondary */
+.sb-icon-btn--secondary {
+  background: var(--fill-control);
+  color: var(--text-primary);
+}
+.sb-icon-btn--secondary:hover,
+.sb-icon-btn--secondary[aria-expanded='true'],
+.sb-icon-btn--secondary[data-state='open'] {
+  background: var(--fill-control-hover);
+}
+
+/* Primary: the round send / stop button */
+.sb-icon-btn--primary {
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+}
+.sb-icon-btn--primary:hover {
+  background: var(--primary-bg-hover);
+}
+
+.sb-icon-btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.sb-icon-btn--primary:disabled {
+  opacity: 0.3;
+}

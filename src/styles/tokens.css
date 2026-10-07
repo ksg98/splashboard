@@ -1,0 +1,362 @@
+/*
+  Splashboard design tokens — direction "Minimal"
+  ------------------------------------------------
+  Import once at the app root. Light is the default; dark follows the system
+  unless the root carries data-theme="light". data-theme="dark" forces dark.
+
+    <html>                    follows the system
+    <html data-theme="light"> always light
+    <html data-theme="dark">  always dark
+
+  Only one accent exists (the macOS system accent). Everything else is gray.
+*/
+
+:root {
+  color-scheme: light;
+
+  /* ---------- Typography ---------- */
+  --font-ui:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --text-2xs: 11px; /* chart axes, keyboard hints */
+  --text-xs: 12px; /* secondary lines, footnotes, captions */
+  --text-sm: 13px; /* UI base: sidebar, rows, buttons, menus */
+  --text-md: 14px; /* thinking text, dense reading */
+  --text-lg: 15px; /* row titles that need a step up */
+  --text-body: 16px; /* chat body, composer */
+  --text-title-3: 17px; /* sheet and dialog titles */
+  --text-title-2: 20px; /* section titles */
+  --text-title-1: 28px; /* page titles, empty state, big numbers */
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  --leading-tight: 1.2;
+  --leading-ui: 1.38; /* 13px -> 18px */
+  --leading-read: 1.55; /* thinking, footnotes */
+  --leading-body: 1.65; /* chat body */
+
+  --mono-size: 13px;
+  --mono-leading: 1.6;
+
+  /* ---------- Spacing (4 px base) ---------- */
+  --space-0: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+
+  /* ---------- Shape ---------- */
+  --radius-xs: 6px; /* pop-up buttons, fields, menu items */
+  --radius-sm: 8px; /* sidebar rows, icon buttons */
+  --radius-md: 10px; /* inset groups (System Settings), cards */
+  --radius-lg: 12px; /* code blocks, popovers, summary cards */
+  --radius-xl: 16px; /* sheets and dialogs */
+  --radius-bubble: 20px;
+  --radius-composer: 26px;
+  --radius-pill: 999px;
+
+  /* ---------- Layout ---------- */
+  --sidebar-width: 260px;
+  --toolbar-height: 52px;
+  --chat-column: 760px;
+  --page-column: 880px;
+  --page-gutter: 40px;
+  --row-height: 44px; /* form rows */
+  --row-height-sm: 32px; /* sidebar and menu rows */
+  --control-height: 28px; /* buttons in rows */
+  --control-height-lg: 36px; /* primary actions in dialogs and onboarding */
+  --scroll-edge: 16px; /* content fades out over this much under a toolbar or sheet header, once scrolled */
+  --scroll-edge-bottom: 32px; /* and over this much above the composer, while more of the thread is below (clear for the last quarter) */
+  --action-slot: 60px; /* trailing action column in lists: Run, Get and the download ring share its centre */
+
+  /* ---------- Icon tiles (one treatment everywhere: gray fill, no border) ---------- */
+  --tile-sm: 32px; /* agent glyphs, terminal sheet header */
+  --tile-md: 44px; /* running model card */
+  --tile-lg: 64px; /* first-run mark */
+  --tile-radius-sm: 8px;
+  --tile-radius-md: 10px;
+  --tile-radius-lg: 14px;
+
+  /* ---------- Motion ---------- */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 150ms; /* hover, press, small fades */
+  --dur-base: 200ms; /* popovers, disclosures */
+  --dur-slow: 250ms; /* sheets, dialogs */
+  --shimmer-period: 1.8s;
+
+  /* ---------- Accent (the only colour) ---------- */
+  --accent: #0a84ff;
+  --focus-ring: #0a84ff; /* solid accent: 3.6:1 on white, 4.4:1 on #212121 */
+
+  /* ---------- Status (dots only, always next to a text label) ---------- */
+  --status-ok: #34c759;
+  --status-warn: #ff9f0a;
+  --status-error: #ff3b30;
+  --status-off: #aeaeb2;
+
+  /* ---------- Window chrome ---------- */
+  --traffic-close: #ff5f57;
+  --traffic-minimize: #febc2e;
+  --traffic-zoom: #28c840;
+  --traffic-edge: rgba(0, 0, 0, 0.12);
+
+  /* ---------- Light surfaces ---------- */
+  --bg-window: #ffffff;
+  --bg-sidebar: #f9f9f9;
+  --bg-elevated: #ffffff; /* popovers, menus */
+  --bg-composer: #ffffff;
+  --bg-sheet: #ffffff;
+  --bg-group: #f7f7f8; /* inset groups, summary cards */
+  --bg-bubble: #f4f4f4; /* user message */
+  --bg-code: #f7f7f8;
+  --bg-terminal: #1c1c1e; /* embedded terminal is always dark */
+
+  --fill-hover: rgba(0, 0, 0, 0.04);
+  --fill-selected: rgba(0, 0, 0, 0.06);
+  --fill-control: rgba(0, 0, 0, 0.05); /* secondary buttons, segmented track */
+  --fill-control-hover: rgba(0, 0, 0, 0.08);
+  --fill-segment: #ffffff; /* selected segment */
+  --fill-track: rgba(0, 0, 0, 0.1); /* slider and progress track */
+  --fill-switch-off: rgba(0, 0, 0, 0.1);
+  --fill-meter: #0d0d0d; /* progress, memory bar (gray scale, not accent) */
+  --fill-tile: var(--fill-control); /* icon tiles: models, agents, first run */
+
+  --text-primary: #0d0d0d;
+  --text-secondary: #6e6e73; /* 5.1:1 on white, AA for any size */
+  --text-tertiary: #8e8e93; /* 3.3:1: placeholders, disabled, >= 18px only */
+  --text-on-primary: #ffffff;
+  --text-destructive: #d70015; /* system red, increased-contrast variant: 5.0:1 on a group. Text only, for actions that remove something */
+  --text-terminal: #e5e5ea;
+  --text-terminal-dim: #98989d;
+
+  --hairline: rgba(0, 0, 0, 0.08);
+  --hairline-strong: rgba(0, 0, 0, 0.14);
+  --chart-grid: rgba(0, 0, 0, 0.07);
+  --chart-baseline: rgba(0, 0, 0, 0.14);
+
+  --primary-bg: #0d0d0d; /* black-on-white primary buttons, send */
+  --primary-bg-hover: #333333;
+  --primary-fg: #ffffff;
+
+  --scrim: rgba(0, 0, 0, 0.2);
+
+  --shadow-popover:
+    0 0 0 0.5px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.04), 0 10px 28px rgba(0, 0, 0, 0.1);
+  --shadow-composer: 0 0 0 1px rgba(0, 0, 0, 0.07), 0 4px 18px rgba(0, 0, 0, 0.05);
+  --shadow-sheet: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 24px 70px rgba(0, 0, 0, 0.18);
+  --shadow-knob: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.18);
+  --shadow-segment: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* The real system accent, where the engine knows it (WKWebView / Safari 16.4+). */
+@supports (color: AccentColor) {
+  :root {
+    --accent: AccentColor;
+  }
+}
+@supports (color: AccentColor) {
+  :root {
+    --focus-ring: AccentColor;
+  }
+}
+
+/* ---------- Dark (system) ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --status-off: #636366;
+    --traffic-edge: rgba(0, 0, 0, 0.25);
+
+    --bg-window: #212121;
+    --bg-sidebar: #171717;
+    --bg-elevated: #383838; /* lighter than the #303030 composer, so menus float */
+    --bg-composer: #303030;
+    --bg-sheet: #262626;
+    --bg-group: rgba(255, 255, 255, 0.05);
+    --bg-bubble: #303030;
+    --bg-code: #171717;
+    --bg-terminal: #141414;
+
+    --fill-hover: rgba(255, 255, 255, 0.06);
+    --fill-selected: rgba(255, 255, 255, 0.08);
+    --fill-control: rgba(255, 255, 255, 0.08);
+    --fill-control-hover: rgba(255, 255, 255, 0.12);
+    --fill-segment: rgba(255, 255, 255, 0.2);
+    --fill-track: rgba(255, 255, 255, 0.14);
+    --fill-switch-off: rgba(255, 255, 255, 0.16);
+    --fill-meter: #f5f5f7;
+
+    --text-primary: #f5f5f7;
+    --text-secondary: #a1a1a6; /* 6.2:1 on #212121 */
+    --text-tertiary: #6e6e73; /* 2.9:1: placeholders and disabled only */
+    --text-on-primary: #0d0d0d;
+    --text-destructive: #ff6961; /* 4.7:1 on a dark group */
+
+    --hairline: rgba(255, 255, 255, 0.08);
+    --hairline-strong: rgba(255, 255, 255, 0.14);
+    --chart-grid: rgba(255, 255, 255, 0.08);
+    --chart-baseline: rgba(255, 255, 255, 0.16);
+
+    --primary-bg: #f5f5f7;
+    --primary-bg-hover: #d1d1d6;
+    --primary-fg: #0d0d0d;
+
+    --scrim: rgba(0, 0, 0, 0.5);
+
+    --shadow-popover: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 10px 32px rgba(0, 0, 0, 0.5);
+    --shadow-composer: 0 0 0 0.5px rgba(255, 255, 255, 0.06), 0 6px 24px rgba(0, 0, 0, 0.25);
+    --shadow-sheet: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 28px 80px rgba(0, 0, 0, 0.6);
+    --shadow-knob: 0 0 0 0.5px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.35);
+    --shadow-segment: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* ---------- Dark (forced) — keep identical to the block above ---------- */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --status-off: #636366;
+  --traffic-edge: rgba(0, 0, 0, 0.25);
+
+  --bg-window: #212121;
+  --bg-sidebar: #171717;
+  --bg-elevated: #383838; /* lighter than the #303030 composer, so menus float */
+  --bg-composer: #303030;
+  --bg-sheet: #262626;
+  --bg-group: rgba(255, 255, 255, 0.05);
+  --bg-bubble: #303030;
+  --bg-code: #171717;
+  --bg-terminal: #141414;
+
+  --fill-hover: rgba(255, 255, 255, 0.06);
+  --fill-selected: rgba(255, 255, 255, 0.08);
+  --fill-control: rgba(255, 255, 255, 0.08);
+  --fill-control-hover: rgba(255, 255, 255, 0.12);
+  --fill-segment: rgba(255, 255, 255, 0.2);
+  --fill-track: rgba(255, 255, 255, 0.14);
+  --fill-switch-off: rgba(255, 255, 255, 0.16);
+  --fill-meter: #f5f5f7;
+
+  --text-primary: #f5f5f7;
+  --text-secondary: #a1a1a6;
+  --text-tertiary: #6e6e73;
+  --text-on-primary: #0d0d0d;
+  --text-destructive: #ff6961;
+
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-strong: rgba(255, 255, 255, 0.14);
+  --chart-grid: rgba(255, 255, 255, 0.08);
+  --chart-baseline: rgba(255, 255, 255, 0.16);
+
+  --primary-bg: #f5f5f7;
+  --primary-bg-hover: #d1d1d6;
+  --primary-fg: #0d0d0d;
+
+  --scrim: rgba(0, 0, 0, 0.5);
+
+  --shadow-popover: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 10px 32px rgba(0, 0, 0, 0.5);
+  --shadow-composer: 0 0 0 0.5px rgba(255, 255, 255, 0.06), 0 6px 24px rgba(0, 0, 0, 0.25);
+  --shadow-sheet: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 28px 80px rgba(0, 0, 0, 0.6);
+  --shadow-knob: 0 0 0 0.5px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-segment: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- Reduced motion ----------
+   Durations drop to 0 here. Components that loop (the "Thinking…" shimmer,
+   the busy dot, the streaming cursor, the terminal caret) must also set
+   `animation: none` under the same query; see index.html. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+  }
+}
+
+/* =====================================================================
+   App additions (not in the reference file)
+   ===================================================================== */
+:root {
+  /* Room the toolbar leaves for the macOS traffic lights when the sidebar is hidden. */
+  --traffic-lights-inset: 84px;
+  --traffic-size: 12px;
+  --traffic-gap: 8px;
+  --traffic-left: 20px;
+  --traffic-top: 20px;
+  --halo-focus: rgba(10, 132, 255, 0.35); /* 3 px halo around rounded fields (search) */
+}
+@supports (color: color-mix(in srgb, red 50%, transparent)) {
+  :root {
+    --halo-focus: color-mix(in srgb, var(--focus-ring) 35%, transparent);
+  }
+}
+
+/* =====================================================================
+   Scaffold aliases
+   ---------------------------------------------------------------------
+   The scaffold's --sb-* names (and the Tailwind utilities built on them)
+   keep working; each one now points at a Minimal token, so both themes
+   follow automatically (the aliases resolve on :root, where the dark
+   overrides above also live).
+   ===================================================================== */
+:root {
+  /* Typography */
+  --sb-font-sans: var(--font-ui);
+  --sb-font-mono: var(--font-mono);
+  --sb-text-xs: var(--text-2xs);
+  --sb-text-sm: var(--text-xs);
+  --sb-text-md: var(--text-sm);
+  --sb-text-lg: var(--text-lg);
+  --sb-text-xl: var(--text-title-2);
+  --sb-text-2xl: var(--text-title-1);
+
+  /* Shape */
+  --sb-radius-sm: var(--radius-xs);
+  --sb-radius-md: var(--radius-sm);
+  --sb-radius-lg: var(--radius-md);
+  --sb-radius-xl: var(--radius-xl);
+  --sb-radius-full: var(--radius-pill);
+
+  /* Window chrome */
+  --sb-titlebar-height: var(--toolbar-height);
+  --sb-traffic-lights-width: var(--traffic-lights-inset);
+  --sb-sidebar-width: var(--sidebar-width);
+
+  /* Surfaces */
+  --sb-bg: var(--bg-window);
+  --sb-surface: var(--bg-sidebar);
+  --sb-surface-raised: var(--bg-elevated);
+  --sb-surface-sunken: var(--fill-selected);
+  --sb-border: var(--hairline);
+  --sb-border-strong: var(--hairline-strong);
+
+  /* Text */
+  --sb-fg: var(--text-primary);
+  --sb-fg-muted: var(--text-secondary);
+  --sb-fg-subtle: var(--text-tertiary);
+
+  /* Interactive and status */
+  --sb-accent: var(--primary-bg);
+  --sb-accent-fg: var(--primary-fg);
+  --sb-focus: var(--focus-ring);
+  --sb-success: var(--status-ok);
+  --sb-warning: var(--status-warn);
+  --sb-danger: var(--text-destructive);
+  --sb-info: var(--accent);
+
+  /* Charts (one accent line; the rest is gray) */
+  --sb-chart-1: var(--accent);
+  --sb-chart-2: var(--text-secondary);
+  --sb-chart-3: var(--text-tertiary);
+  --sb-chart-4: var(--fill-meter);
+  --sb-chart-grid: var(--chart-grid);
+}

@@ -1,0 +1,209 @@
+/*
+ * Inset grouped form, macOS System Settings style (design/minimal-ref:
+ * .form-title, .group, .row, .row-help, .footnote, .text-btn, .row-action).
+ * Grouped forms are always one column.
+ */
+
+/* Section: title, group(s), footnote. 28px above every title but the first. */
+.sb-form-section + .sb-form-section {
+  margin-top: 28px;
+}
+
+.sb-form-section__title {
+  margin: 0 0 8px 2px;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-ui);
+  color: var(--text-primary);
+}
+
+.sb-form-footnote {
+  margin: 8px 12px 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* Two groups in one section sit 12px apart. */
+.sb-form-group + .sb-form-group {
+  margin-top: 12px;
+}
+
+/* Group: 10px radius, light fill. */
+.sb-form-group {
+  border-radius: var(--radius-md);
+  background: var(--bg-group);
+}
+
+/* Row: 44px minimum, 8px 12px padding, label left, control right. */
+.sb-form-row {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--row-height);
+  padding: 8px 12px;
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+}
+
+.sb-form-row__line {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.sb-form-row__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.sb-form-row__label {
+  display: block;
+  color: var(--text-primary);
+}
+
+.sb-form-row__help {
+  margin-top: 1px;
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+.sb-form-row__help.is-error {
+  color: var(--text-destructive);
+}
+
+/* The control slot is a <fieldset> so a disabled row disables what it holds. */
+.sb-form-row__control {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: none;
+  min-width: 0;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* A note about this row only: under the whole row, full width. */
+.sb-form-row__footnote {
+  margin-top: 6px;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* Stacked: label and help above, the control below at full width. */
+.sb-form-row.is-stacked .sb-form-row__line {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.sb-form-row.is-stacked .sb-form-row__control {
+  justify-content: flex-start;
+}
+
+/* Disabled: the label goes tertiary (disabled text only); the reason stays secondary so it reads. */
+.sb-form-row.is-disabled .sb-form-row__label,
+.sb-form-row.is-disabled .sb-form-value {
+  color: var(--text-tertiary);
+}
+
+/* Hairline separators, inset 12px from both edges. Rows, "More options" rows
+   and the first row of an opened "More options" panel all take one. */
+.sb-form-group > :is(.sb-form-row, .sb-form-more) + :is(.sb-form-row, .sb-form-more)::before,
+.sb-form-group > .sb-disclosure-panel + :is(.sb-form-row, .sb-form-more)::before,
+.sb-form-group .sb-disclosure-panel__inner > .sb-form-row:first-child::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: var(--hairline);
+  pointer-events: none;
+}
+
+/* Rows that fill on hover keep the group's corners. */
+.sb-form-group > .sb-form-row:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+}
+
+.sb-form-group > .sb-form-row:last-child {
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+/* Read-only value at the trailing end of a row. */
+.sb-form-value {
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sb-form-value.is-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+/* Text button: an action inside a line of text (Regenerate…). 12px inside a help line. */
+.sb-form-text-button {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: var(--radius-xs);
+  font-size: inherit;
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.sb-form-text-button:hover:not(:disabled) {
+  background: var(--fill-hover);
+}
+
+.sb-form-text-button:disabled {
+  opacity: 0.4;
+}
+
+.sb-form-row__help .sb-form-text-button {
+  height: 24px;
+  margin: 2px 0 0 -6px;
+  padding: 0 6px;
+}
+
+/* A row that is one button. Red only for actions that remove something. */
+.sb-form-action {
+  width: 100%;
+  align-items: flex-start;
+  text-align: left;
+  color: var(--text-primary);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.sb-form-action:hover:not(:disabled) {
+  background: var(--fill-hover);
+}
+
+.sb-form-action.is-destructive {
+  color: var(--text-destructive);
+}
+
+.sb-form-action:disabled {
+  opacity: 0.4;
+}
+
+.sb-form-action:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}

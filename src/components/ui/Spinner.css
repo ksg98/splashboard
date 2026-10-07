@@ -1,0 +1,32 @@
+.sb-spinner {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  color: var(--text-secondary);
+}
+.sb-spinner svg {
+  display: block;
+  overflow: visible;
+  animation: sb-spin 0.9s linear infinite;
+}
+.sb-spinner__track {
+  fill: none;
+  stroke: var(--fill-track);
+}
+.sb-spinner__arc {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+}
+
+@keyframes sb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-spinner svg {
+    animation: none;
+  }
+}

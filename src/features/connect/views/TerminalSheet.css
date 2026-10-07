@@ -1,0 +1,138 @@
+/* The agent terminal sheet (design/minimal-ref: .sheet-terminal, .terminal). */
+
+/* Most of the window: a coding session needs the room. */
+.sb-dialog.ts-sheet {
+  width: min(1040px, calc(100vw - 80px));
+  height: 90vh;
+  max-height: 90vh;
+}
+
+.ts-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 16px 12px 20px;
+}
+
+.ts-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.ts-title {
+  font-size: var(--text-title-3);
+  line-height: 22px;
+  font-weight: var(--weight-semibold);
+}
+
+.ts-sub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin-top: 2px;
+  font-size: var(--text-sm);
+  line-height: 20px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* The working-folder chip: a quiet pill, a button when the folder can change. */
+.ts-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  max-width: 360px;
+  height: 20px;
+  margin-left: -2px;
+  padding: 0 8px 0 6px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--fill-control);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-xs);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.ts-chip svg {
+  flex: none;
+}
+
+.ts-chip-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ts-chip--button:hover {
+  background: var(--fill-control-hover);
+  color: var(--text-primary);
+}
+
+.ts-chip--button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* The dark panel clips; text scrolls inside it on a 20 px line grid. */
+.ts-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--bg-terminal);
+  color: var(--text-terminal);
+}
+
+.ts-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px 18px 28px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 20px;
+  white-space: pre-wrap;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* xterm.js owns its own scrolling; the host only pads it. */
+.ts-host {
+  flex: 1;
+  min-height: 0;
+  padding: 16px 18px 12px;
+}
+
+.ts-foot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px 16px;
+}
+
+.ts-note {
+  flex: 1;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 16px;
+  color: var(--text-secondary);
+}
+
+.ts-note > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

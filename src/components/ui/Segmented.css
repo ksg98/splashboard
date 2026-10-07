@@ -1,0 +1,67 @@
+/* Segmented control (design/minimal-ref .seg): 2px inset track, white selected segment. */
+.sb-segmented {
+  display: inline-flex;
+  flex: none;
+  padding: 2px;
+  gap: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--fill-control);
+}
+
+.sb-segmented.is-equal {
+  display: inline-grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+}
+
+.sb-segmented__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 12px;
+  border-radius: var(--radius-xs);
+  font-size: var(--text-xs);
+  line-height: 1;
+  color: var(--text-primary);
+  white-space: nowrap;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.sb-segmented.is-sm .sb-segmented__item {
+  height: 20px;
+  padding: 0 10px;
+  font-size: var(--text-2xs);
+}
+
+.sb-segmented__item:hover:not([data-state='on']):not(:disabled) {
+  background: var(--fill-hover);
+}
+
+.sb-segmented__item[data-state='on'] {
+  background: var(--fill-segment);
+  box-shadow: var(--shadow-segment);
+  font-weight: var(--weight-medium);
+}
+
+.sb-segmented__item:disabled {
+  opacity: 0.45;
+}
+
+.sb-segmented__item:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.sb-segmented__icon {
+  display: inline-grid;
+  place-items: center;
+}
+
+.sb-segmented__icon > svg {
+  width: 14px;
+  height: 14px;
+}

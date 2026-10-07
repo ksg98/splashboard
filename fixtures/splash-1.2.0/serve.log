@@ -1,0 +1,42 @@
+Splash model incoai/Qwen3.8-27B-Splash is already installed in /Users/you/Library/Application Support/Splash/models/incoai/Qwen3.8-27B-Splash
+00:18:18 Loading · incoai/Qwen3.8-27B-Splash
+00:18:19 Chat template · renders later system messages in place, generation prompt 5-7 tokens
+00:18:22 Weights loaded in 3.59 s.
+00:18:22 Kernel policy for GPU family 9 with 40 cores.
+00:18:39 Ready · incoai/Qwen3.8-27B-Splash · context 256K · http://127.0.0.1:8011
+00:19:17 Done · input 62 · cached 0 · output 57 · TTFT 0.6s · 75.2 tok/s
+00:19:33 Done · input 22 · cached 0 · output 36 · TTFT 0.3s · 70.0 tok/s
+00:19:39 Done · input 62 · cached 32 · output 102 · TTFT 0.3s · 63.3 tok/s
+00:20:03 Done · input 35 · cached 0 · output 400 · TTFT 0.5s · 41.7 tok/s
+00:20:32 Error · invalid_request_error · POST /v1/chat/completions
+00:20:32 Refused · Origin tauri://localhost · restart with --allowed-origin tauri://localhost to accept it
+00:21:05 Error · not_found · GET /v1/nope
+00:21:05 Error · model_not_found · POST /v1/chat/completions
+00:21:05 Error · invalid_request_error · POST /v1/chat/completions
+00:21:05 Error · context_length_exceeded · POST /v1/chat/completions
+00:21:06 Error · invalid_request_error · POST /v1/chat/completions
+00:21:06 Error · invalid_request_error · POST /v1/chat/completions
+00:21:06 Error · invalid_request_error · POST /v1/chat/completions
+00:21:06 Error · invalid_request_error · POST /v1/chat/completions
+00:21:06 Error · invalid_request_error · POST /v1/chat/completions
+00:21:06 Error · invalid_request_error · POST /v1/chat/completions
+00:21:06 Error · invalid_request_error · POST /v1/chat/completions
+00:21:06 Error · invalid_request_error · POST /v1/chat/completions
+00:21:13 Cancelled · input 27 · cached 0 · output 168 · TTFT 0.3s · 128.9 tok/s
+00:21:29 Done · input 325 · cached 0 · output 74 · tools 1·fc9a94dc · TTFT 1.9s · 72.3 tok/s
+00:21:30 Done · input 15 · cached 0 · output 7 · TTFT 0.3s · 33.7 tok/s
+00:21:31 Done · input 43 · cached 0 · output 34 · TTFT 0.6s · 93.4 tok/s
+00:21:31 Done · input 55 · cached 32 · output 25 · TTFT 0.3s · 92.7 tok/s
+00:21:32 Done · input 26 · cached 0 · output 22 · TTFT 0.3s · 125.9 tok/s
+00:21:45 Done · input 48 · cached 32 · output 256 · TTFT 0.3s · 57.7 tok/s
+00:21:49 Done · input 61 · cached 32 · output 256 · TTFT 0.3s · 61.0 tok/s
+00:21:50 Done · input 5 · cached 0 · output 8 · TTFT 0.3s · 33.8 tok/s
+00:22:04 Done · input 87 · cached 0 · output 2 · TTFT 1.3s
+00:22:04 Error · invalid_request_error · POST /v1/chat/completions
+00:23:27 Done · input 13,116 · cached 0 · output 4 · TTFT 71.6s
+00:24:21 Done · input 24 · cached 0 · output 350 · TTFT 0.4s · 8.8 tok/s
+00:24:21 Done · input 17 · cached 0 · output 3 · TTFT 38.5s
+00:24:21 Done · input 24 · cached 0 · output 350 · TTFT 1.3s · 8.9 tok/s
+00:24:22 Done · input 24 · cached 0 · output 350 · TTFT 1.3s · 8.9 tok/s
+00:24:22 Done · input 24 · cached 0 · output 350 · TTFT 2.0s · 9.0 tok/s
+00:24:31 Stopping · releasing engine resources

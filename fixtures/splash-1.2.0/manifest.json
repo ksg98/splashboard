@@ -1,0 +1,785 @@
+{
+  "splash_version": "1.2.0",
+  "status_schema_version": 6,
+  "captured": "2026-10-04",
+  "machine": "MacBook Pro M3 Max, 40-core GPU, 64 GB, macOS 26.6.2",
+  "model": "incoai/Qwen3.8-27B-Splash (legacy Splash package, vision on, context 262144)",
+  "note": "Throughput numbers were measured while the machine ran other work; do not treat them as benchmarks.",
+  "sessions": {
+    "main": {
+      "argv": [
+        "splash",
+        "serve",
+        "--model",
+        "incoai/Qwen3.8-27B-Splash",
+        "--port",
+        "8011",
+        "--offline"
+      ],
+      "env": {},
+      "log": "serve.log"
+    },
+    "cors_apikey": {
+      "argv": [
+        "splash",
+        "serve",
+        "--model",
+        "incoai/Qwen3.8-27B-Splash",
+        "--port",
+        "8011",
+        "--offline",
+        "--allowed-origin",
+        "tauri://localhost",
+        "--allowed-origin",
+        "http://localhost:1420"
+      ],
+      "env": {
+        "SPLASH_API_KEY": "splashboard-test-key"
+      },
+      "log": "serve_cors_apikey.log"
+    },
+    "idle_release": {
+      "argv": [
+        "splash",
+        "serve",
+        "--model",
+        "incoai/Qwen3.8-27B-Splash",
+        "--port",
+        "8011",
+        "--offline"
+      ],
+      "env": {},
+      "log": "serve_idle_release.log"
+    }
+  },
+  "capture_scripts_note": "capture/*.py document how these fixtures were produced; their path constants (scratchpad and fixture dirs) must be edited before re-running.",
+  "files": {
+    "apply_template.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/apply-template",
+      "request_body": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Hello"
+          }
+        ],
+        "reasoning_effort": "low"
+      },
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "chat_nonstream.headers.txt": {
+      "session": "main",
+      "kind": "headers",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_nonstream.json",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "chat_nonstream.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_nonstream.json",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "chat_nonstream_effort_low.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Say hi."
+          }
+        ],
+        "reasoning_effort": "low",
+        "max_tokens": 256
+      },
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "chat_nonstream_enable_thinking_false.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Say hi."
+          }
+        ],
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "max_tokens": 32
+      },
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "chat_nonstream_image.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_image.json",
+      "http_status": 200,
+      "note": "64x64 red PNG data URL",
+      "provenance": "observed"
+    },
+    "chat_nonstream_json_schema.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Give me a JSON object with name and age for a fictional person."
+          }
+        ],
+        "reasoning_effort": "none",
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "person",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "age": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "name",
+                "age"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "max_tokens": 128
+      },
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "chat_stream_after_idle.timeline.jsonl": {
+      "session": "idle_release",
+      "kind": "sse-timeline",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_stream_after_idle.json",
+      "http_status": 200,
+      "note": "first request after release; includes restore wait",
+      "provenance": "observed"
+    },
+    "chat_stream_cancelled.sse": {
+      "session": "main",
+      "kind": "sse",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Count from 1 to 500, one number per line."
+          }
+        ],
+        "stream": true,
+        "reasoning_effort": "none",
+        "max_tokens": 2000
+      },
+      "http_status": 200,
+      "note": "client closed the connection after 1.5 s; truncated, no [DONE]",
+      "provenance": "observed"
+    },
+    "chat_stream_long.timeline.jsonl": {
+      "session": "main",
+      "kind": "sse-timeline",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_stream_long.json",
+      "http_status": 200,
+      "note": "first line = status+headers; then {t_ms, line} per SSE line",
+      "provenance": "observed"
+    },
+    "chat_stream_long_prompt.timeline.jsonl": {
+      "session": "main",
+      "kind": "sse-timeline",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_stream_long_prompt.json",
+      "http_status": 200,
+      "note": "13,116-token prompt, return_progress",
+      "provenance": "observed"
+    },
+    "chat_stream_no_thinking.headers.txt": {
+      "session": "main",
+      "kind": "headers",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_stream_no_thinking.json",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "chat_stream_no_thinking.sse": {
+      "session": "main",
+      "kind": "sse",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_stream_no_thinking.json",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "chat_stream_queued.timeline.jsonl": {
+      "session": "main",
+      "kind": "sse-timeline",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_stream_queued.json",
+      "http_status": 200,
+      "note": "sent while 4 other 350-token requests occupied every lane",
+      "provenance": "observed"
+    },
+    "chat_stream_thinking.headers.txt": {
+      "session": "main",
+      "kind": "headers",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_stream_thinking.json",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "chat_stream_thinking.sse": {
+      "session": "main",
+      "kind": "sse",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_stream_thinking.json",
+      "http_status": 200,
+      "note": "default effort",
+      "provenance": "observed"
+    },
+    "chat_stream_tools.sse": {
+      "session": "main",
+      "kind": "sse",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_chat_tools_stream.json",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "completions_nonstream.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/completions",
+      "request_body": {
+        "model": "incoai/Qwen3.8-27B-Splash",
+        "prompt": "The capital of France is",
+        "max_tokens": 8,
+        "temperature": 0
+      },
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "cors_preflight_allowed.headers.txt": {
+      "session": "cors_apikey",
+      "kind": "headers",
+      "method": "OPTIONS",
+      "path": "/v1/chat/completions",
+      "http_status": 204,
+      "note": "Origin: tauri://localhost; Access-Control-Request-Headers: authorization,content-type",
+      "provenance": "observed"
+    },
+    "cors_status_allowed.headers.txt": {
+      "session": "cors_apikey",
+      "kind": "headers",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 200,
+      "note": "Origin: tauri://localhost + Bearer key",
+      "provenance": "observed"
+    },
+    "cors_stream_allowed.headers.txt": {
+      "session": "cors_apikey",
+      "kind": "headers",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Say OK."
+          }
+        ],
+        "reasoning_effort": "none",
+        "max_tokens": 8,
+        "stream": true
+      },
+      "http_status": 200,
+      "note": "Origin: tauri://localhost + Bearer key",
+      "provenance": "observed"
+    },
+    "error_400.headers.txt": {
+      "session": "main",
+      "kind": "headers",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_error_400.json",
+      "http_status": 400,
+      "provenance": "observed"
+    },
+    "error_400.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_error_400.json",
+      "http_status": 400,
+      "note": "temperature 5",
+      "provenance": "observed"
+    },
+    "error_401.json": {
+      "session": "cors_apikey",
+      "kind": "json",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 401,
+      "note": "no Authorization header",
+      "provenance": "observed"
+    },
+    "error_404.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/v1/nope",
+      "http_status": 404,
+      "provenance": "observed"
+    },
+    "error_context_length.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "hi"
+          }
+        ],
+        "max_tokens": 300000
+      },
+      "http_status": 400,
+      "provenance": "observed"
+    },
+    "error_model_not_found.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body": {
+        "model": "nope/model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "hi"
+          }
+        ]
+      },
+      "http_status": 404,
+      "provenance": "observed"
+    },
+    "error_reasoning_effort.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "hi"
+          }
+        ],
+        "reasoning_effort": "turbo",
+        "max_tokens": 8
+      },
+      "http_status": 400,
+      "provenance": "observed"
+    },
+    "health.headers.txt": {
+      "session": "main",
+      "kind": "headers",
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "health.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "health_idle_released.json": {
+      "session": "idle_release",
+      "kind": "json",
+      "method": "GET",
+      "path": "/health",
+      "http_status": 200,
+      "note": "after 'Weights released' log line",
+      "provenance": "observed"
+    },
+    "host_forbidden.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/health",
+      "http_status": 403,
+      "note": "header Host: mymac.local",
+      "provenance": "observed"
+    },
+    "idle_release_trace.jsonl": {
+      "session": "idle_release",
+      "kind": "probe-log",
+      "method": "GET",
+      "path": "/ready,/status",
+      "note": "polls every 5 s while idle, then every 0.25 s during restore",
+      "provenance": "observed"
+    },
+    "messages_stream.sse": {
+      "session": "main",
+      "kind": "sse",
+      "method": "POST",
+      "path": "/v1/messages",
+      "request_body": {
+        "model": "incoai/Qwen3.8-27B-Splash",
+        "max_tokens": 256,
+        "messages": [
+          {
+            "role": "user",
+            "content": "In five words, what is the sky?"
+          }
+        ],
+        "thinking": {
+          "type": "enabled",
+          "budget_tokens": 1024
+        },
+        "stream": true
+      },
+      "http_status": 200,
+      "note": "stop_reason max_tokens",
+      "provenance": "observed"
+    },
+    "metrics.headers.txt": {
+      "session": "main",
+      "kind": "headers",
+      "method": "GET",
+      "path": "/metrics",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "metrics.txt": {
+      "session": "main",
+      "kind": "prometheus",
+      "method": "GET",
+      "path": "/metrics",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "metrics_idle_released.txt": {
+      "session": "idle_release",
+      "kind": "prometheus",
+      "method": "GET",
+      "path": "/metrics",
+      "http_status": 200,
+      "note": "after release",
+      "provenance": "observed"
+    },
+    "model_get.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/v1/models/incoai/Qwen3.8-27B-Splash",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "models.headers.txt": {
+      "session": "main",
+      "kind": "headers",
+      "method": "GET",
+      "path": "/v1/models",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "models.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/v1/models",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "origin_forbidden.headers.txt": {
+      "session": "main",
+      "kind": "headers",
+      "method": "GET",
+      "path": "/health",
+      "http_status": 403,
+      "note": "header Origin: tauri://localhost",
+      "provenance": "observed"
+    },
+    "origin_forbidden.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/health",
+      "http_status": 403,
+      "note": "header Origin: tauri://localhost",
+      "provenance": "observed"
+    },
+    "origin_forbidden_chat.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "request_body_file": "req_error_400.json",
+      "http_status": 403,
+      "note": "header Origin: tauri://localhost",
+      "provenance": "observed"
+    },
+    "origin_preflight_forbidden.headers.txt": {
+      "session": "main",
+      "kind": "headers",
+      "method": "OPTIONS",
+      "path": "/v1/chat/completions",
+      "http_status": 403,
+      "provenance": "observed"
+    },
+    "origin_preflight_forbidden.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "OPTIONS",
+      "path": "/v1/chat/completions",
+      "http_status": 403,
+      "note": "Origin: tauri://localhost, Access-Control-Request-Method: POST",
+      "provenance": "observed"
+    },
+    "ready.headers.txt": {
+      "session": "main",
+      "kind": "headers",
+      "method": "GET",
+      "path": "/ready",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "ready.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/ready",
+      "http_status": 200,
+      "provenance": "observed"
+    },
+    "ready_idle_released.json": {
+      "session": "idle_release",
+      "kind": "json",
+      "method": "GET",
+      "path": "/ready",
+      "http_status": 200,
+      "note": "after 'Weights released' log line",
+      "provenance": "observed"
+    },
+    "req_chat_image.json": {
+      "kind": "request-body"
+    },
+    "req_chat_nonstream.json": {
+      "kind": "request-body"
+    },
+    "req_chat_stream_after_idle.json": {
+      "kind": "request-body"
+    },
+    "req_chat_stream_long.json": {
+      "kind": "request-body"
+    },
+    "req_chat_stream_long_prompt.json": {
+      "kind": "request-body"
+    },
+    "req_chat_stream_no_thinking.json": {
+      "kind": "request-body"
+    },
+    "req_chat_stream_queued.json": {
+      "kind": "request-body"
+    },
+    "req_chat_stream_thinking.json": {
+      "kind": "request-body"
+    },
+    "req_chat_tools_stream.json": {
+      "kind": "request-body"
+    },
+    "req_error_400.json": {
+      "kind": "request-body"
+    },
+    "responses_stream.sse": {
+      "session": "main",
+      "kind": "sse",
+      "method": "POST",
+      "path": "/v1/responses",
+      "request_body": {
+        "model": "incoai/Qwen3.8-27B-Splash",
+        "input": "In five words, what is Splash?",
+        "reasoning": {
+          "effort": "low"
+        },
+        "max_output_tokens": 256,
+        "stream": true
+      },
+      "http_status": 200,
+      "note": "ends response.incomplete (budget spent in reasoning)",
+      "provenance": "observed"
+    },
+    "serve.log": {
+      "session": "main",
+      "kind": "log",
+      "note": "stdout+stderr of the main session, startup to Stopping",
+      "provenance": "observed"
+    },
+    "serve_cors_apikey.log": {
+      "session": "cors_apikey",
+      "kind": "log",
+      "note": "second session",
+      "provenance": "observed"
+    },
+    "serve_idle_release.log": {
+      "session": "idle_release",
+      "kind": "log",
+      "note": "third session: idle weight release/restore",
+      "provenance": "observed"
+    },
+    "serve_port_in_use.log": {
+      "session": "cors_apikey",
+      "kind": "log",
+      "note": "a second `splash serve --port 8011` while cors_apikey ran: launcher refusal, exit 1",
+      "provenance": "observed"
+    },
+    "startup_probe.jsonl": {
+      "session": "main",
+      "kind": "probe-log",
+      "method": "GET",
+      "path": "/health,/ready,/status",
+      "note": "poller during startup: t (seconds since the poller started; splash serve was spawned at t~3), path, code (null = network error: refused, then connect timeouts), body",
+      "provenance": "observed"
+    },
+    "status_after.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 200,
+      "note": "after all main-session chat captures",
+      "provenance": "observed"
+    },
+    "status_after_cancel.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 200,
+      "note": "1 s after chat_stream_cancelled",
+      "provenance": "observed"
+    },
+    "status_after_restore.json": {
+      "session": "idle_release",
+      "kind": "json",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 200,
+      "note": "2 s after that request finished",
+      "provenance": "observed"
+    },
+    "status_busy.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 200,
+      "note": "2.013 s into req_chat_stream_long.json (single lane decoding)",
+      "provenance": "observed"
+    },
+    "status_busy_2.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 200,
+      "note": "1.006 s after status_busy.json",
+      "provenance": "observed"
+    },
+    "status_idle.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 200,
+      "note": "right after Ready, before any request",
+      "provenance": "observed"
+    },
+    "status_idle_released.json": {
+      "session": "idle_release",
+      "kind": "json",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 200,
+      "note": "after 'Weights released' log line",
+      "provenance": "observed"
+    },
+    "status_restore_start.json": {
+      "session": "idle_release",
+      "kind": "json",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 200,
+      "note": "taken 4 ms after sending the post-idle request, before it was queued: still the released state; mid-restore values are in idle_release_trace.jsonl",
+      "provenance": "observed"
+    },
+    "status_saturated.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "GET",
+      "path": "/status",
+      "http_status": 200,
+      "note": "4 lanes decoding + 1 request waiting for concurrency",
+      "provenance": "observed"
+    },
+    "tokenize.json": {
+      "session": "main",
+      "kind": "json",
+      "method": "POST",
+      "path": "/tokenize",
+      "request_body": {
+        "content": "Hello world"
+      },
+      "http_status": 200,
+      "provenance": "observed"
+    }
+  },
+  "expected_but_absent": []
+}

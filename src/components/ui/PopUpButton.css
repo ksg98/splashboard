@@ -1,0 +1,98 @@
+/*
+ * Pop-up buttons.
+ * filled: the macOS pop-up in forms, value and up-down chevrons on a 5% fill.
+ * plain:  the ChatGPT pill (composer thinking level), text with a chevron,
+ *         a light fill on hover and while its menu is open.
+ */
+
+.sb-popup {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  max-width: 280px;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  font: inherit;
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+  white-space: nowrap;
+  color: var(--text-primary);
+  background: transparent;
+  cursor: default;
+  -webkit-user-select: none;
+  user-select: none;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.sb-popup:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.sb-popup:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.sb-popup__value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sb-popup__icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+.sb-popup__icon > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sb-popup__chevron {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  color: var(--text-secondary);
+}
+
+/* filled */
+.sb-popup--filled {
+  height: 24px;
+  padding: 0 6px 0 10px;
+  border-radius: var(--radius-xs);
+  background: var(--fill-control);
+}
+.sb-popup--filled.sb-popup--md {
+  height: var(--control-height);
+  padding: 0 8px 0 12px;
+}
+.sb-popup--filled:hover,
+.sb-popup--filled[data-state='open'] {
+  background: var(--fill-control-hover);
+}
+
+/* plain */
+.sb-popup--plain {
+  height: 36px;
+  padding: 0 12px 0 10px;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+}
+.sb-popup--plain.sb-popup--sm {
+  height: var(--control-height);
+  padding: 0 10px 0 8px;
+}
+.sb-popup--plain:not(:has(.sb-popup__icon)) {
+  padding-left: 12px;
+}
+.sb-popup--plain:hover,
+.sb-popup--plain[data-state='open'] {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}

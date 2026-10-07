@@ -1,0 +1,146 @@
+/*
+ * Global stylesheet: Tailwind (utilities only, themed by tokens.css) plus the
+ * structural base. Feature code styles itself with utilities or a component
+ * CSS file next to the component; it does not add global CSS.
+ */
+@import 'tailwindcss';
+@import './tokens.css';
+/* Element defaults sit in the base layer, so utilities and component classes win over them. */
+@import './base.css' layer(base);
+
+/* `dark:` follows the app theme attribute, not only the OS setting. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/*
+ * Map Tailwind's theme onto the tokens. The default palette, radii, fonts,
+ * type scale, shadows and easings are cleared, so only token-backed
+ * utilities exist.
+ *
+ * Careful: Tailwind's `--text-*` namespace is FONT SIZE, while tokens.css uses
+ * --text-primary / --text-secondary / ... for text COLOURS. Text colours are
+ * mapped as `fg-*` below (text-fg, text-fg-secondary, ...), never as --text-*.
+ *
+ * Some names below are identical on both sides (--radius-sm: var(--radius-sm)).
+ * `inline` makes the utilities read the token directly, and the unlayered
+ * tokens.css wins the cascade over anything Tailwind emits in @layer theme.
+ *
+ * Utilities (Minimal names):
+ *   bg-window bg-sidebar bg-elevated bg-composer bg-sheet bg-group bg-bubble
+ *   bg-code bg-terminal bg-hover bg-selected bg-control bg-control-hover
+ *   bg-segment bg-track bg-switch-off bg-meter bg-tile bg-primary
+ *   bg-primary-hover bg-scrim
+ *   text-fg text-fg-secondary text-fg-tertiary text-on-primary text-destructive
+ *   text-terminal text-terminal-dim text-accent
+ *   border-hairline border-hairline-strong   outline-focus
+ *   bg-ok bg-warn bg-error bg-off  (status dots only)
+ *   rounded-xs/sm/md/lg/xl/bubble/composer/pill
+ *   text-2xs/xs/sm/md/lg/body/title-3/title-2/title-1
+ *   font-ui font-sans font-mono   shadow-popover/composer/sheet/knob/segment
+ *   ease-out ease-in-out
+ * Scaffold names (bg-bg, bg-surface, text-fg-muted, ...) still work.
+ */
+@theme inline {
+  --color-*: initial;
+  /* Surfaces */
+  --color-window: var(--bg-window);
+  --color-sidebar: var(--bg-sidebar);
+  --color-elevated: var(--bg-elevated);
+  --color-composer: var(--bg-composer);
+  --color-sheet: var(--bg-sheet);
+  --color-group: var(--bg-group);
+  --color-bubble: var(--bg-bubble);
+  --color-code: var(--bg-code);
+  --color-terminal: var(--bg-terminal);
+  --color-scrim: var(--scrim);
+  /* Fills */
+  --color-hover: var(--fill-hover);
+  --color-selected: var(--fill-selected);
+  --color-control: var(--fill-control);
+  --color-control-hover: var(--fill-control-hover);
+  --color-segment: var(--fill-segment);
+  --color-track: var(--fill-track);
+  --color-switch-off: var(--fill-switch-off);
+  --color-meter: var(--fill-meter);
+  --color-tile: var(--fill-tile);
+  --color-primary: var(--primary-bg);
+  --color-primary-hover: var(--primary-bg-hover);
+  --color-on-primary: var(--primary-fg);
+  /* Text */
+  --color-fg: var(--text-primary);
+  --color-fg-secondary: var(--text-secondary);
+  --color-fg-tertiary: var(--text-tertiary);
+  --color-destructive: var(--text-destructive);
+  --color-terminal-fg: var(--text-terminal);
+  --color-terminal-dim: var(--text-terminal-dim);
+  /* Lines */
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-baseline: var(--chart-baseline);
+  /* Accent and status */
+  --color-accent: var(--accent);
+  --color-focus: var(--focus-ring);
+  --color-ok: var(--status-ok);
+  --color-warn: var(--status-warn);
+  --color-error: var(--status-error);
+  --color-off: var(--status-off);
+  /* Scaffold names */
+  --color-bg: var(--sb-bg);
+  --color-surface: var(--sb-surface);
+  --color-surface-raised: var(--sb-surface-raised);
+  --color-surface-sunken: var(--sb-surface-sunken);
+  --color-border: var(--sb-border);
+  --color-border-strong: var(--sb-border-strong);
+  --color-fg-muted: var(--sb-fg-muted);
+  --color-fg-subtle: var(--sb-fg-subtle);
+  --color-accent-fg: var(--sb-accent-fg);
+  --color-success: var(--sb-success);
+  --color-warning: var(--sb-warning);
+  --color-danger: var(--sb-danger);
+  --color-info: var(--sb-info);
+  --color-chart-1: var(--sb-chart-1);
+  --color-chart-2: var(--sb-chart-2);
+  --color-chart-3: var(--sb-chart-3);
+  --color-chart-4: var(--sb-chart-4);
+
+  --radius-*: initial;
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-bubble: var(--radius-bubble);
+  --radius-composer: var(--radius-composer);
+  --radius-pill: var(--radius-pill);
+  --radius-full: var(--radius-pill);
+
+  --font-*: initial;
+  --font-ui: var(--font-ui);
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-mono);
+
+  --text-*: initial;
+  --text-2xs: var(--text-2xs);
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-md: var(--text-md);
+  --text-lg: var(--text-lg);
+  --text-body: var(--text-body);
+  --text-title-3: var(--text-title-3);
+  --text-title-2: var(--text-title-2);
+  --text-title-1: var(--text-title-1);
+  /* Scaffold sizes */
+  --text-xl: var(--sb-text-xl);
+  --text-2xl: var(--sb-text-2xl);
+
+  --shadow-*: initial;
+  --shadow-popover: var(--shadow-popover);
+  --shadow-composer: var(--shadow-composer);
+  --shadow-sheet: var(--shadow-sheet);
+  --shadow-knob: var(--shadow-knob);
+  --shadow-segment: var(--shadow-segment);
+
+  --ease-*: initial;
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+}

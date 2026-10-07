@@ -1,0 +1,131 @@
+{
+  "formulae": [
+    {
+      "name": "splash",
+      "full_name": "incoai/tap/splash",
+      "tap": "incoai/tap",
+      "oldnames": [],
+      "aliases": [],
+      "versioned_formulae": [],
+      "desc": "Local inference engine for Apple silicon, built around the model",
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/incoai/splash",
+      "versions": {
+        "stable": "1.2.0",
+        "head": null,
+        "bottle": true
+      },
+      "urls": {
+        "stable": {
+          "url": "https://github.com/incoai/splash/releases/download/1.2.0/splash-1.2.0-arm64-macos26.tar.gz",
+          "tag": null,
+          "revision": null,
+          "using": null,
+          "checksum": "b774e28ee1fb5f3526bf65f6a17cfc08b97ff90308eebe3ed00eedb652f85234"
+        }
+      },
+      "patches": [],
+      "revision": 0,
+      "version_scheme": 0,
+      "compatibility_version": null,
+      "autobump": true,
+      "no_autobump_message": null,
+      "skip_livecheck": false,
+      "bottle": {
+        "stable": {
+          "rebuild": 0,
+          "root_url": "https://github.com/incoai/splash/releases/download/1.2.0",
+          "files": {
+            "arm64_tahoe": {
+              "cellar": ":any",
+              "url": "https://github.com/incoai/splash/releases/download/1.2.0/splash-1.2.0.arm64_tahoe.bottle.tar.gz",
+              "sha256": "2d8ca74e4c558a77cbd4dc81a8003fd4dbb0eff1494c895dcdfadb34e5296a83"
+            }
+          }
+        }
+      },
+      "pour_bottle_only_if": null,
+      "keg_only": false,
+      "keg_only_reason": null,
+      "options": [],
+      "build_dependencies": [],
+      "dependencies": [],
+      "test_dependencies": [],
+      "recommended_dependencies": [],
+      "optional_dependencies": [],
+      "uses_from_macos": [],
+      "uses_from_macos_bounds": [],
+      "requirements": [
+        {
+          "name": "arch",
+          "cask": null,
+          "download": null,
+          "version": "arm64",
+          "contexts": [],
+          "specs": [
+            "stable"
+          ]
+        },
+        {
+          "name": "macos",
+          "cask": null,
+          "download": null,
+          "version": "26",
+          "contexts": [],
+          "specs": [
+            "stable"
+          ]
+        },
+        {
+          "name": "splashmacos",
+          "cask": null,
+          "download": null,
+          "version": null,
+          "contexts": [],
+          "specs": [
+            "stable"
+          ]
+        }
+      ],
+      "conflicts_with": [],
+      "conflicts_with_reasons": [],
+      "link_overwrite": [],
+      "caveats": "Serve a model:\n  splash serve --model mlx-community/Qwen3.8-27B-4bit\n",
+      "installed": [
+        {
+          "version": "1.2.0",
+          "used_options": [],
+          "built_as_bottle": true,
+          "poured_from_bottle": true,
+          "time": 1791098110,
+          "runtime_dependencies": [],
+          "installed_on_request": true
+        }
+      ],
+      "linked_keg": "1.2.0",
+      "pinned": false,
+      "outdated": false,
+      "deprecated": false,
+      "deprecation_date": null,
+      "deprecation_reason": null,
+      "deprecation_replacement_formula": null,
+      "deprecation_replacement_cask": null,
+      "deprecate_args": null,
+      "disabled": false,
+      "disable_date": null,
+      "disable_reason": null,
+      "disable_replacement_formula": null,
+      "disable_replacement_cask": null,
+      "disable_args": null,
+      "post_install_steps": [],
+      "post_install_defined": false,
+      "service": null,
+      "tap_git_head": "e1cccbdd23b76ed6cb6beb2e07302ef810d02dde",
+      "ruby_source_path": "Formula/splash.rb",
+      "ruby_source_checksum": {
+        "sha256": "a6c4d2cb29e95548eb559ed96b35f8a2af1563b631fd5834d294b2ad7be41985"
+      }
+    }
+  ],
+  "casks": []
+}

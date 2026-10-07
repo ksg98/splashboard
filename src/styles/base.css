@@ -1,0 +1,104 @@
+/*
+ * Structural base: page sizing, the system font, focus rings and the few
+ * element defaults every screen shares. Layout only; anything visual reads a
+ * token from tokens.css.
+ */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-window);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+  -webkit-font-smoothing: antialiased;
+  /* Desktop app: chrome text is not selectable unless a view opts in. */
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* Text the user may copy (messages, logs, code) opts back in. */
+[data-selectable],
+[data-selectable] *,
+.selectable,
+.selectable *,
+input,
+textarea,
+pre,
+code {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* macOS controls use the arrow cursor, not the pointing hand. */
+button,
+[role='button'],
+summary {
+  cursor: default;
+}
+
+input,
+textarea {
+  caret-color: var(--accent);
+}
+
+kbd {
+  font-family: var(--font-ui);
+}
+
+/* Live numbers. */
+.num,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Keyboard focus: a 2 px accent ring with a 2 px offset, never on mouse click. */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Visually hidden, still read by VoiceOver. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Full-window routes without the shell (onboarding). */
+.sb-bare {
+  height: 100%;
+  overflow: auto;
+  padding-top: var(--toolbar-height);
+}
+
+/*
+ * Reduced motion: tokens.css drops every duration to 0. Components that loop
+ * (busy dot, spinner, shimmer, cursor) set `animation: none` themselves under
+ * the same query.
+ */

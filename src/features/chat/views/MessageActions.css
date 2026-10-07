@@ -1,0 +1,53 @@
+/* Message actions under an assistant reply (reference: .actions / .act / .turn-stats). */
+.ch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  min-height: 32px;
+  margin: -4px 0 0 -6px;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.ch-actions.is-persistent,
+.ch-actions:focus-within,
+.ch-ai:hover .ch-actions {
+  opacity: 1;
+}
+
+.ch-actions .ch-actions-copy {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+}
+
+.ch-actions button[aria-pressed='true'] {
+  color: var(--text-primary);
+  background: var(--fill-selected);
+}
+
+.ch-stats {
+  display: inline;
+  flex: 1 1 0;
+  min-width: 0;
+  margin-left: 10px;
+  font-size: var(--text-xs);
+  line-height: 18px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+}
+
+.ch-stats.is-shown {
+  opacity: 1;
+  transform: none;
+}
+
+.ch-stats-part {
+  white-space: nowrap;
+}

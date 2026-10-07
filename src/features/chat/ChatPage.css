@@ -1,0 +1,12 @@
+.sb-chat-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--bg-window);
+}
+
+.sb-chat-page__dock {
+  flex: none;
+  padding: 4px 24px 18px;
+}

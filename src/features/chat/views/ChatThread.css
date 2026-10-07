@@ -1,0 +1,91 @@
+/* Thread (reference: .thread, .thread-inner, .scroll-edge). */
+.ch-thread-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.ch-thread {
+  --ch-edge-top: 0px;
+  --ch-edge-bottom: 0px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  outline: none;
+  /* A mask only hides content near an edge; it adds no colour. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--ch-edge-top),
+    #000 calc(100% - var(--ch-edge-bottom)),
+    transparent calc(100% - var(--ch-edge-bottom) / 4)
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--ch-edge-top),
+    #000 calc(100% - var(--ch-edge-bottom)),
+    transparent calc(100% - var(--ch-edge-bottom) / 4)
+  );
+}
+
+.ch-thread.has-above {
+  --ch-edge-top: var(--scroll-edge, 16px);
+}
+
+.ch-thread.has-below {
+  --ch-edge-bottom: var(--scroll-edge-bottom, 32px);
+}
+
+.ch-thread-inner {
+  max-width: calc(var(--chat-column, 760px) + 48px);
+  margin: 0 auto;
+  padding: 12px 24px 28px;
+}
+
+/* Jump to latest: a small floating circle above the composer. */
+.ch-jump {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-popover);
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  pointer-events: none;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.ch-jump.is-shown {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+.ch-jump:hover {
+  background: var(--bg-composer);
+}
+
+.ch-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

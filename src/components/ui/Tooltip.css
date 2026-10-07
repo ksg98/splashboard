@@ -1,0 +1,25 @@
+/*
+ * Tooltip: a small macOS-style help tag on the raised surface. The label in
+ * primary text, the shortcut after it in secondary text ("Activity  ⌘2").
+ */
+
+.sb-tooltip.sb-floating {
+  z-index: 70;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  max-width: 280px;
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  font-size: var(--text-xs);
+  line-height: 16px;
+  pointer-events: none;
+}
+
+.sb-tooltip__shortcut {
+  font-family: var(--font-ui);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}

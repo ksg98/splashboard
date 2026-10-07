@@ -1,0 +1,2 @@
+error: Splash is already serving (PID 75278, model incoai/Qwen3.8-27B-Splash, port 8011); stop it with Ctrl+C first
+exit 1

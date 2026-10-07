@@ -1,0 +1,47 @@
+/* Static terminal text for previews (design/minimal-ref: .terminal .dim/.b/.box/.input). */
+
+.tt-dim {
+  color: var(--text-terminal-dim);
+}
+
+.tt-b {
+  font-weight: var(--weight-semibold);
+  color: var(--text-terminal);
+}
+
+/* Boxes add exactly one line (9 + 9 + 2 px), so the 20 px grid holds. */
+.tt-box {
+  display: inline-block;
+  vertical-align: top;
+  padding: 9px 14px 9px 12px;
+  border: 1px solid color-mix(in srgb, var(--text-terminal-dim) 32%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+.tt-input {
+  display: block;
+  padding: 9px 12px;
+  border: 1px solid color-mix(in srgb, var(--text-terminal-dim) 42%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+.tt-caret {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  vertical-align: -3px;
+  background: var(--text-terminal);
+  animation: tt-caret 1.2s steps(1) infinite;
+}
+
+@keyframes tt-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tt-caret {
+    animation: none;
+  }
+}

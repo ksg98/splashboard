@@ -1,0 +1,11 @@
+Splash model incoai/Qwen3.8-27B-Splash is already installed in /Users/you/Library/Application Support/Splash/models/incoai/Qwen3.8-27B-Splash
+00:27:17 Loading · incoai/Qwen3.8-27B-Splash
+00:27:18 Chat template · renders later system messages in place, generation prompt 5-7 tokens
+00:27:21 Weights loaded in 3.06 s.
+00:27:21 Kernel policy for GPU family 9 with 40 cores.
+00:27:35 Ready · incoai/Qwen3.8-27B-Splash · context 256K · http://127.0.0.1:8011
+00:27:36 Done · input 15 · cached 0 · output 2 · TTFT 0.3s
+Weights released after 600 s without a request; the next request restores them
+Weights restored in 3.07 s
+00:37:50 Done · input 18 · cached 0 · output 2 · TTFT 3.4s
+00:37:52 Stopping · releasing engine resources

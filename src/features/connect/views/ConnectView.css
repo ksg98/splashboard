@@ -1,0 +1,145 @@
+/* Connect page (design/minimal-ref: .page, .page-head, Connect group rows). */
+
+.cv-page {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  background: var(--bg-window);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+}
+
+/* Shares the 880 px page column with Activity and Models, so titles never jump. */
+.cv-inner {
+  box-sizing: border-box;
+  max-width: calc(var(--page-column) + var(--page-gutter) * 2);
+  margin: 0 auto;
+  padding: 4px var(--page-gutter) 64px;
+}
+
+@media (max-width: 1339px) {
+  .cv-inner {
+    --page-gutter: 32px;
+  }
+}
+
+.cv-head {
+  margin-bottom: 28px;
+}
+
+.cv-title {
+  margin: 0;
+  font-size: var(--text-title-1);
+  line-height: 34px;
+  font-weight: var(--weight-semibold);
+}
+
+/* One status line (18 px) in every state, so nothing below moves. */
+.cv-sub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 18px;
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+}
+
+/* Coding agents: an inset group of rows with a 32 px icon tile each. */
+.cv-agents {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--radius-md);
+  background: var(--bg-group);
+}
+
+.cv-agent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: var(--row-height);
+  padding: 8px 12px;
+}
+
+.cv-agent + .cv-agent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: var(--hairline);
+}
+
+.cv-agent-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.cv-agent-name {
+  color: var(--text-primary);
+}
+
+.cv-agent-desc {
+  margin-top: 1px;
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+.cv-agent-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: none;
+}
+
+.cv-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Keeps a spinner centred where the Open pill will appear. */
+.cv-slot {
+  display: inline-grid;
+  place-items: center;
+  width: 61px;
+  height: var(--control-height);
+}
+
+/* API rows: label on the left, the monospace value, then reveal and copy. */
+.cv-copy-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cv-mono {
+  margin-right: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* 28 px, like the copy buttons beside it, so API rows keep the 44 px row height. */
+.cv-reveal.sb-icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-xs);
+}
+
+.cv-inner > .ui-form-section.cv-api {
+  margin-top: 32px;
+}

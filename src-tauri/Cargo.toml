@@ -1,0 +1,49 @@
+[package]
+name = "splashboard"
+version = "0.1.0"
+description = "Splashboard: a desktop control room for the Splash local inference engine"
+authors = ["Splashboard contributors"]
+license = "Apache-2.0"
+edition = "2021"
+rust-version = "1.85"
+
+[lib]
+# The `_lib` suffix keeps the lib name distinct from the bin name
+# (see https://github.com/rust-lang/cargo/issues/8519).
+name = "splashboard_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+tauri-plugin-shell = "2"
+tauri-plugin-store = "2"
+tauri-plugin-log = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+# reqwest 0.13 renamed the `rustls-tls` feature to `rustls`. Splash is only ever
+# reached over plain HTTP on loopback; TLS is kept for future downloads.
+reqwest = { version = "0.13", default-features = false, features = ["json", "stream", "rustls"] }
+futures-util = "0.3"
+thiserror = "2"
+log = "0.4"
+nix = { version = "0.31", features = ["signal", "process", "fs"] }
+which = "8"
+dirs = "7"
+portable-pty = "0.9.0"
+sha2 = "0.10"
+
+# See https://tauri.app/concept/size/#cargo-configuration
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2-metal = { version = "0.3.2", default-features = false, features = ["std", "MTLDevice"] }

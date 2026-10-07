@@ -1,0 +1,15 @@
+/* One column, as in System Settings: each label sits next to its value. */
+.eng-detail-list {
+  padding-top: 28px;
+}
+
+/* Activity details are a little tighter than forms: 24px between groups. */
+.eng-detail-section + .eng-detail-section {
+  margin-top: 24px;
+}
+
+.eng-detail-value {
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

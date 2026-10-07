@@ -1,0 +1,134 @@
+/*
+ * Menu rows, shared by Menu, ContextMenu and PopUpButton. 13px items with an
+ * optional leading icon, a 12px secondary description, a right-aligned
+ * shortcut and a trailing checkmark, as in the ChatGPT model and thinking menus.
+ */
+
+.sb-menu {
+  max-height: min(
+    var(--radix-dropdown-menu-content-available-height, 100vh),
+    var(--radix-context-menu-content-available-height, 100vh),
+    560px
+  );
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sb-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 30px;
+  padding: 5px 10px;
+  border-radius: var(--radius-xs);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+  text-align: left;
+  outline: none;
+  cursor: default;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.sb-menu__item[data-highlighted] {
+  background: var(--fill-hover);
+}
+
+/* Keyboard focus also gets the ring, not only the light fill. */
+.sb-menu__item:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.sb-menu__item[data-disabled] {
+  color: var(--text-tertiary);
+}
+.sb-menu__item[data-disabled] .sb-menu__desc,
+.sb-menu__item[data-disabled] .sb-menu__shortcut {
+  color: var(--text-tertiary);
+}
+
+.sb-menu__item--destructive {
+  color: var(--text-destructive);
+}
+
+.sb-menu__icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+.sb-menu__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.sb-menu__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.sb-menu__label-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sb-menu__desc {
+  display: block;
+  margin-top: 1px;
+  font-size: var(--text-xs);
+  line-height: 16px;
+  color: var(--text-secondary);
+}
+
+.sb-menu__shortcut {
+  flex: none;
+  margin-left: 16px;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.sb-menu__check {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+.sb-menu__check svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
+.sb-menu__heading {
+  padding: 6px 10px 4px;
+  font-size: var(--text-xs);
+  line-height: 16px;
+  color: var(--text-secondary);
+}
+
+.sb-menu__separator {
+  height: 1px;
+  margin: 6px 10px;
+  background: var(--hairline);
+}
+
+.sb-menu__note {
+  padding: 4px 10px 6px;
+  font-size: var(--text-xs);
+  line-height: 16px;
+  color: var(--text-secondary);
+}
+
+.sb-menu__item + .sb-menu__note {
+  margin-top: 4px;
+}

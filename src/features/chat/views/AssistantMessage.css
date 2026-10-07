@@ -1,0 +1,169 @@
+/* Assistant turn (reference: .turn-ai, .thought, .thinking, .shimmer, .cursor). */
+.ch-ai {
+  margin: 0 0 32px;
+  color: var(--text-primary);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+/* The last turn in a thread needs no space under it. */
+.ch-thread-inner > :last-child > .ch-ai {
+  margin-bottom: 0;
+}
+
+/* "Thought for N seconds ›" and the live "Thinking…" label */
+.ch-thought {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  margin: 0 0 8px;
+  padding: 0 6px 0 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: none;
+  font: inherit;
+  font-size: var(--text-md);
+  line-height: 1;
+  color: var(--text-secondary);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+button.ch-thought:not(:disabled):hover {
+  color: var(--text-primary);
+}
+
+.ch-thought svg {
+  flex: none;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.ch-thought[aria-expanded='true'] svg {
+  transform: rotate(90deg);
+}
+
+.ch-thinking {
+  margin: 0 0 18px;
+  padding: 2px 0 2px 14px;
+  border-left: 2px solid var(--hairline-strong);
+  font-size: var(--text-md);
+  line-height: var(--leading-read);
+  color: var(--text-secondary);
+}
+
+.ch-ai.is-thinking .ch-thinking {
+  margin-bottom: 0;
+}
+
+.ch-thinking p {
+  margin: 0 0 8px;
+}
+
+.ch-thinking p:last-child {
+  margin: 0;
+}
+
+/* A soft highlight moving across secondary gray text. */
+.ch-shimmer {
+  color: var(--text-secondary);
+  background-image: linear-gradient(
+    90deg,
+    var(--text-secondary) 0%,
+    var(--text-secondary) 40%,
+    var(--text-primary) 50%,
+    var(--text-secondary) 60%,
+    var(--text-secondary) 100%
+  );
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: ch-shimmer var(--shimmer-period, 1.8s) linear infinite;
+}
+
+@keyframes ch-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* Caret shown before the first answer text arrives (Markdown draws it after that). */
+.ch-caret {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  vertical-align: 1px;
+  animation: ch-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes ch-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Keep list markers even where a CSS reset removes them (reference: disc bullets in gray). */
+.ch-answer ul:not(.contains-task-list) {
+  list-style: disc;
+}
+
+.ch-answer ol {
+  list-style: decimal;
+}
+
+.ch-ai-note {
+  margin: 8px 0 4px;
+  font-size: var(--text-sm);
+  line-height: 18px;
+  color: var(--text-secondary);
+}
+
+.ch-ai-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 0;
+  font-size: var(--text-sm);
+  line-height: 18px;
+  color: var(--text-secondary);
+}
+
+.ch-ai-error-text {
+  min-width: 0;
+}
+
+.ch-ai-error > button {
+  margin-left: 4px;
+  flex: none;
+}
+
+.ch-answer + .ch-ai-error,
+.ch-answer + .ch-ai-note {
+  margin-top: 4px;
+}
+
+.ch-ai .ch-actions {
+  margin-top: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-shimmer {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: currentColor;
+  }
+
+  .ch-caret {
+    animation: none;
+  }
+}

@@ -1,0 +1,31 @@
+/* Collapsed sidebar: the engine state at the toolbar's right end. */
+.eng-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  margin: 0;
+  padding: 0 12px 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: default;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.eng-chip:hover,
+.eng-chip[aria-expanded='true'] {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.eng-chip:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}

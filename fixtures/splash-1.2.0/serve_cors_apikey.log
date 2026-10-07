@@ -1,0 +1,9 @@
+Splash model incoai/Qwen3.8-27B-Splash is already installed in /Users/you/Library/Application Support/Splash/models/incoai/Qwen3.8-27B-Splash
+00:24:43 Loading · incoai/Qwen3.8-27B-Splash
+00:24:43 Chat template · renders later system messages in place, generation prompt 5-7 tokens
+00:24:47 Weights loaded in 3.08 s.
+00:24:47 Kernel policy for GPU family 9 with 40 cores.
+00:25:06 Ready · incoai/Qwen3.8-27B-Splash · context 256K · http://127.0.0.1:8011
+00:25:15 Refused · Origin http://localhost:3000 · restart with --allowed-origin http://localhost:3000 to accept it
+00:25:15 Done · input 15 · cached 0 · output 3 · TTFT 0.3s · 28.9 tok/s
+00:25:29 Stopping · releasing engine resources

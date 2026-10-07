@@ -1,0 +1,31 @@
+/* Gallery only: an empty window frame (260 px sidebar, 52 px toolbar). */
+.cdemo-window {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-window);
+}
+
+.cdemo-sidebar {
+  background: var(--bg-sidebar);
+}
+
+.cdemo-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.cdemo-toolbar {
+  flex: none;
+  height: var(--toolbar-height);
+}
+
+.cdemo-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}

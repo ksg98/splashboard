@@ -1,0 +1,51 @@
+/* Copy button (design/minimal-ref .copy-btn; .code-copy for the labelled form). */
+.sb-copy-button {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-xs);
+  color: var(--text-secondary);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.sb-copy-button.has-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  height: 26px;
+  padding: 0 8px;
+  font-size: var(--text-xs);
+}
+
+.sb-copy-button:hover:not(:disabled) {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.sb-copy-button[data-copied] {
+  color: var(--text-primary);
+}
+
+.sb-copy-button:disabled {
+  opacity: 0.4;
+}
+
+.sb-copy-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Announces "Copied" to VoiceOver; takes no space. */
+.sb-copy-button__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

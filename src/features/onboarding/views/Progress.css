@@ -1,0 +1,136 @@
+/*
+ * Progress in first-run sheets and the Start row (design/minimal-ref
+ * .progress-block, .meter, .log-box). Gray scale only, never the accent.
+ */
+
+.sb-fr-bar {
+  position: relative;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--fill-track);
+  overflow: hidden;
+}
+
+.sb-fr-bar[data-size='lg'] {
+  height: 6px;
+  border-radius: 3px;
+}
+
+.sb-fr-bar__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--fill-meter);
+  transition: width var(--dur-slow) var(--ease-out);
+}
+
+/* No measure yet: a short segment slides across the track. */
+.sb-fr-bar[data-indeterminate] .sb-fr-bar__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 32%;
+  transition: none;
+  animation: sb-fr-bar-slide 1.4s var(--ease-in-out) infinite;
+}
+
+@keyframes sb-fr-bar-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(320%);
+  }
+}
+
+.sb-fr-progress {
+  padding: 4px 0 8px;
+}
+
+.sb-fr-progress__line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.sb-fr-progress__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: var(--weight-medium);
+}
+
+.sb-fr-progress__value {
+  flex: none;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sb-fr-progress__foot {
+  margin: 8px 0 0;
+  min-height: 16px;
+  font-size: var(--text-xs);
+  line-height: 16px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Live log tail: monospaced, selectable, scrolls inside its box. */
+.sb-fr-log {
+  box-sizing: border-box;
+  margin: 10px 0 0;
+  padding: 12px 14px;
+  max-height: 220px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--radius-md);
+  background: var(--bg-group);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.sb-fr-log:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.sb-fr-log__empty {
+  color: var(--text-secondary);
+}
+
+.sb-fr-log-wrap {
+  position: relative;
+}
+
+/* Room for the corner button so it never covers a line. */
+.sb-fr-log-wrap[data-has-action] .sb-fr-log {
+  padding-right: 44px;
+}
+
+.sb-fr-log-action {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-fr-bar__fill {
+    transition: none;
+  }
+  /* No loop: the whole track fills faintly, which reads as "working". */
+  .sb-fr-bar[data-indeterminate] .sb-fr-bar__fill {
+    width: 100%;
+    animation: none;
+    opacity: 0.3;
+  }
+}

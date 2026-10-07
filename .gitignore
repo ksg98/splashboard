@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+dist-ssr/
+*.local
+
+# Tauri / Rust
+src-tauri/target/
+src-tauri/gen/schemas/
+
+# Tests and tooling
+coverage/
+playwright-report/
+test-results/
+blob-report/
+playwright/.cache/
+.vitest/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Editors and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.swp
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Splash fixtures keep their recorded server logs (the Rust tests read them)
+!fixtures/**/*.log
+
+# Agent and design-exploration leftovers (design/minimal-ref is the chosen design)
+.playwright-cli/
+design/*
+!design/minimal-ref/

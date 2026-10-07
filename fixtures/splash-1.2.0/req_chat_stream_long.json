@@ -1,0 +1,1 @@
+{"model":"incoai/Qwen3.8-27B-Splash","messages":[{"role":"user","content":"Write a detailed 600-word short story about a lighthouse keeper who discovers a message in a bottle."}],"stream":true,"stream_options":{"include_usage":true},"reasoning_effort":"none","max_tokens":400,"return_progress":true}

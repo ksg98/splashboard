@@ -1,0 +1,96 @@
+/*
+ * Floating surfaces: popovers, menus and pop-up menus share this look.
+ * Raised surface, 12px radius, the soft popover shadow (the only shadow
+ * besides the composer and sheets), and a short fade that rises 4px from
+ * 98% scale toward the trigger. No motion with reduced motion.
+ */
+
+.sb-floating {
+  --sb-float-dx: 0px;
+  --sb-float-dy: 4px;
+  z-index: 60;
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: calc(100vw - 16px);
+  padding: 6px;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-popover);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+/* The panel takes focus on open; the ring belongs to the items inside it. */
+.sb-floating:focus,
+.sb-floating:focus-visible {
+  outline: none;
+}
+
+/* Rise from the trigger's side. */
+.sb-floating[data-side='bottom'] {
+  --sb-float-dy: -4px;
+  transform-origin: top center;
+}
+.sb-floating[data-side='top'] {
+  --sb-float-dy: 4px;
+  transform-origin: bottom center;
+}
+.sb-floating[data-side='left'] {
+  --sb-float-dx: 4px;
+  --sb-float-dy: 0px;
+  transform-origin: center right;
+}
+.sb-floating[data-side='right'] {
+  --sb-float-dx: -4px;
+  --sb-float-dy: 0px;
+  transform-origin: center left;
+}
+
+.sb-floating[data-state='open'],
+.sb-floating[data-state='delayed-open'],
+.sb-floating[data-state='instant-open'] {
+  animation: sb-float-in var(--dur-base) var(--ease-out);
+}
+
+.sb-floating[data-state='closed'] {
+  animation: sb-float-out var(--dur-fast) var(--ease-out) forwards;
+}
+
+@keyframes sb-float-in {
+  from {
+    opacity: 0;
+    transform: translate(var(--sb-float-dx), var(--sb-float-dy)) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sb-float-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--sb-float-dx), var(--sb-float-dy)) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-floating[data-state] {
+    animation: none;
+  }
+}
+
+/* Popover body: content decides its own layout. */
+.sb-popover {
+  max-height: var(--radix-popover-content-available-height);
+  overflow-y: auto;
+}

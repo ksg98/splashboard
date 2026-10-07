@@ -1,0 +1,35 @@
+/* Title pop-up (reference: .title-popup). */
+.ch-title-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  height: 36px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-md, 10px);
+  background: none;
+  font: inherit;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold, 600);
+  line-height: 1;
+  color: var(--text-primary);
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.ch-title-picker:hover,
+.ch-title-picker[aria-expanded='true'],
+.ch-title-picker[data-state='open'] {
+  background: var(--fill-hover);
+}
+
+.ch-title-picker-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ch-title-picker svg {
+  flex: none;
+  color: var(--text-secondary);
+}

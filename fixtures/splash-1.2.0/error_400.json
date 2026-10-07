@@ -1,0 +1,1 @@
+{"error":{"message":"temperature must be a number in [0, 2]","type":"invalid_request_error","code":"invalid_request_error"}}

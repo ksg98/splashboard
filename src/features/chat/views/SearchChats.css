@@ -1,0 +1,193 @@
+/* Search chats overlay (⌘K). Field and empty state follow the reference's sidebar search. */
+.ch-search-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: var(--scrim);
+  animation: ch-search-fade var(--dur-slow) var(--ease-out);
+}
+
+.ch-search {
+  position: fixed;
+  top: 14vh;
+  left: 50%;
+  z-index: 71;
+  display: flex;
+  flex-direction: column;
+  width: min(600px, calc(100vw - 48px));
+  max-height: min(520px, 72vh);
+  overflow: hidden;
+  border-radius: var(--radius-xl, 16px);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-sheet);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  line-height: 18px;
+  transform: translateX(-50%);
+  animation: ch-search-rise var(--dur-slow) var(--ease-out);
+  outline: none;
+}
+
+.ch-search [cmdk-root] {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.ch-search-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 14px 0 16px;
+  border-bottom: 1px solid var(--hairline);
+  flex: none;
+}
+
+.ch-search-icon {
+  flex: none;
+  color: var(--text-secondary);
+}
+
+.ch-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: var(--text-lg, 15px);
+  color: var(--text-primary);
+  caret-color: var(--accent);
+  outline: none;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.ch-search-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.ch-search-input:focus-visible {
+  outline: none;
+}
+
+.ch-search-clear {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--fill-control-hover);
+  color: var(--text-secondary);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.ch-search-clear:hover {
+  background: var(--fill-track);
+  color: var(--text-primary);
+}
+
+.ch-search-list {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 8px 8px;
+}
+
+.ch-search-group [cmdk-group-heading] {
+  padding: 12px 10px 4px;
+  font-size: var(--text-xs);
+  line-height: 16px;
+  font-weight: var(--weight-medium, 500);
+  color: var(--text-secondary);
+}
+
+.ch-search-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 36px;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm, 8px);
+  color: var(--text-primary);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.ch-search-item[data-selected='true'] {
+  background: var(--fill-selected);
+}
+
+.ch-search-item-icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--text-secondary);
+}
+
+.ch-search-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ch-search-item-title,
+.ch-search-item-snippet {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ch-search-item-snippet {
+  font-size: var(--text-xs);
+  line-height: 16px;
+  color: var(--text-secondary);
+}
+
+.ch-search-item mark {
+  background: none;
+  color: inherit;
+  font-weight: var(--weight-semibold, 600);
+}
+
+.ch-search-item-snippet mark {
+  color: var(--text-primary);
+}
+
+.ch-search-empty {
+  padding: 16px 10px 12px;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.ch-search-empty strong {
+  display: block;
+  font-weight: var(--weight-medium, 500);
+  color: var(--text-primary);
+}
+
+@keyframes ch-search-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes ch-search-rise {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(0.985);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ch-search,
+  .ch-search-scrim {
+    animation: none;
+  }
+}

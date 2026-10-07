@@ -1,0 +1,56 @@
+/* Gallery only: a stand-in window so the views sit where the shell puts them. */
+.eng-gallery-window {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-window);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+}
+
+.eng-gallery-window.is-collapsed {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.eng-gallery-sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--bg-sidebar);
+}
+
+.eng-gallery-spacer {
+  flex: 1;
+}
+
+.eng-gallery-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.eng-gallery-toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 52px;
+  padding: 0 12px;
+}
+
+.eng-gallery-toolbar.is-collapsed {
+  padding-left: 84px;
+}
+
+.eng-gallery-flex {
+  flex: 1;
+}
+
+.eng-gallery-content {
+  flex: 1;
+  min-height: 0;
+}

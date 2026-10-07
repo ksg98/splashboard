@@ -1,0 +1,9 @@
+{
+ "tag_name": "1.2.0",
+ "name": "Splash 1.2.0",
+ "html_url": "https://github.com/incoai/splash/releases/tag/1.2.0",
+ "published_at": "2026-10-04T01:25:34Z",
+ "prerelease": false,
+ "draft": false,
+ "body": "Splash 1.2.0 adds persistent conversation caching, OpenAI text completions, more sampling controls, and broader GGUF compatibility. It also unifies Metal memory residency, replaces sparse KV mapping, improves concurrent serving and memory handling on 24 GB Macs, and removes the extra prepared-weight copy on disk.\n\n## Persistent conversation cache\n\n- Add `--persistent-cache` with `--max-cache-disk` to reuse durable conversation prefixes after a clean restart, a compatible upgrade, or a crash. `--cache-dir` selects the location; the default is `~/Library/Caches/Splash/prefix-cache`.\n- Persist re"
+}

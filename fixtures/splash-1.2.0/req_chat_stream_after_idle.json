@@ -1,0 +1,1 @@
+{"model": "incoai/Qwen3.8-27B-Splash", "messages": [{"role": "user", "content": "Say hello in one word."}], "stream": true, "stream_options": {"include_usage": true}, "return_progress": true, "reasoning_effort": "none", "max_tokens": 16}

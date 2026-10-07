@@ -1,0 +1,12 @@
+/* One icon-tile treatment app-wide: a light gray fill, no border, no shadow,
+   and a line glyph in the primary text colour (32 px / 8 px radius size). */
+.agent-tile {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--tile-sm, 32px);
+  height: var(--tile-sm, 32px);
+  border-radius: var(--tile-radius-sm, 8px);
+  background: var(--fill-tile);
+  color: var(--text-primary);
+}

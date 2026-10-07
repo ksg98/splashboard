@@ -1,0 +1,162 @@
+/*
+ * Engine popover content. The Popover supplies the raised surface and 6px
+ * padding; the content adds 8px on top (14px in all, as in the reference).
+ */
+.eng-pop {
+  padding-top: 8px;
+  font-size: 13px;
+  line-height: var(--leading-ui);
+  color: var(--text-primary);
+}
+
+.eng-pop-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.eng-pop-title {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eng-pop-state {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.eng-pop-sub {
+  padding: 2px 10px 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Three numbers in a quiet inset. */
+.eng-pop-stats {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: space-between;
+  gap: 8px;
+  margin: 14px 4px 12px;
+  padding: 12px 8px;
+  border-radius: 10px;
+  background: var(--bg-group);
+}
+
+.eng-pop-stat {
+  padding: 0 6px;
+}
+
+.eng-pop-num {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.eng-pop-num small {
+  margin-left: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.eng-pop-num small.is-tight {
+  margin-left: 0;
+}
+
+.eng-pop-cap {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Starting: the phase, its seconds and a thin gray progress line in place of the numbers. */
+.eng-pop-progress {
+  margin: 14px 4px 12px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--bg-group);
+}
+
+.eng-pop-progress-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.eng-pop-elapsed {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Stopped / failed: one line on what happens next, no numbers. */
+.eng-pop-note {
+  margin: 0;
+  padding: 12px 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.eng-pop-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 0 4px 6px;
+}
+
+.eng-pop-actions.is-single {
+  grid-template-columns: 1fr;
+}
+
+.eng-pop-sep {
+  height: 1px;
+  margin: 6px 10px;
+  background: var(--hairline);
+}
+
+/* The engine's pages, as menu items. */
+.eng-pop-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 30px;
+  margin: 0;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: default;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.eng-pop-item:hover {
+  background: var(--fill-hover);
+}
+
+.eng-pop-item:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.eng-pop-item-text {
+  flex: 1;
+  min-width: 0;
+}

@@ -1,0 +1,165 @@
+/*
+ * Activity. The page column is shared with Models and Connect (880px, 40px
+ * gutters, 32px below 1340px) so titles never jump between pages.
+ */
+
+.eng-page {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  background: var(--bg-window);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: var(--leading-ui);
+}
+
+/*
+ * Scroll edge: once scrolled, content fades out under the toolbar instead of
+ * being sliced. A mask reads only alpha, so any opaque token works as the stop.
+ */
+.eng-page.is-scrolled {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    var(--text-primary) var(--scroll-edge, 16px)
+  );
+  mask-image: linear-gradient(to bottom, transparent, var(--text-primary) var(--scroll-edge, 16px));
+}
+
+.eng-page-inner {
+  max-width: calc(var(--page-column, 880px) + var(--page-gutter, 40px) * 2);
+  margin: 0 auto;
+  padding: 4px var(--page-gutter, 40px) 64px;
+}
+
+@media (max-width: 1339px) {
+  .eng-page-inner {
+    padding-inline: 32px;
+  }
+}
+
+/* Large-title header: the actions sit on the title's 34px line (macOS). */
+.eng-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.eng-head-text {
+  min-width: 0;
+}
+
+.eng-title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 600;
+}
+
+/* One 18px status line in every state; the start progress lives at its end. */
+.eng-sub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 18px;
+  margin-top: 6px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.eng-sub-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.eng-sub-meter {
+  display: block;
+  width: 120px;
+  flex: none;
+  margin-left: 4px;
+}
+
+.eng-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  flex: none;
+}
+
+/* The chart and the failure lines share one footprint: an 18px head, 14px gap, 200px body. */
+.eng-chart {
+  margin-top: 36px;
+}
+
+.eng-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  height: 18px;
+  margin: 0 0 14px 2px;
+}
+
+.eng-section-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.eng-section-readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A 24px text button inside the 18px head, without growing it. */
+.eng-fail-showlog {
+  margin: -3px -8px -3px 0;
+}
+
+/* Failed: the last lines Splash printed, at the chart's height. */
+.eng-fail-body {
+  height: 200px;
+  box-sizing: border-box;
+  padding: 14px 16px 14px 30px;
+  border-radius: 10px;
+  background: var(--bg-group);
+  overflow-y: auto;
+}
+
+.eng-details {
+  margin-top: 24px;
+}
+
+.eng-details-off {
+  margin: 12px 0 0 2px;
+  color: var(--text-secondary);
+}
+
+.eng-log-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.eng-log-row-note {
+  color: var(--text-secondary);
+}
+
+/* Narrow windows: the four cards wrap two by two (StatGrid keeps four columns otherwise). */
+@media (max-width: 900px) {
+  .sb-stat-grid.eng-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,202 @@
+/*
+ * First-run sheet surface (design/minimal-ref .sheet). It is not the shared
+ * centred Dialog: on first run the sheet hangs just below the welcome's
+ * steps (Welcome positions it), so the welcome stays readable above it.
+ */
+
+.sb-fr-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  max-width: 100%;
+  max-height: 100%;
+  background: var(--bg-sheet);
+  color: var(--text-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sheet);
+  overflow: hidden;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+  animation: sb-fr-sheet-in var(--dur-slow) var(--ease-out);
+}
+
+.sb-fr-sheet:focus,
+.sb-fr-sheet:focus-visible {
+  outline: none;
+}
+
+@keyframes sb-fr-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sb-fr-sheet__head {
+  flex: none;
+  padding: 18px 24px 14px;
+}
+
+.sb-fr-sheet__title {
+  margin: 0;
+  font-size: var(--text-title-3);
+  line-height: 22px;
+  font-weight: var(--weight-semibold);
+}
+
+.sb-fr-sheet__sub {
+  margin: 2px 0 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+  color: var(--text-secondary);
+}
+
+.sb-fr-sheet__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 24px 26px;
+}
+
+.sb-fr-sheet__foot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px 14px 24px;
+  border-top: 1px solid var(--hairline);
+}
+
+.sb-fr-sheet__note {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+  line-height: 18px;
+  color: var(--text-secondary);
+}
+
+.sb-fr-sheet__actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Inline code in a footer note or a sentence: "Runs brew install incoai/tap/splash". */
+.sb-fr-code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* A plain sentence in the body. */
+.sb-fr-text {
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.sb-fr-text + .sb-fr-text {
+  margin-top: 8px;
+}
+
+.sb-fr-text--secondary {
+  color: var(--text-secondary);
+}
+
+/* A text button inside a sentence or a footer note (brew.sh, Try again). */
+.sb-fr-link {
+  display: inline;
+  margin: 0;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: var(--weight-medium);
+  cursor: default;
+  text-decoration: underline;
+  text-decoration-color: var(--hairline-strong);
+  text-underline-offset: 2px;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.sb-fr-link:hover {
+  background: var(--fill-hover);
+}
+
+.sb-fr-link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 1px;
+}
+
+/* A command shown whole, with its copy button (Homebrew's installer). */
+.sb-fr-command {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 8px 8px 8px 14px;
+  border-radius: var(--radius-md);
+  background: var(--bg-group);
+}
+
+.sb-fr-command__text {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Result line (installed, failed): an icon in the text colour and a sentence. */
+.sb-fr-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.sb-fr-result__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: -1px;
+  border-radius: 50%;
+  background: var(--fill-control);
+  color: var(--text-primary);
+}
+
+.sb-fr-result__icon > svg {
+  width: 12px;
+  height: 12px;
+}
+
+.sb-fr-result__dot {
+  margin: 6px 2px 0 6px;
+}
+
+.sb-fr-details {
+  margin-top: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-fr-sheet {
+    animation: none;
+  }
+}

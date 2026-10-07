@@ -1,0 +1,146 @@
+/*
+ * Toasts: small notes at the bottom centre of the window that dismiss
+ * themselves. Raised surface and popover shadow like menus; an error carries
+ * a red status dot before its text (status is a dot next to a label, never a
+ * coloured box). Hover or focus pauses the timer; swipe down dismisses.
+ */
+
+.sb-toaster {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(480px, calc(100vw - 32px));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transform: translateX(-50%);
+  outline: none;
+}
+
+.sb-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-height: 36px;
+  padding: 8px 14px;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-popover);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  line-height: var(--leading-ui);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.sb-toast--with-action {
+  padding: 4px 4px 4px 14px;
+}
+
+.sb-toast:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.sb-toast__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--status-error);
+}
+
+.sb-toast__message {
+  flex: 1;
+  min-width: 0;
+}
+
+.sb-toast__action {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-height);
+  margin: 0;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--fill-control);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  cursor: default;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.sb-toast__action:hover {
+  background: var(--fill-control-hover);
+}
+.sb-toast__action:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.sb-toast[data-state='open'] {
+  animation: sb-toast-in var(--dur-base) var(--ease-out);
+}
+.sb-toast[data-state='closed'] {
+  animation: sb-toast-out var(--dur-fast) var(--ease-out) forwards;
+}
+.sb-toast[data-swipe='move'] {
+  transform: translateY(var(--radix-toast-swipe-move-y));
+}
+.sb-toast[data-swipe='cancel'] {
+  transform: none;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.sb-toast[data-swipe='end'] {
+  animation: sb-toast-swipe-out var(--dur-fast) var(--ease-out) forwards;
+}
+
+@keyframes sb-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sb-toast-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes sb-toast-swipe-out {
+  from {
+    opacity: 1;
+    transform: translateY(var(--radix-toast-swipe-end-y));
+  }
+  to {
+    opacity: 0;
+    transform: translateY(calc(var(--radix-toast-swipe-end-y) + 16px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-toast[data-state],
+  .sb-toast[data-swipe] {
+    animation: none;
+    transition: none;
+  }
+}

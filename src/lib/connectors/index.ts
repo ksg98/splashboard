@@ -1,0 +1,46 @@
+export {
+  AGENT_IDS,
+  CLIENT_CONFIGS,
+  CONNECTORS,
+  DEFAULT_PORT,
+  compareVersions,
+  connectorFiles,
+  connectorUndo,
+  fillPort,
+  getConnector,
+  isAgentId,
+  isSupportedBy,
+  minSplashVersion,
+  profileName,
+  renderClientConfig,
+  type AgentId,
+  type ClientConfigDef,
+  type ClientConfigValues,
+  type ConnectorDef,
+  type EnvOption,
+  type HeadlessLaunch,
+  type RenderedClientConfig,
+} from './catalog';
+export {
+  detectConnectors,
+  parseDetection,
+  type AgentDetection,
+  type ConnectorDetection,
+} from './detect';
+export {
+  ConnectorLaunchError,
+  LOCAL_NO_PROXY,
+  buildConnectorLaunch,
+  connectorCommandLine,
+  launchConnector,
+  type ConnectorLaunchErrorKind,
+  type ConnectorLaunchOptions,
+} from './launch';
+export {
+  connectorEntries,
+  resetConnectorsStore,
+  useConnectorsStore,
+  type ConnectorEntry,
+  type ConnectorsState,
+  type DetectionStatus,
+} from './store';

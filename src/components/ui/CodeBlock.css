@@ -1,0 +1,176 @@
+/*
+ * Code block (design/minimal-ref: .code). Light gray block in light mode,
+ * near-black in dark; 36 px header with the language and Copy; 13 px mono.
+ *
+ * Syntax colours follow the reference's gray tint: keywords semibold,
+ * strings and comments secondary (comments italic), everything else primary.
+ * Highlighting is never coloured: the accent is reserved for focus, switches,
+ * the chart line and the caret.
+ */
+
+.sb-code {
+  margin: 4px 0 16px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-code);
+  overflow: hidden;
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+}
+
+.sb-code__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 36px;
+  padding: 0 8px 0 16px;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  line-height: 1;
+}
+
+.sb-code__lang {
+  overflow: hidden;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sb-code__copy {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-xs);
+  line-height: 1;
+  cursor: default;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.sb-code__copy:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.sb-code__copy:focus-visible,
+.sb-code__pre:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.sb-code__copy svg {
+  flex: none;
+}
+
+.sb-code__pre {
+  margin: 0;
+  padding: 0 16px 16px;
+  overflow-x: auto;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--mono-size);
+  line-height: var(--mono-leading);
+  tab-size: 4;
+}
+
+.sb-code__pre:focus-visible {
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.sb-code__pre code {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  padding: 0;
+  background: none;
+  font: inherit;
+  white-space: pre;
+}
+
+/* ---------- Syntax tint (highlight.js classes, via rehype-highlight) ---------- */
+
+.sb-code .hljs-keyword,
+.sb-code .hljs-literal,
+.sb-code .hljs-selector-tag,
+.sb-code .hljs-section,
+.sb-code .hljs-doctag,
+.sb-code .hljs-strong,
+.sb-code .hljs-meta .hljs-keyword {
+  font-weight: var(--weight-semibold);
+}
+
+.sb-code .hljs-string,
+.sb-code .hljs-regexp,
+.sb-code .hljs-char,
+.sb-code .hljs-symbol,
+.sb-code .hljs-bullet,
+.sb-code .hljs-meta,
+.sb-code .hljs-meta .hljs-string,
+.sb-code .hljs-template-tag,
+.sb-code .hljs-deletion {
+  color: var(--text-secondary);
+}
+
+.sb-code .hljs-comment,
+.sb-code .hljs-quote {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.sb-code .hljs-emphasis {
+  font-style: italic;
+}
+
+.sb-code .hljs-link {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---------- Streaming caret (shared with Markdown) ---------- */
+
+.sb-caret {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  vertical-align: 1px;
+  animation: sb-caret-pulse 1.2s ease-in-out infinite;
+}
+
+.sb-code__pre .sb-caret {
+  width: 8px;
+  height: 8px;
+  margin-left: 2px;
+  vertical-align: 0;
+}
+
+@keyframes sb-caret-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-caret {
+    animation: none;
+  }
+  .sb-code__copy {
+    transition: none;
+  }
+}

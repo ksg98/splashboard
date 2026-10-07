@@ -1,0 +1,121 @@
+/* Pill buttons (design/minimal-ref: .btn, .btn-primary, .btn-lg, .text-btn) */
+.sb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: none;
+  height: var(--control-height);
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  background: var(--fill-control);
+  color: var(--text-primary);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+  -webkit-user-select: none;
+  user-select: none;
+}
+.sb-btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.sb-btn.is-loading {
+  opacity: 0.7;
+}
+.sb-btn__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sb-btn__icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+.sb-btn__icon svg {
+  width: 14px;
+  height: 14px;
+}
+.sb-btn__spinner {
+  color: currentColor;
+}
+
+/* Sizes */
+.sb-btn--sm {
+  height: 24px;
+  padding: 0 10px;
+  font-size: var(--text-xs);
+  gap: 4px;
+}
+.sb-btn--sm .sb-btn__icon svg {
+  width: 12px;
+  height: 12px;
+}
+.sb-btn--lg {
+  height: var(--control-height-lg);
+  padding: 0 20px;
+  font-size: var(--text-md);
+}
+.sb-btn--lg .sb-btn__icon svg {
+  width: 16px;
+  height: 16px;
+}
+.sb-btn--block {
+  display: flex;
+  width: 100%;
+}
+
+/* Secondary (default): gray fill */
+.sb-btn--secondary:hover,
+.sb-btn--secondary[aria-expanded='true'],
+.sb-btn--secondary:active {
+  background: var(--fill-control-hover);
+}
+
+/* Primary: black on white, white on black in dark */
+.sb-btn--primary {
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+}
+.sb-btn--primary:hover,
+.sb-btn--primary:active {
+  background: var(--primary-bg-hover);
+}
+
+/* Destructive: the gray pill, increased-contrast red text */
+.sb-btn--destructive {
+  color: var(--text-destructive);
+}
+.sb-btn--destructive:hover,
+.sb-btn--destructive:active {
+  background: var(--fill-control-hover);
+}
+
+/* Ghost: a text button, no fill until hover */
+.sb-btn--ghost {
+  background: transparent;
+  border-radius: var(--radius-xs);
+  padding: 0 8px;
+  height: 26px;
+}
+.sb-btn--ghost.sb-btn--sm {
+  height: 24px;
+  padding: 0 6px;
+}
+.sb-btn--ghost.sb-btn--lg {
+  height: var(--control-height-lg);
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+}
+.sb-btn--ghost:hover,
+.sb-btn--ghost[aria-expanded='true'],
+.sb-btn--ghost:active {
+  background: var(--fill-hover);
+}

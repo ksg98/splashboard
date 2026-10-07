@@ -1,0 +1,44 @@
+/* macOS switch (design/minimal-ref .switch): 32×18 track, 16px knob, 14px travel. */
+.sb-switch {
+  position: relative;
+  flex: none;
+  width: 32px;
+  height: 18px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: var(--fill-switch-off);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.sb-switch[data-state='checked'] {
+  background: var(--accent);
+}
+
+.sb-switch:disabled {
+  opacity: 0.45;
+}
+
+.sb-switch:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* The knob is white in both themes, as on macOS (--fill-knob is proposed for tokens.css). */
+.sb-switch__knob {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--fill-knob, #ffffff);
+  box-shadow: var(--shadow-knob);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.sb-switch__knob[data-state='checked'] {
+  transform: translateX(14px);
+}

@@ -1,0 +1,303 @@
+/*
+ * Models page (design/minimal-ref: .page, .running, .model-row), with the
+ * three-line rows from the Native direction restyled in Minimal's tokens.
+ */
+
+/* Page: one scroll container, the shared 880 px column with 40 px gutters. */
+.mv-page {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  background: var(--bg-window);
+  color: var(--text-primary);
+}
+
+.mv-page__inner {
+  box-sizing: border-box;
+  max-width: calc(var(--page-column) + var(--page-gutter) * 2);
+  margin: 0 auto;
+  padding: 4px var(--page-gutter) 64px;
+}
+
+@media (max-width: 1340px) {
+  .mv-page__inner {
+    padding-inline: 32px;
+  }
+}
+
+/* Large-title header; the search field is centred on the title's 34 px line. */
+.mv-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.mv-head__text {
+  min-width: 0;
+}
+
+.mv-head__title {
+  margin: 0;
+  font-size: var(--text-title-1);
+  line-height: 34px;
+  font-weight: var(--weight-semibold);
+}
+
+.mv-head__sub {
+  margin: 6px 0 0;
+  font-size: var(--text-sm);
+  line-height: 18px;
+  color: var(--text-secondary);
+}
+
+.mv-head__actions {
+  display: flex;
+  align-items: center;
+  flex: none;
+  height: 34px;
+}
+
+.mv-search {
+  width: 240px;
+}
+
+/* Running model card */
+.mv-running {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-group);
+}
+
+.mv-running--empty {
+  min-height: 44px;
+}
+
+.mv-tile {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: var(--tile-md);
+  height: var(--tile-md);
+  border-radius: var(--tile-radius-md);
+  background: var(--fill-tile);
+  color: var(--text-primary);
+}
+
+.mv-tile > svg {
+  width: 22px;
+  height: 22px;
+}
+
+.mv-running__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.mv-running__name {
+  font-size: var(--text-title-3);
+  line-height: 22px;
+  font-weight: var(--weight-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mv-running__name .mv-row__variant {
+  font-weight: var(--weight-regular);
+}
+
+.mv-running__meta {
+  margin-top: 2px;
+  font-size: var(--text-xs);
+  line-height: 16px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.mv-running__side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  margin-left: auto;
+}
+
+.mv-running__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 8px;
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+/* Lists */
+.mv-section-title {
+  margin: 32px 0 10px 2px;
+  font-size: var(--text-sm);
+  line-height: 18px;
+  font-weight: var(--weight-semibold);
+}
+
+.mv-group {
+  border-radius: var(--radius-md);
+  background: var(--bg-group);
+}
+
+/*
+ * Row columns: text · optional version pop-up · the 60 px action slot · a
+ * 12 px chevron. Run, Get and the download ring are centred in the same slot,
+ * so the trailing column is one straight line.
+ */
+.mv-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto var(--action-slot) 12px;
+  align-items: center;
+  gap: 16px;
+  min-height: 72px;
+  box-sizing: border-box;
+  padding: 10px 10px 10px 12px;
+  font-size: var(--text-sm);
+}
+
+.mv-row + .mv-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  height: 1px;
+  background: var(--hairline);
+}
+
+.mv-group > .mv-row:first-child {
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+}
+
+.mv-group > .mv-row:last-child {
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+}
+
+.mv-row__text {
+  min-width: 0;
+}
+
+.mv-row__name {
+  font-weight: var(--weight-medium);
+  line-height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mv-row__variant {
+  font-weight: var(--weight-regular);
+}
+
+.mv-row__line {
+  margin-top: 1px;
+  font-size: var(--text-xs);
+  line-height: 16px;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mv-row__meta {
+  margin-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.mv-row__aside {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.mv-row__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mv-row__action > .sb-btn {
+  min-width: var(--action-slot);
+}
+
+.mv-row__word {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.mv-row__chevron {
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  width: 12px;
+  height: 12px;
+  color: var(--text-tertiary);
+}
+
+.mv-row__chevron > svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Rows that open launch settings: a trailing chevron and a light hover fill. */
+.mv-row--opens {
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.mv-row--opens:hover {
+  background: var(--fill-hover);
+}
+
+.mv-row--opens:hover::before,
+.mv-row--opens:hover + .mv-row::before {
+  opacity: 0;
+}
+
+.mv-row--opens:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+/* Not compatible with this Mac: the name steps down to secondary, no action. */
+.mv-row--incompatible .mv-row__name {
+  color: var(--text-secondary);
+}
+
+/* Loading, empty and error lines in a list */
+.mv-note-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--row-height);
+  padding: 8px 12px;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.mv-footnote {
+  margin: 8px 12px 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.mv-path {
+  -webkit-user-select: text;
+  user-select: text;
+}

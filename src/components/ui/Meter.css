@@ -1,0 +1,55 @@
+/*
+ * MeterBar and DotsMeter (design/minimal-ref: .meter, .dots7).
+ * Gray scale only: meters never use the accent.
+ * Colours come from the Minimal tokens (src/styles/tokens.css).
+ */
+
+.sb-meter {
+  position: relative;
+  height: 4px;
+  min-width: 24px;
+  border-radius: 2px;
+  background: var(--fill-track);
+  overflow: hidden;
+}
+
+.sb-meter--lg {
+  height: 6px;
+  border-radius: 3px;
+}
+
+.sb-meter__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--fill-meter);
+  transition: width var(--dur-slow) var(--ease-out);
+}
+
+.sb-dots {
+  display: inline-flex;
+  flex: none;
+  gap: 3px;
+}
+
+.sb-dots__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fill-track);
+}
+
+.sb-dots__dot[data-state='on'] {
+  background: var(--text-primary);
+}
+
+.sb-dots__dot[data-state='part'] {
+  background: var(--text-primary);
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-meter__fill {
+    transition: none;
+  }
+}
