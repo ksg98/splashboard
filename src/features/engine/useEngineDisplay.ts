@@ -43,7 +43,11 @@ const PHASE_PROGRESS: Partial<Record<EngineState['phase'], number>> = {
 };
 
 function clock(ms: number): string {
-  return new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  return new Date(ms).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
 }
 
 function dayAndTime(ms: number | null | undefined): string {
@@ -106,7 +110,8 @@ function activityStatus(
   if (word.serving) {
     if (live?.weights === 'released' && !live.busy) return { kind: 'idle', uptime };
     const requests = live ? live.requests.running + live.requests.queued : 0;
-    if (live?.busy || state.phase === 'busy') return { kind: 'busy', requests: Math.max(1, requests), uptime };
+    if (live?.busy || state.phase === 'busy')
+      return { kind: 'busy', requests: Math.max(1, requests), uptime };
     return { kind: 'ready', requests, uptime };
   }
   if (word.launching) return { kind: 'starting', phase: startPhase(state, now) };
@@ -139,7 +144,8 @@ function activityDetails(
     live.kv.allocatedBytes && live.kv.allocatedPages
       ? live.kv.allocatedBytes / live.kv.allocatedPages
       : null;
-  const pagesToGB = (pages: number | null) => (pageBytes && pages != null ? (pages * pageBytes) / GB : 0);
+  const pagesToGB = (pages: number | null) =>
+    pageBytes && pages != null ? (pages * pageBytes) / GB : 0;
   const kvFlag = state.command?.argv.find((arg) => arg.startsWith('--kv-format='));
   return {
     requests: {
@@ -150,10 +156,15 @@ function activityDetails(
     },
     speed: {
       readingPromptsTokensPerSecond:
-        recentMean(samples, (s) => (s.prefillTokPerSec && s.prefillTokPerSec > 0 ? s.prefillTokPerSec : null), 60) ??
-        live.lifetime.prefillTokPerSec,
-      firstTokenTypicalSeconds: live.lifetime.ttftP50Ms != null ? live.lifetime.ttftP50Ms / 1000 : null,
-      firstTokenSlowestSeconds: live.lifetime.ttftP95Ms != null ? live.lifetime.ttftP95Ms / 1000 : null,
+        recentMean(
+          samples,
+          (s) => (s.prefillTokPerSec && s.prefillTokPerSec > 0 ? s.prefillTokPerSec : null),
+          60,
+        ) ?? live.lifetime.prefillTokPerSec,
+      firstTokenTypicalSeconds:
+        live.lifetime.ttftP50Ms != null ? live.lifetime.ttftP50Ms / 1000 : null,
+      firstTokenSlowestSeconds:
+        live.lifetime.ttftP95Ms != null ? live.lifetime.ttftP95Ms / 1000 : null,
     },
     workingMemory: {
       inUseGB: pagesToGB(live.kv.activePages),

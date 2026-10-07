@@ -6,3 +6,5 @@ src-tauri/gen
 design
 fixtures
 docs/splash-api.md
+docs/
+src-tauri/src/**/testdata/

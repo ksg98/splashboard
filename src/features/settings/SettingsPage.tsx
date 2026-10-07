@@ -101,7 +101,9 @@ export function SettingsPage() {
     setValues((current) => {
       const next = { ...current, ...patch };
       const { hfToken: _token, ...persisted } = next;
-      void getStorage().settings.set(APP_SETTINGS_KEY, persisted).catch(() => undefined);
+      void getStorage()
+        .settings.set(APP_SETTINGS_KEY, persisted)
+        .catch(() => undefined);
       return next;
     });
     if (patch.appearance) setPreference(patch.appearance);
@@ -137,7 +139,9 @@ export function SettingsPage() {
       : latest?.latest
         ? { state: 'up-to-date', latest: latest.latest, checkedAt: checkedAt(latest.checkedAtMs) }
         : { state: 'up-to-date', latest: install?.version ?? '—', checkedAt: 'not yet' };
-  const memory = install?.system.memoryBytes ? `${Math.round(install.system.memoryBytes / 1024 ** 3)} GB` : '';
+  const memory = install?.system.memoryBytes
+    ? `${Math.round(install.system.memoryBytes / 1024 ** 3)} GB`
+    : '';
 
   const info: SettingsInfo = {
     models: runnable.map((m) => ({
@@ -150,12 +154,19 @@ export function SettingsPage() {
     modelsDiskUsed: gigabytes(installed?.cachedBytes) || '0 GB',
     modelsCount: runnable.length,
     splash: { version: install?.version ?? 'not installed', update: splashUpdate },
-    app: { version: APP_VERSION, update: { state: 'up-to-date', latest: APP_VERSION, checkedAt: 'not yet' } },
+    app: {
+      version: APP_VERSION,
+      update: { state: 'up-to-date', latest: APP_VERSION, checkedAt: 'not yet' },
+    },
     mac: [install?.system.chip, memory].filter(Boolean).join(' · ') || 'This Mac',
     server: `127.0.0.1:${useLaunchStore.getState().port}`,
     license: 'Apache-2.0',
     links: [
-      { label: 'Splash on GitHub', help: 'The engine: server options, the API and the agents.', url: 'https://github.com/incoai/splash' },
+      {
+        label: 'Splash on GitHub',
+        help: 'The engine: server options, the API and the agents.',
+        url: 'https://github.com/incoai/splash',
+      },
     ],
   };
 

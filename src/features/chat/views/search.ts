@@ -50,7 +50,8 @@ export function searchChats(chats: SearchableChat[], query: string): ChatSearchR
     }
     const inTitle = chat.title.toLowerCase().includes(needle);
     const snippet = chat.text ? snippetAround(chat.text, needle) : undefined;
-    if (inTitle || snippet) results.push({ id: chat.id, title: chat.title, group: chat.group, snippet });
+    if (inTitle || snippet)
+      results.push({ id: chat.id, title: chat.title, group: chat.group, snippet });
   }
   return results;
 }

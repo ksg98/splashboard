@@ -15,7 +15,7 @@ describe('toFormModel (serve)', () => {
       label: 'Memory & context',
     });
     expect(model.groups.map((g) => [g.id, g.rows.map((r) => r.key)])).toEqual([
-      ['basic', ['max_memory', 'max_context']],
+      ['basic', ['max_memory', 'max_context', 'idle_release']],
       ['advanced', ['max_image_pixels']],
     ]);
   });

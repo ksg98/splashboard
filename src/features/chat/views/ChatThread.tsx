@@ -34,7 +34,9 @@ export interface ChatThreadProps {
 }
 
 function announcement(turns: ChatTurn[], modelName: string): string {
-  const last = [...turns].reverse().find((turn): turn is AssistantTurn => turn.role === 'assistant');
+  const last = [...turns]
+    .reverse()
+    .find((turn): turn is AssistantTurn => turn.role === 'assistant');
   if (!last) return '';
   switch (last.status) {
     case 'thinking':
@@ -175,7 +177,11 @@ export function ChatThread({
           {turns.map((turn) =>
             turn.role === 'user' ? (
               <div key={turn.id} data-turn-id={turn.id}>
-                <UserMessage content={turn.content} images={turn.images} onOpenImage={onOpenImage} />
+                <UserMessage
+                  content={turn.content}
+                  images={turn.images}
+                  onOpenImage={onOpenImage}
+                />
               </div>
             ) : (
               <div key={turn.id} data-turn-id={turn.id} className="ch-turn-ai">

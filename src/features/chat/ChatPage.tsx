@@ -28,8 +28,18 @@ import type {
 import './ChatPage.css';
 
 const SUGGESTIONS: Suggestion[] = [
-  { id: 'trace', label: 'Explain a stack trace', icon: 'code', prompt: 'Explain this stack trace:\n\n' },
-  { id: 'script', label: 'Write a shell script', icon: 'terminal', prompt: 'Write a shell script that ' },
+  {
+    id: 'trace',
+    label: 'Explain a stack trace',
+    icon: 'code',
+    prompt: 'Explain this stack trace:\n\n',
+  },
+  {
+    id: 'script',
+    label: 'Write a shell script',
+    icon: 'terminal',
+    prompt: 'Write a shell script that ',
+  },
   { id: 'summary', label: 'Summarize a document', icon: 'file', prompt: 'Summarize this:\n\n' },
   { id: 'diff', label: 'Review a diff', icon: 'book', prompt: 'Review this diff:\n\n' },
 ];

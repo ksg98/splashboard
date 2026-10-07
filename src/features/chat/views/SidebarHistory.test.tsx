@@ -95,7 +95,9 @@ describe('ModelPickerTitle', () => {
     expect(menu).toHaveTextContent('mlx-community · 15.6 GB');
     expect(menu).toHaveTextContent('Switching models restarts the server.');
     expect(menu.textContent).not.toMatch(/gguf/i);
-    await user.click(screen.getByRole('menuitemcheckbox', { name: /Qwen3.8-27B \(MLX 4-bit\)mlx/ }));
+    await user.click(
+      screen.getByRole('menuitemcheckbox', { name: /Qwen3.8-27B \(MLX 4-bit\)mlx/ }),
+    );
     expect(onChange).toHaveBeenCalledWith('mlx-community/Qwen3.8-27B-4bit');
   });
 });

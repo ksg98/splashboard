@@ -49,7 +49,10 @@ export const busyErrorImage: ChatImage = {
 };
 
 const bars = [81.6, 11, 9.8, 10.6, 9.4, 17, 10.2, 9.6, 11.4, 10, 9.2, 10.8]
-  .map((h, i) => `<rect x="${34 + i * 16}" y="${(112 - h).toFixed(1)}" width="10" height="${h}" rx="1.5"/>`)
+  .map(
+    (h, i) =>
+      `<rect x="${34 + i * 16}" y="${(112 - h).toFixed(1)}" width="10" height="${h}" rx="1.5"/>`,
+  )
   .join('');
 
 /** A chart the user is about to send: time to first token per request. */
@@ -280,7 +283,11 @@ export const engineStarting: ComposerEngine = {
 
 export const pickerModels: PickerModel[] = [
   { id: 'incoai/Qwen3.8-27B-Splash', name: 'Qwen3.8-27B', detail: 'Splash package · Ready' },
-  { id: 'incoai/Qwen3.6-35B-A3B-Splash', name: 'Qwen3.6-35B-A3B', detail: 'Splash package · 20.4 GB' },
+  {
+    id: 'incoai/Qwen3.6-35B-A3B-Splash',
+    name: 'Qwen3.6-35B-A3B',
+    detail: 'Splash package · 20.4 GB',
+  },
   {
     id: 'mlx-community/Qwen3.8-27B-4bit',
     name: 'Qwen3.8-27B (MLX 4-bit)',
@@ -298,9 +305,24 @@ export const pickerValue = 'incoai/Qwen3.8-27B-Splash';
 /* ---------- New chat ---------- */
 
 export const suggestions: Suggestion[] = [
-  { id: 's-diff', label: 'Review a diff', icon: 'code', prompt: 'Review this diff and point out bugs:\n\n' },
-  { id: 's-script', label: 'Write a script', icon: 'terminal', prompt: 'Write a shell script that ' },
-  { id: 's-shot', label: 'Describe a screenshot', icon: 'image', prompt: 'Describe this screenshot.' },
+  {
+    id: 's-diff',
+    label: 'Review a diff',
+    icon: 'code',
+    prompt: 'Review this diff and point out bugs:\n\n',
+  },
+  {
+    id: 's-script',
+    label: 'Write a script',
+    icon: 'terminal',
+    prompt: 'Write a shell script that ',
+  },
+  {
+    id: 's-shot',
+    label: 'Describe a screenshot',
+    icon: 'image',
+    prompt: 'Describe this screenshot.',
+  },
   { id: 's-explain', label: 'Explain a concept', icon: 'book', prompt: 'Explain ' },
 ];
 
@@ -356,12 +378,18 @@ const chatText: Record<string, string> = {
     'Coding agents send long prompts. With 128K context and the SSD cache on, the prompt cache keeps them ready across restarts.',
   'c-regex':
     'Each Splash log line starts with a level and a component. Match Loading, Weights loaded in and Ready to follow the start phases.',
-  'c-sidebar': 'Animate the sidebar width over 250 ms with an ease-out curve, and drop it to 0 ms when reduced motion is on.',
-  'c-models': 'The Models screen lists the running model on top, then Installed and Available, with Run and Get in one column.',
-  'c-mlx':
-    'mlx-community/Qwen3.8-27B-4bit is a plain 4-bit MLX conversion that Splash can run.',
+  'c-sidebar':
+    'Animate the sidebar width over 250 ms with an ease-out curve, and drop it to 0 ms when reduced motion is on.',
+  'c-models':
+    'The Models screen lists the running model on top, then Installed and Available, with Run and Get in one column.',
+  'c-mlx': 'mlx-community/Qwen3.8-27B-4bit is a plain 4-bit MLX conversion that Splash can run.',
 };
 
 export const searchableChats: SearchableChat[] = historyGroups.flatMap((group) =>
-  group.items.map((item) => ({ id: item.id, title: item.title, group: group.label, text: chatText[item.id] })),
+  group.items.map((item) => ({
+    id: item.id,
+    title: item.title,
+    group: group.label,
+    text: chatText[item.id],
+  })),
 );

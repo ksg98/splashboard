@@ -26,7 +26,12 @@ import {
 export type { Conversation, ConversationMessage } from './types';
 
 const DEFAULTS_KEY = 'chat.defaults';
-const ACCEPTED_IMAGES: readonly ImageMime[] = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+const ACCEPTED_IMAGES: readonly ImageMime[] = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+];
 const MAX_IMAGE_BYTES = 32 * 1024 * 1024;
 
 export interface PendingImage {
@@ -146,7 +151,7 @@ function describeError(state: TurnState): ChatError {
     return {
       kind: 'unauthorized',
       title: 'API key needed',
-      message: "This server needs an API key. Add it in Settings.",
+      message: 'This server needs an API key. Add it in Settings.',
       action: 'open-settings',
       retryable: false,
       status,
@@ -290,7 +295,9 @@ export const useChatStore = create<ChatState>()((set, get) => {
     };
 
     try {
-      for await (const event of getSplashClient().chatTurn(request, { signal: controller.signal })) {
+      for await (const event of getSplashClient().chatTurn(request, {
+        signal: controller.signal,
+      })) {
         turn = reduceTurn(turn, event);
         schedule();
       }
@@ -342,7 +349,9 @@ export const useChatStore = create<ChatState>()((set, get) => {
           keys.map((key) => storage.conversations.get<StoredConversation>(key)),
         );
         const conversations = records
-          .filter((record): record is StoredConversation => !!record && Array.isArray(record.messages))
+          .filter(
+            (record): record is StoredConversation => !!record && Array.isArray(record.messages),
+          )
           .map(({ schemaVersion: _version, ...conversation }) => ({
             ...conversation,
             settings: conversation.settings ?? {},
@@ -392,7 +401,10 @@ export const useChatStore = create<ChatState>()((set, get) => {
         settings: {},
         messages: [],
       };
-      set((s) => ({ conversations: [conversation, ...s.conversations], activeId: conversation.id }));
+      set((s) => ({
+        conversations: [conversation, ...s.conversations],
+        activeId: conversation.id,
+      }));
       return conversation.id;
     },
 
@@ -408,7 +420,13 @@ export const useChatStore = create<ChatState>()((set, get) => {
           continue;
         }
         try {
-          added.push({ id: newId(), name: file.name, mime, url: await readFile(file), bytes: file.size });
+          added.push({
+            id: newId(),
+            name: file.name,
+            mime,
+            url: await readFile(file),
+            bytes: file.size,
+          });
         } catch {
           rejected.push(file.name);
         }
@@ -417,7 +435,8 @@ export const useChatStore = create<ChatState>()((set, get) => {
       return rejected;
     },
 
-    removeAttachment: (id) => set((s) => ({ attachments: s.attachments.filter((a) => a.id !== id) })),
+    removeAttachment: (id) =>
+      set((s) => ({ attachments: s.attachments.filter((a) => a.id !== id) })),
 
     send: async () => {
       const { draft, attachments } = get();

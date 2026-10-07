@@ -1,15 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { toast } from '@/components/ui/Toast';
-import { displayModelName, engineWord, restartEngine, startEngine, useLaunchStore } from '@/lib/launch';
 import {
-
+  displayModelName,
+  engineWord,
+  restartEngine,
+  startEngine,
+  useLaunchStore,
+} from '@/lib/launch';
+import {
   gigabytes,
   isOfferedEntry,
   runnableModels,
   type RunnableModel,
 } from '@/lib/models/runnable';
-import { downloadFraction, isDownloadActive, useModelsStore, type DownloadState } from '@/lib/models/store';
+import {
+  downloadFraction,
+  isDownloadActive,
+  useModelsStore,
+  type DownloadState,
+} from '@/lib/models/store';
 import type { CatalogEntry } from '@/lib/models/types';
 import type { ServeValues } from '@/lib/params/types';
 import { useEngineStore } from '@/lib/splash/engine-store';
@@ -80,7 +90,9 @@ export function ModelsPage() {
   const launch = useLaunchStore();
   const live = useTelemetryStore((s) => s.tracker.live);
   const [query, setQuery] = useState('');
-  const [draft, setDraft] = useState<{ model: string; values: ServeValues; preset: string } | null>(null);
+  const [draft, setDraft] = useState<{ model: string; values: ServeValues; preset: string } | null>(
+    null,
+  );
   const [commandOpen, setCommandOpen] = useState(false);
 
   useEffect(() => {
@@ -157,7 +169,10 @@ export function ModelsPage() {
         model.model,
         model.name,
         model.format,
-        entryDescription(catalog?.entries.find((e) => e.id === model.model), model.publisher),
+        entryDescription(
+          catalog?.entries.find((e) => e.id === model.model),
+          model.publisher,
+        ),
         model.sizeBytes,
         download ? downloadAction(download) : { kind: 'run' },
       );
@@ -171,8 +186,7 @@ export function ModelsPage() {
     .filter((entry) => !needle || `${entry.id} ${entry.label}`.toLowerCase().includes(needle))
     .map((entry) => {
       const download = activeDownloads.find((d) => d.model === entry.id);
-      const fits =
-        !entry.minRamGb || !ramBytes || entry.minRamGb * 1024 ** 3 <= ramBytes * 1.02;
+      const fits = !entry.minRamGb || !ramBytes || entry.minRamGb * 1024 ** 3 <= ramBytes * 1.02;
       const action: ModelRowAction = download
         ? downloadAction(download)
         : fits
@@ -228,14 +242,20 @@ export function ModelsPage() {
         onSearchChange={setQuery}
         onOpenLaunchSettings={openSheet}
         onStart={() => void startEngine().then((r) => report(r, 'Splash could not start.'))}
-        onStop={() => void useEngineStore.getState().stop().then((r) => report(r, 'Splash could not stop.'))}
+        onStop={() =>
+          void useEngineStore
+            .getState()
+            .stop()
+            .then((r) => report(r, 'Splash could not stop.'))
+        }
         onRun={run}
         onGet={(model) =>
           void useModelsStore
             .getState()
             .download({ model })
             .then((result) => {
-              if (!result) toast(`Couldn't download ${displayModelName(model)}.`, { tone: 'error' });
+              if (!result)
+                toast(`Couldn't download ${displayModelName(model)}.`, { tone: 'error' });
             })
         }
         onCancelDownload={(model) => void useModelsStore.getState().cancelDownload(model)}
@@ -259,7 +279,10 @@ export function ModelsPage() {
                     ...current,
                     preset: CUSTOM_PRESET,
                     model: key === 'model' && typeof value === 'string' ? value : current.model,
-                    values: { ...current.values, [key]: fromSheetValue(key, value, sections) as ServeValues[string] },
+                    values: {
+                      ...current.values,
+                      [key]: fromSheetValue(key, value, sections) as ServeValues[string],
+                    },
                   }
                 : current,
             )
@@ -299,4 +322,3 @@ export function ModelsPage() {
     </>
   );
 }
-

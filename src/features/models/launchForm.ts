@@ -34,7 +34,8 @@ function numberOr(value: unknown, fallback: number): number {
 
 function control(row: FormRow, models: RunnableModel[]): LaunchControl {
   const min = row.bounds.min ?? 0;
-  const max = row.bounds.dynamicMax ?? row.bounds.softMax ?? row.bounds.max ?? Math.max(min * 4, 64);
+  const max =
+    row.bounds.dynamicMax ?? row.bounds.softMax ?? row.bounds.max ?? Math.max(min * 4, 64);
   const step = row.bounds.step ?? 1;
   switch (row.control) {
     case 'model-picker':
@@ -55,7 +56,9 @@ function control(row: FormRow, models: RunnableModel[]): LaunchControl {
         kind: row.control === 'segmented' ? 'segmented' : 'select',
         value: row.value == null ? '' : String(row.value),
         options: [
-          ...(row.control === 'select' && row.value == null ? [{ value: '', label: 'Model default' }] : []),
+          ...(row.control === 'select' && row.value == null
+            ? [{ value: '', label: 'Model default' }]
+            : []),
           ...(row.choices ?? []).map((choice) => ({
             value: String(choice.value),
             label: choice.label || String(choice.value),
@@ -72,9 +75,22 @@ function control(row: FormRow, models: RunnableModel[]): LaunchControl {
         max,
         step,
         unit: row.unit === 'GiB' ? 'GB' : (row.unit ?? undefined),
-        format: row.type === 'tokens' ? 'tokens' : row.unit === 'GiB' ? 'gb' : row.unit === 'pixels' ? 'megapixels' : 'plain',
-        enabled: row.control === 'slider+auto' ? row.value !== 'auto' && row.value != null : undefined,
-        emptyLabel: row.control === 'slider+auto' ? 'Automatic' : row.control === 'slider+off' ? 'Off' : undefined,
+        format:
+          row.type === 'tokens'
+            ? 'tokens'
+            : row.unit === 'GiB'
+              ? 'gb'
+              : row.unit === 'pixels'
+                ? 'megapixels'
+                : 'plain',
+        enabled:
+          row.control === 'slider+auto' ? row.value !== 'auto' && row.value != null : undefined,
+        emptyLabel:
+          row.control === 'slider+auto'
+            ? 'Automatic'
+            : row.control === 'slider+off'
+              ? 'Off'
+              : undefined,
       };
     case 'number':
     case 'number+none':
@@ -112,7 +128,8 @@ function control(row: FormRow, models: RunnableModel[]): LaunchControl {
 }
 
 function toRow(row: FormRow, models: RunnableModel[], saved: ServeValues): LaunchRow {
-  const changed = JSON.stringify(saved[row.key] ?? null) !== JSON.stringify(row.value ?? null) && !row.isDefault;
+  const changed =
+    JSON.stringify(saved[row.key] ?? null) !== JSON.stringify(row.value ?? null) && !row.isDefault;
   return {
     key: row.key,
     label: row.label,
@@ -161,18 +178,33 @@ export function launchSections(input: LaunchFormInput): LaunchSection[] {
       };
     })
     .filter((section) => section.rows.length + (section.moreRows?.length ?? 0) > 0)
-    .map((section) => (section.rows.length === 0 ? { ...section, rows: section.moreRows ?? [], moreRows: [] } : section));
+    .map((section) =>
+      section.rows.length === 0
+        ? { ...section, rows: section.moreRows ?? [], moreRows: [] }
+        : section,
+    );
 }
 
 /** A value from the sheet → the value buildServeRequest expects. */
-export function fromSheetValue(key: string, value: LaunchValue, sections: LaunchSection[]): unknown {
-  const row = sections.flatMap((s) => [...s.rows, ...(s.moreRows ?? [])]).find((r) => r.key === key);
+export function fromSheetValue(
+  key: string,
+  value: LaunchValue,
+  sections: LaunchSection[],
+): unknown {
+  const row = sections
+    .flatMap((s) => [...s.rows, ...(s.moreRows ?? [])])
+    .find((r) => r.key === key);
   if (!row) return value;
   if (row.control.kind === 'slider' && typeof value === 'number') {
-    if (row.control.format === 'gb') return value === 0 && key === 'max_cache_disk' ? '0' : `${value}${sizeSuffix('GiB')}`;
+    if (row.control.format === 'gb')
+      return value === 0 && key === 'max_cache_disk' ? '0' : `${value}${sizeSuffix('GiB')}`;
     return value;
   }
-  if (row.control.kind === 'text' || row.control.kind === 'secret' || row.control.kind === 'select') {
+  if (
+    row.control.kind === 'text' ||
+    row.control.kind === 'secret' ||
+    row.control.kind === 'select'
+  ) {
     return value === '' ? undefined : value;
   }
   return value;
@@ -199,14 +231,22 @@ export function presetPicker(
   };
 }
 
-export function withPreset(values: ServeValues, presetId: string, ramBytes: number | null, version: string | null): ServeValues {
+export function withPreset(
+  values: ServeValues,
+  presetId: string,
+  ramBytes: number | null,
+  version: string | null,
+): ServeValues {
   const mac = presetsForMac(ramBytes, version);
   const option = [...mac.ram, ...mac.recipes].find((o) => o.preset.id === presetId);
   if (!option) return values;
   return applyPreset(values, option.preset).values;
 }
 
-export function launchCommand(values: ServeValues, version: string | null): { command: string; error: string | null } {
+export function launchCommand(
+  values: ServeValues,
+  version: string | null,
+): { command: string; error: string | null } {
   const built = tryBuildServeRequest(values, undefined, version ?? undefined);
   if (!built.request) {
     return { command: '', error: built.issues[0]?.message ?? 'These settings are not valid.' };

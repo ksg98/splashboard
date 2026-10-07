@@ -29,6 +29,11 @@ export interface ConnectorLaunchOptions {
   apiKey?: string | null;
   /** Extra arguments for the agent, after `splash <agent>`. */
   args?: string[];
+  /**
+   * Installed Splash version. 1.3.0+ launchers take `--port`, which reaches
+   * servers on other ports reliably; older ones only read SPLASH_PORT.
+   */
+  splashVersion?: string | null;
   /** The project folder the agent works in; the home folder when omitted. */
   cwd?: string | null;
   /** Values for the connector's env_options (empty values are skipped). */
@@ -50,6 +55,12 @@ function checkOption(env: string, control: string, value: string): void {
       throw new ConnectorLaunchError('invalidOption', `${env} must be a JSON object`);
     }
   }
+}
+
+function supportsPortFlag(version: string | null | undefined): boolean {
+  if (!version) return false;
+  const [major = 0, minor = 0] = version.split('.').map((part) => Number.parseInt(part, 10) || 0);
+  return major > 1 || (major === 1 && minor >= 3);
 }
 
 /** The PTY launch for `splash <agent>` against the server on `port`. */
@@ -74,7 +85,17 @@ export function buildConnectorLaunch(id: AgentId, options: ConnectorLaunchOption
     checkOption(key, option.control, value);
     env[key] = option.control === 'number' ? value.trim() : value;
   }
-  const launch: PtyLaunch = { kind: 'splash', args: [id, ...(options.args ?? [])], env };
+  const portArgs = supportsPortFlag(options.splashVersion) ? ['--port', String(port)] : [];
+  const launch: PtyLaunch = {
+    kind: 'splash',
+    // The agent's own arguments go after `--`, so they never reach Splash's parser.
+    args: [
+      id,
+      ...portArgs,
+      ...(options.args?.length && portArgs.length ? ['--', ...options.args] : (options.args ?? [])),
+    ],
+    env,
+  };
   if (options.cwd) launch.cwd = options.cwd;
   return launch;
 }

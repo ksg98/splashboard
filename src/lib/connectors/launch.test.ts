@@ -130,3 +130,20 @@ describe('launchConnector', () => {
     expect(start).toHaveBeenCalledOnce();
   });
 });
+
+describe('buildConnectorLaunch on Splash 1.3.0+', () => {
+  it('also passes --port, and puts the agent arguments after --', () => {
+    const launch = buildConnectorLaunch('claude', {
+      port: 8123,
+      splashVersion: '1.3.0',
+      args: ['--continue'],
+    });
+    expect(launch.args).toEqual(['claude', '--port', '8123', '--', '--continue']);
+    expect(launch.env?.SPLASH_PORT).toBe('8123');
+  });
+
+  it('keeps the old form for 1.2.x', () => {
+    const launch = buildConnectorLaunch('codex', { port: 8123, splashVersion: '1.2.1' });
+    expect(launch.args).toEqual(['codex']);
+  });
+});

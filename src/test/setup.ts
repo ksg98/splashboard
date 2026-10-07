@@ -42,7 +42,8 @@ if (typeof HTMLCanvasElement !== 'undefined') {
       set: () => true,
     },
   );
-  HTMLCanvasElement.prototype.getContext = (() => context) as unknown as HTMLCanvasElement['getContext'];
+  HTMLCanvasElement.prototype.getContext = (() =>
+    context) as unknown as HTMLCanvasElement['getContext'];
   if (typeof globalThis.Path2D === 'undefined') {
     globalThis.Path2D = class {
       moveTo() {}

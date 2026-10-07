@@ -27,7 +27,9 @@ describe('ChatThread', () => {
     expect(
       screen.getAllByRole('status').some((node) => node.textContent?.includes('Response ready')),
     ).toBe(true);
-    expect(screen.getByRole('button', { name: 'Jump to latest', hidden: true })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Jump to latest', hidden: true }),
+    ).toBeInTheDocument();
   });
 
   it('announces thinking without making the streaming turn a live region', () => {
@@ -44,7 +46,9 @@ describe('ChatThread', () => {
     const user = userEvent.setup();
     const onRetry = vi.fn();
     render(<ChatThread turns={errorTurns} onRetry={onRetry} />);
-    expect(screen.getByRole('alert')).toHaveTextContent('Splash stopped before the reply finished.');
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Splash stopped before the reply finished.',
+    );
     await user.click(screen.getByRole('button', { name: 'Retry' }));
     expect(onRetry).toHaveBeenCalledWith('a3');
   });
@@ -52,7 +56,9 @@ describe('ChatThread', () => {
 
 describe('AssistantMessage', () => {
   it('shows the live "Thinking…" row with the reasoning, and no actions', () => {
-    render(<AssistantMessage status="thinking" content="" reasoning="Splash answers 503 when busy." />);
+    render(
+      <AssistantMessage status="thinking" content="" reasoning="Splash answers 503 when busy." />,
+    );
     expect(screen.getByText('Thinking…')).toBeInTheDocument();
     expect(screen.getByText('Splash answers 503 when busy.')).toBeInTheDocument();
     expect(screen.queryByRole('toolbar')).not.toBeInTheDocument();

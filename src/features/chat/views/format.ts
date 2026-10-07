@@ -11,7 +11,12 @@ export interface EffortOption {
 
 /** The thinking levels, with the one-line explanations from the reference. */
 export const EFFORT_OPTIONS: readonly EffortOption[] = [
-  { value: 'none', label: 'None', description: 'Answer right away, no thinking', pill: 'Thinking off' },
+  {
+    value: 'none',
+    label: 'None',
+    description: 'Answer right away, no thinking',
+    pill: 'Thinking off',
+  },
   { value: 'low', label: 'Low', description: 'Think briefly', pill: 'Low thinking' },
   { value: 'medium', label: 'Medium', description: 'Balanced', pill: 'Medium thinking' },
   {

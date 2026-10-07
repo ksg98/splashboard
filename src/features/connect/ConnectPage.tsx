@@ -105,7 +105,9 @@ export function ConnectPage() {
         setSession((s) => (s ? { ...s, status: 'starting' } : s));
         await startEngine();
         await new Promise<void>((resolve) => {
-          const done = () => engineWord(useEngineStore.getState().state).serving || useEngineStore.getState().state.phase === 'failed';
+          const done = () =>
+            engineWord(useEngineStore.getState().state).serving ||
+            useEngineStore.getState().state.phase === 'failed';
           if (done()) return resolve();
           const unsubscribe = useEngineStore.subscribe(() => {
             if (done()) {
@@ -116,11 +118,19 @@ export function ConnectPage() {
         });
       }
       try {
-        await controller.start(buildConnectorLaunch(agent, { port: useEngineStore.getState().state.port ?? port }));
+        await controller.start(
+          buildConnectorLaunch(agent, {
+            port: useEngineStore.getState().state.port ?? port,
+            splashVersion: useEngineStore.getState().install?.version ?? null,
+          }),
+        );
       } catch (error) {
-        toast(error instanceof Error ? error.message : `Couldn't start ${getConnector(agent).label}.`, {
-          tone: 'error',
-        });
+        toast(
+          error instanceof Error ? error.message : `Couldn't start ${getConnector(agent).label}.`,
+          {
+            tone: 'error',
+          },
+        );
       }
     },
     [port],

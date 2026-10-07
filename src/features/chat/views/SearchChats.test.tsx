@@ -15,7 +15,13 @@ beforeAll(() => {
   Element.prototype.scrollIntoView ??= function scrollIntoView() {};
 });
 
-function Harness({ initial = '', onSelect = vi.fn() }: { initial?: string; onSelect?: (id: string) => void }) {
+function Harness({
+  initial = '',
+  onSelect = vi.fn(),
+}: {
+  initial?: string;
+  onSelect?: (id: string) => void;
+}) {
   const [open, setOpen] = useState(true);
   const [query, setQuery] = useState(initial);
   return (
@@ -66,7 +72,9 @@ describe('SearchChats', () => {
     expect(screen.getByText('No chats mention “benchmark”.', { exact: false })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Clear search' }));
     expect(screen.getByRole('combobox')).toHaveValue('');
-    expect(screen.getByRole('option', { name: /Time to first token in Python/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole('option', { name: /Time to first token in Python/ }),
+    ).toBeInTheDocument();
   });
 
   it('clears and closes on Escape', async () => {

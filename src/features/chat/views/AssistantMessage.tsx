@@ -140,7 +140,9 @@ export function AssistantMessage({
       {status === 'error' && (
         <div className="ch-ai-error" role="alert">
           <StatusDot tone="error" />
-          <span className="ch-ai-error-text">{error ?? 'Something went wrong before the reply finished.'}</span>
+          <span className="ch-ai-error-text">
+            {error ?? 'Something went wrong before the reply finished.'}
+          </span>
           {onRetry && (
             <Button variant="secondary" size="sm" onClick={onRetry}>
               Retry

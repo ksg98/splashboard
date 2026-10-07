@@ -364,3 +364,18 @@ describe('idle weight release and restore (idle_release_trace.jsonl)', () => {
     expect(enginePhase(climbing, 'resident')).toBe('queued');
   });
 });
+
+describe('weightsResidency with Splash 1.2.1+ weights.released', () => {
+  it('trusts the reported flag over the memory heuristic', () => {
+    const released = {
+      ...idleJson,
+      weights: { released: true, idle_release_seconds: 600, restores: 2 },
+    };
+    expect(weightsResidency(released as never)).toBe('released');
+    const resident = {
+      ...idleReleasedJson,
+      weights: { released: false, idle_release_seconds: 600, restores: 2 },
+    };
+    expect(weightsResidency(resident as never, 'resident')).toBe('resident');
+  });
+});

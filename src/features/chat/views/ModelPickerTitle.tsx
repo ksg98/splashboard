@@ -34,17 +34,15 @@ export function ModelPickerTitle({
   defaultOpen,
 }: ModelPickerTitleProps) {
   const current = models.find((model) => model.id === value);
-  const items: MenuItem[] = models.map(
-    (model): MenuItem => ({
-      id: model.id,
-      label: model.name,
-      description: model.detail,
-      checked: model.id === value,
-      onSelect: () => {
-        if (model.id !== value) onChange(model.id);
-      },
-    }),
-  );
+  const items: MenuItem[] = models.map((model): MenuItem => ({
+    id: model.id,
+    label: model.name,
+    description: model.detail,
+    checked: model.id === value,
+    onSelect: () => {
+      if (model.id !== value) onChange(model.id);
+    },
+  }));
   if (note) items.push({ type: 'note', label: note });
   if (onManageModels) {
     items.push({ type: 'separator' });

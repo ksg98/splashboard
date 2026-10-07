@@ -76,9 +76,7 @@ export function ModelsView({
           <section className="mv-running mv-running--empty" aria-label="Running model">
             <div className="mv-running__text">
               <div className="mv-running__name">No model is running</div>
-              <div className="mv-running__meta">
-                Run an installed model, or get one below.
-              </div>
+              <div className="mv-running__meta">Run an installed model, or get one below.</div>
             </div>
           </section>
         )}

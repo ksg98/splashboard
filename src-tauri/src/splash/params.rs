@@ -503,7 +503,7 @@ mod tests {
     #[test]
     fn catalog_parses_and_matches_the_doc() {
         let catalog = catalog().unwrap();
-        assert_eq!(catalog.version, "1.2.0");
+        assert_eq!(catalog.version, "1.3.0");
         assert!(catalog.serve.iter().any(|p| p.key == "max_context"));
         // Embedded bytes are the file on disk (no stale copy).
         let on_disk = std::fs::read_to_string(

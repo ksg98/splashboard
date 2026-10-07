@@ -19,7 +19,7 @@ describe('catalog loader', () => {
 
   it('exposes every serve and request entry by key', () => {
     const catalog = getCatalog();
-    expect(catalog.version).toBe('1.2.0');
+    expect(catalog.version).toBe('1.3.0');
     expect(catalog.serve.length).toBeGreaterThan(30);
     expect(serveEntry('max_memory')?.flag).toBe('--max-memory');
     expect(serveEntry('hf_token')?.env).toBe('HF_TOKEN');

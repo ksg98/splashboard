@@ -32,11 +32,15 @@ export function runnableModels(
   catalog: CatalogEntry[] = [],
 ): RunnableModel[] {
   const seen = new Map<string, RunnableModel>();
-  const describe = (model: string) => catalog.find((entry) => entry.id === model)?.description ?? null;
+  const describe = (model: string) =>
+    catalog.find((entry) => entry.id === model)?.description ?? null;
 
   for (const installation of installed?.installations ?? []) {
     if (!installation.model || !installation.complete) continue;
-    const format = formatOf(installation.model, installation.kind === 'package' ? 'package' : installation.targetFormat);
+    const format = formatOf(
+      installation.model,
+      installation.kind === 'package' ? 'package' : installation.targetFormat,
+    );
     if (!format) continue;
     seen.set(installation.model, {
       model: installation.model,
@@ -60,8 +64,8 @@ export function runnableModels(
       description: describe(cached.repo),
     });
   }
-  return [...seen.values()].sort(
-    (a, b) => (a.format === b.format ? a.name.localeCompare(b.name) : a.format === 'package' ? -1 : 1),
+  return [...seen.values()].sort((a, b) =>
+    a.format === b.format ? a.name.localeCompare(b.name) : a.format === 'package' ? -1 : 1,
   );
 }
 

@@ -1,5 +1,5 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "$comment": "Generated for Splashboard from Splash 1.2.0 (splash serve --help, server/serve_options.py, install/launcher.py, server/frontend.py, install/clients.py). Prose and rationale: docs/terminal-parity.md. HTTP shapes: docs/splash-api.md. serve[] holds every `splash serve` flag (flag != null) and every environment variable the form controls (flag == null, env set). Values in presets[].serve use serve[].key and CLI spelling (sizes like '32G', context like '256K', booleans true). min_version is the first Splash release that accepts the field.",
   "conventions": {
     "control": [
@@ -667,6 +667,60 @@
       "notes": null
     },
     {
+      "flag": "--idle-release",
+      "env": null,
+      "key": "idle_release",
+      "label": "Free memory when idle",
+      "section": "memory_context",
+      "control": "select",
+      "type": "enum",
+      "default": "10m",
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": [
+        {
+          "value": "5m",
+          "label": "After 5 minutes"
+        },
+        {
+          "value": "10m",
+          "label": "After 10 minutes"
+        },
+        {
+          "value": "30m",
+          "label": "After 30 minutes"
+        },
+        {
+          "value": "1h",
+          "label": "After 1 hour"
+        },
+        {
+          "value": "2h",
+          "label": "After 2 hours"
+        },
+        {
+          "value": "off",
+          "label": "Never"
+        }
+      ],
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.2.1",
+      "help": "How long Splash waits without a request before it frees the model's memory. The next message reloads the weights, which takes a few seconds. Never keeps the model in memory.",
+      "validation": {
+        "summary": "A duration such as 30m, or Never."
+      },
+      "pass_as": "argv",
+      "cli_format": "{value}",
+      "visibility": "basic",
+      "notes": "Before 1.2.1 the release was fixed at 10 minutes.",
+      "applies_to": [
+        "serve"
+      ]
+    },
+    {
       "flag": "--kv-format",
       "env": null,
       "key": "kv_format",
@@ -843,6 +897,35 @@
       "notes": null
     },
     {
+      "flag": "--disable-ane",
+      "env": null,
+      "key": "disable_ane",
+      "label": "Prefill on the GPU only",
+      "section": "performance",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.3.0",
+      "help": "By default Splash also uses the Neural Engine to read long prompts on dense models such as Qwen3.8-27B, which shortens the time to the first token. Turn this on to use the GPU alone; it leaves more memory for context.",
+      "validation": {
+        "summary": "Off uses the GPU and Neural Engine when that is faster."
+      },
+      "pass_as": "argv",
+      "cli_format": "flag",
+      "visibility": "advanced",
+      "notes": "1.3.0 added GPU + Neural Engine prefill; MoE models and decoding always use the GPU.",
+      "applies_to": [
+        "serve"
+      ]
+    },
+    {
       "flag": "--queue-size",
       "env": null,
       "key": "queue_size",
@@ -900,7 +983,7 @@
       "pass_as": "argv",
       "cli_format": "{value}",
       "visibility": "advanced",
-      "notes": "1.0-1.1.0: fixed 1800 s and not settable through `splash serve` (#185).",
+      "notes": "1.0-1.1.0: fixed 1800 s and not settable through `splash serve` (#185). 1.2.1+: also accepts durations such as 30m.",
       "applies_to": [
         "serve"
       ]
@@ -937,6 +1020,35 @@
         "serve"
       ],
       "notes": null
+    },
+    {
+      "flag": "--allow-idle-sleep",
+      "env": null,
+      "key": "allow_idle_sleep",
+      "label": "Let the Mac sleep during requests",
+      "section": "performance",
+      "control": "toggle",
+      "type": "boolean",
+      "default": false,
+      "min": null,
+      "max": null,
+      "step": null,
+      "unit": null,
+      "choices": null,
+      "multiple": false,
+      "restart_required": true,
+      "min_version": "1.2.1",
+      "help": "Splash keeps the Mac awake while a request runs (the display can still sleep). Turn this on to let it sleep on its own schedule.",
+      "validation": {
+        "summary": "Off keeps the Mac awake until requests finish."
+      },
+      "pass_as": "argv",
+      "cli_format": "flag",
+      "visibility": "advanced",
+      "notes": null,
+      "applies_to": [
+        "serve"
+      ]
     },
     {
       "flag": "--default-reasoning-effort",

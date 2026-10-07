@@ -124,6 +124,8 @@ describe('Composer', () => {
       'Think longest, for hard problems',
     );
     await user.click(screen.getByRole('menuitemcheckbox', { name: /High/ }));
-    expect(screen.getByRole('button', { name: 'Thinking: High' })).toHaveTextContent('High thinking');
+    expect(screen.getByRole('button', { name: 'Thinking: High' })).toHaveTextContent(
+      'High thinking',
+    );
   });
 });

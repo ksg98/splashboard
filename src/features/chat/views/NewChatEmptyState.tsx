@@ -1,4 +1,12 @@
-import { BookOpen, Code, FileText, Image, Sparkles, SquareTerminal, type LucideIcon } from 'lucide-react';
+import {
+  BookOpen,
+  Code,
+  FileText,
+  Image,
+  Sparkles,
+  SquareTerminal,
+  type LucideIcon,
+} from 'lucide-react';
 import type { ReactNode } from 'react';
 import type { Suggestion, SuggestionIcon } from './types';
 import './NewChatEmptyState.css';

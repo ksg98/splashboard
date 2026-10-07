@@ -150,22 +150,26 @@ export function Composer({
   const current = effortOption(effort);
   const effortItems: MenuItem[] = [
     { type: 'heading', label: 'Thinking' },
-    ...EFFORT_OPTIONS.map(
-      (option): MenuItem => ({
-        id: option.value,
-        label: option.label,
-        description: option.description,
-        checked: option.value === effort,
-        onSelect: () => onEffortChange(option.value),
-      }),
-    ),
+    ...EFFORT_OPTIONS.map((option): MenuItem => ({
+      id: option.value,
+      label: option.label,
+      description: option.description,
+      checked: option.value === effort,
+      onSelect: () => onEffortChange(option.value),
+    })),
   ];
 
-  const status = engine && (engine.state === 'stopped' || engine.state === 'starting') ? engine : undefined;
+  const status =
+    engine && (engine.state === 'stopped' || engine.state === 'starting') ? engine : undefined;
 
   return (
     <form
-      className={clsx('ch-composer', dragging && 'is-dragging', disabled && 'is-disabled', className)}
+      className={clsx(
+        'ch-composer',
+        dragging && 'is-dragging',
+        disabled && 'is-disabled',
+        className,
+      )}
       aria-label="Message composer"
       onSubmit={submit}
       onDragEnter={onDragEnter}
@@ -199,7 +203,10 @@ export function Composer({
           <span className="ch-composer-status-text">Starting {status.modelName}…</span>
           {(status.phase || status.elapsedSeconds !== undefined) && (
             <span className="ch-composer-status-sub">
-              {[status.phase, status.elapsedSeconds !== undefined ? `${Math.floor(status.elapsedSeconds)} s` : '']
+              {[
+                status.phase,
+                status.elapsedSeconds !== undefined ? `${Math.floor(status.elapsedSeconds)} s` : '',
+              ]
                 .filter(Boolean)
                 .join(' · ')}
             </span>

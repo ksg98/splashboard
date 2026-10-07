@@ -90,7 +90,9 @@ describe('AppShellView', () => {
           onSearch={() => setQuery('')}
           onNavigate={() => undefined}
           search={
-            query === null ? null : { value: query, onChange: setQuery, onClose: () => setQuery(null) }
+            query === null
+              ? null
+              : { value: query, onChange: setQuery, onClose: () => setQuery(null) }
           }
         />
       );

@@ -292,6 +292,17 @@ export function weightsResidency(
   previous: WeightsResidency = 'unknown',
   residentBaseline: number | null = null,
 ): WeightsResidency {
+  // Splash 1.2.1+ says so directly.
+  const reported = (status as { weights?: { released?: unknown } }).weights?.released;
+  if (typeof reported === 'boolean') {
+    const waiting = waitingForStart(status) && running(status) === 0;
+    if (reported) return waiting ? 'restoring' : 'released';
+    return previous === 'released' || previous === 'restoring'
+      ? waiting
+        ? 'restoring'
+        : 'resident'
+      : 'resident';
+  }
   const current = finite(status.memory_actual?.current_bytes);
   if (current === null) return 'unknown';
   const weights = weightsBytes(status) ?? residentBaseline;

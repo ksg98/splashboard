@@ -29,7 +29,7 @@ The design reference is `design/minimal-ref/` (open `index.html`).
 ## Requirements
 
 - A Mac with Apple silicon, macOS 14 or later (Splash runs only on Apple silicon)
-- Splash 1.2+ installed with Homebrew (`splash --version`)
+- Splash 1.2+ installed with Homebrew (`splash --version`); 1.3.0 recommended
 - Node.js 22+ and pnpm 11 (`corepack enable`)
 - Rust (stable, 1.85+) and Xcode Command Line Tools, for the Tauri shell
 

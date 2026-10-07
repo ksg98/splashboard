@@ -1,7 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { connectInstallEvents, selectNeedsHomebrew, useInstallStore } from '@/lib/install/store';
-import { DEFAULT_MODEL, displayModelName, engineWord, launchPhaseWord, startEngine, useLaunchStore } from '@/lib/launch';
+import {
+  DEFAULT_MODEL,
+  displayModelName,
+  engineWord,
+  launchPhaseWord,
+  startEngine,
+  useLaunchStore,
+} from '@/lib/launch';
 import { isOfferedEntry, runnableModels } from '@/lib/models/runnable';
 import { connectModelsEvents, isDownloadActive, useModelsStore } from '@/lib/models/store';
 import { connectEngineEvents, useEngineStore } from '@/lib/splash/engine-store';
@@ -46,7 +53,9 @@ export function WelcomePage() {
   }, []);
 
   const runnable = useMemo(() => runnableModels(installed, catalog?.entries), [installed, catalog]);
-  const memoryGb = install?.system.memoryBytes ? Math.round(install.system.memoryBytes / 1024 ** 3) : 0;
+  const memoryGb = install?.system.memoryBytes
+    ? Math.round(install.system.memoryBytes / 1024 ** 3)
+    : 0;
   const options: ModelOption[] = useMemo(
     () =>
       (catalog?.entries ?? []).filter(isOfferedEntry).map((entry) => ({
@@ -66,7 +75,8 @@ export function WelcomePage() {
     [catalog, memoryGb],
   );
 
-  const chosenId = choice ?? (runnable[0]?.model ?? (options.find((o) => o.recommended)?.id ?? DEFAULT_MODEL));
+  const chosenId =
+    choice ?? runnable[0]?.model ?? options.find((o) => o.recommended)?.id ?? DEFAULT_MODEL;
   const chosen = options.find((o) => o.id === chosenId) ?? {
     id: chosenId,
     name: displayModelName(chosenId),
@@ -93,7 +103,10 @@ export function WelcomePage() {
     : job?.phase === 'done'
       ? { kind: 'succeeded', version: status?.version ?? '' }
       : job?.phase === 'failed' || job?.phase === 'cancelled'
-        ? { kind: 'failed', message: job.error?.message ?? job.result?.error ?? 'Homebrew stopped.' }
+        ? {
+            kind: 'failed',
+            message: job.error?.message ?? job.result?.error ?? 'Homebrew stopped.',
+          }
         : { kind: 'running', phase: job?.phase ?? 'starting', progress: null };
 
   const downloadState: DownloadState = !download
@@ -198,7 +211,9 @@ export function WelcomePage() {
         onInstall={runInstall}
         onDownload={runDownload}
         onChooseModel={() => setSheet('choose')}
-        onStart={() => void startEngine(runnable.some((m) => m.model === launchModel) ? launchModel : chosen.id)}
+        onStart={() =>
+          void startEngine(runnable.some((m) => m.model === launchModel) ? launchModel : chosen.id)
+        }
         onOpenChat={() => {
           void markOnboardingCompleted().then(() => navigate('/chat'));
         }}

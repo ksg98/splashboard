@@ -157,7 +157,11 @@ export function SidebarHistory({
               return (
                 <li
                   key={item.id}
-                  className={clsx('ch-history-row', current && 'is-current', renaming && 'is-renaming')}
+                  className={clsx(
+                    'ch-history-row',
+                    current && 'is-current',
+                    renaming && 'is-renaming',
+                  )}
                 >
                   {renaming ? (
                     <RenameField

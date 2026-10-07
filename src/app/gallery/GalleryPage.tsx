@@ -56,7 +56,9 @@ export function GalleryEntryPage() {
   }
   const frame = entry.frame ?? 'centered';
   if (frame === 'window') {
-    return <div style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>{entry.render()}</div>;
+    return (
+      <div style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>{entry.render()}</div>
+    );
   }
   return (
     <div

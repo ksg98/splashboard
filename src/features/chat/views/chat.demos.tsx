@@ -42,8 +42,9 @@ function NavRow({ icon, label }: { icon: ReactNode; label: string }) {
   );
 }
 
-interface ComposerDemoProps
-  extends Partial<Omit<ComposerProps, 'value' | 'onChange' | 'effort' | 'onEffortChange'>> {
+interface ComposerDemoProps extends Partial<
+  Omit<ComposerProps, 'value' | 'onChange' | 'effort' | 'onEffortChange'>
+> {
   initialValue?: string;
   initialAttachments?: ChatImage[];
   initialEffort?: ThinkingEffort;
@@ -244,7 +245,10 @@ export function SidebarHistoryDemo({
         }
         onDelete={(id) =>
           setGroups((list) =>
-            list.map((group) => ({ ...group, items: group.items.filter((item) => item.id !== id) })),
+            list.map((group) => ({
+              ...group,
+              items: group.items.filter((item) => item.id !== id),
+            })),
           )
         }
         query={query}

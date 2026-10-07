@@ -161,7 +161,8 @@ export function AppShell() {
       if (model === launchModel && display.word.serving) return;
       useLaunchStore.getState().update({ model });
       if (!useEngineStore.getState().available) return;
-      const action = display.word.serving || display.word.launching ? restartEngine() : startEngine(model);
+      const action =
+        display.word.serving || display.word.launching ? restartEngine() : startEngine(model);
       void action.then((result) => reportFailure(result, 'Splash could not start that model.'));
     },
     [launchModel, display.word.serving, display.word.launching],
@@ -189,7 +190,9 @@ export function AppShell() {
           .stop()
           .then((r) => reportFailure(r, 'Splash could not stop.'))
       }
-      onRestart={() => void restartEngine().then((r) => reportFailure(r, 'Splash could not restart.'))}
+      onRestart={() =>
+        void restartEngine().then((r) => reportFailure(r, 'Splash could not restart.'))
+      }
       onOpenActivity={() => go('activity')}
       onOpenLaunchSettings={openLaunchSettings}
       onOpenModels={() => go('models')}

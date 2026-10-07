@@ -123,7 +123,12 @@ export function SearchChats({
                         onOpenChange(false);
                       }}
                     >
-                      <MessageCircle size={16} strokeWidth={1.5} aria-hidden className="ch-search-item-icon" />
+                      <MessageCircle
+                        size={16}
+                        strokeWidth={1.5}
+                        aria-hidden
+                        className="ch-search-item-icon"
+                      />
                       <span className="ch-search-item-text">
                         <span className="ch-search-item-title">
                           <Highlight text={result.title} query={trimmed} />
