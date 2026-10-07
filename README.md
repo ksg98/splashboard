@@ -26,6 +26,14 @@ Status: early (0.1). Every screen is wired to Splash 1.2:
 
 The design reference is `design/minimal-ref/` (open `index.html`).
 
+## Install
+
+Download `Splashboard_0.1.0_aarch64.dmg` from the
+[latest release](https://github.com/ksg98/splashboard/releases/latest), open it
+and drag Splashboard to Applications. The app is signed with a Developer ID and
+notarized by Apple. On first launch it offers to install Splash with Homebrew
+and download a model if you don't have them yet.
+
 ## Requirements
 
 - A Mac with Apple silicon, macOS 14 or later (Splash runs only on Apple silicon)
