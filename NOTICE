@@ -1,0 +1,6 @@
+Splashboard
+Copyright 2026 Splashboard contributors
+
+Splashboard is an independent project and is not affiliated with Inco.
+"Splash" refers to Inco's inference engine (https://github.com/incoai/splash),
+which Splashboard drives through its public CLI and HTTP API.
