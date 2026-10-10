@@ -10,7 +10,29 @@ React and TypeScript.
 > "Splash" refers to Inco's engine, which Splashboard drives through its public
 > CLI and HTTP API.
 
-Status: early (0.1). Every screen is wired to Splash 1.2:
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/chat-dark.png">
+  <img alt="Splashboard chat with Qwen3.8-27B running on Splash" src="docs/screenshots/chat-light.png">
+</picture>
+
+<table>
+  <tr>
+    <td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/activity-dark.png"><img alt="Activity: live tokens per second, draft acceptance, memory and prompt cache" src="docs/screenshots/activity-light.png"></picture></td>
+    <td><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/models-dark.png"><img alt="Models: the running model, Launch settings and downloads" src="docs/screenshots/models-light.png"></picture></td>
+  </tr>
+  <tr>
+    <td align="center">Activity</td>
+    <td align="center">Models</td>
+  </tr>
+  <tr>
+    <td colspan="2"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/connect-dark.png"><img alt="Connect: Claude Code, OpenCode, Codex, Hermes and Pi, plus the API address" src="docs/screenshots/connect-light.png"></picture></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">Connect</td>
+  </tr>
+</table>
+
+Status: early (0.1). Every screen is wired to Splash 1.2 and 1.3:
 
 - **Chat**: streamed replies with thinking, Stop, Regenerate, image attachments,
   saved history and a thinking-level picker. Sending starts the model if needed.
