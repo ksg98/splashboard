@@ -1,6 +1,6 @@
 [package]
 name = "splashboard"
-version = "0.1.0"
+version = "0.1.1"
 description = "Splashboard: a desktop control room for the Splash local inference engine"
 authors = ["Splashboard contributors"]
 license = "Apache-2.0"
