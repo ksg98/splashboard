@@ -50,7 +50,7 @@ The design reference is `design/minimal-ref/` (open `index.html`).
 
 ## Install
 
-Download `Splashboard_0.1.0_aarch64.dmg` from the
+Download `Splashboard_0.1.1_aarch64.dmg` from the
 [latest release](https://github.com/ksg98/splashboard/releases/latest), open it
 and drag Splashboard to Applications. The app is signed with a Developer ID and
 notarized by Apple. On first launch it offers to install Splash with Homebrew
